@@ -50,7 +50,7 @@ def get_job_description_text_embedding(job_description_text):
             # Initialize Bedrock client
             bedrock_runtime = boto3.client(
                 'bedrock-runtime',
-                region_name='us-east-1'  # Adjust region as needed
+                region_name='ap-south-1'  # ✅ Match your region
             )
             
             # Prepare the input for Titan Embeddings V2
