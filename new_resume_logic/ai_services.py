@@ -4,6 +4,7 @@ import logging
 import re
 from config import AWS_REGION, BEDROCK_ENDPOINT, EMBEDDING_MODEL_ID, LLM_MODEL_ID, MAX_TEXT_LENGTH, MAX_EMBEDDING_LENGTH, EMBEDDING_DIMENSION
 from prompts import get_metadata_extraction_prompt
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
 logger = logging.getLogger()
 bedrock = boto3.client('bedrock-runtime', AWS_REGION, endpoint_url=BEDROCK_ENDPOINT)
@@ -139,48 +140,63 @@ def get_embedding(text):
 def create_section_embeddings(metadata):
     """Create separate embeddings for different resume sections"""
     try:
-        # Skills vector
-        skills_text = ' '.join(metadata.get('skills', []))
-        logger.info(f"Skills text for embedding: '{skills_text}'")
-        skills_vector = get_embedding(skills_text)
-        
-        # Experience vector
+        # Prepare clean texts for each section
+        skills_text = ' '.join([s for s in metadata.get('skills', []) if isinstance(s, str)]).strip()
+        logger.info(f"Skills text for embedding length: {len(skills_text)}")
+
         experience_texts = []
         for exp in metadata.get('work_experience', []):
             if isinstance(exp, dict):
-                exp_text = f"{exp.get('title', '')} at {exp.get('company', '')} {exp.get('description', '')}"
-                experience_texts.append(exp_text.strip())
-            elif isinstance(exp, str):
-                experience_texts.append(exp)
+                parts = [exp.get('title') or '', exp.get('company') or '', exp.get('description') or '']
+                exp_text = ' '.join([p for p in parts if p]).strip()
+                if exp_text:
+                    experience_texts.append(exp_text)
+            elif isinstance(exp, str) and exp.strip():
+                experience_texts.append(exp.strip())
         experience_text = ' '.join(experience_texts)
-        experience_vector = get_embedding(experience_text)
-        
-        # Certification vector
+
         certifications_list = metadata.get('certifications', [])
         if isinstance(certifications_list, list):
-            certifications_text = ' '.join(certifications_list)
+            certifications_text = ' '.join([str(c) for c in certifications_list if c]).strip()
         else:
             certifications_text = str(certifications_list)
-        certification_vector = get_embedding(certifications_text)
-        
-        # Projects vector
+
         projects_texts = []
         for project in metadata.get('projects', []):
             if isinstance(project, dict):
-                proj_text = f"{project.get('title', '')} {project.get('description', '')}"
-                projects_texts.append(proj_text.strip())
-            elif isinstance(project, str):
-                projects_texts.append(project)
+                parts = [project.get('title') or '', project.get('description') or '']
+                proj_text = ' '.join([p for p in parts if p]).strip()
+                if proj_text:
+                    projects_texts.append(proj_text)
+            elif isinstance(project, str) and project.strip():
+                projects_texts.append(project.strip())
         projects_text = ' '.join(projects_texts)
-        projects_vector = get_embedding(projects_text)
-        
-        return {
-            'skills_vector': skills_vector,
-            'experience_vector': experience_vector,
-            'certification_vector': certification_vector,
-            'projects_vector': projects_vector
+
+        # Run Bedrock embedding calls in parallel (up to 4 workers)
+        section_texts = {
+            'skills_vector': skills_text,
+            'experience_vector': experience_text,
+            'certification_vector': certifications_text,
+            'projects_vector': projects_text,
         }
-        
+
+        results = {k: [0.0] * EMBEDDING_DIMENSION for k in section_texts.keys()}
+
+        with ThreadPoolExecutor(max_workers=4) as executor:
+            future_map = {
+                executor.submit(get_embedding, text): name
+                for name, text in section_texts.items()
+            }
+            for future in as_completed(future_map):
+                name = future_map[future]
+                try:
+                    results[name] = future.result()
+                except Exception as e:
+                    logger.error(f"Embedding generation failed for {name}: {str(e)}")
+                    results[name] = [0.0] * EMBEDDING_DIMENSION
+
+        return results
+
     except Exception as e:
         logger.error(f"Section embeddings error: {str(e)}")
         return {

@@ -159,9 +159,9 @@ def extract_text_from_pdf(pdf_content):
         # Reset to beginning for processing
         pdf_stream.seek(0)
         
-        # Method 1: Try PyPDF2 with default settings
+        # Method 1: Try PyPDF2 with tolerant settings (strict=False) to handle malformed PDFs
         try:
-            pdf_reader = PyPDF2.PdfReader(pdf_stream)
+            pdf_reader = PyPDF2.PdfReader(pdf_stream, strict=False)
             
             # Check if PDF has pages
             logger.info(f"PDF has {len(pdf_reader.pages)} pages")
@@ -190,16 +190,18 @@ def extract_text_from_pdf(pdf_content):
         except Exception as e:
             logger.warning(f"PyPDF2 extraction failed: {str(e)}")
         
-        # Method 2: Try PyPDF2 with strict=False (for malformed PDFs like Google Docs)
+        # Method 2: Retry PyPDF2 with strict=False (kept as an additional attempt; often redundant but safe)
         try:
             pdf_stream.seek(0)
             pdf_reader = PyPDF2.PdfReader(pdf_stream, strict=False)
+
             text = ""
             for page_num, page in enumerate(pdf_reader.pages):
                 try:
                     page_text = page.extract_text()
                     if page_text:
                         text += page_text + "\n"
+                        logger.info(f"Page {page_num + 1} (retry): extracted {len(page_text)} characters")
                         logger.info(f"Page {page_num + 1} (strict=False): extracted {len(page_text)} characters")
                 except Exception as e:
                     logger.warning(f"Page {page_num + 1} extraction failed: {str(e)}")

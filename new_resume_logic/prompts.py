@@ -1,44 +1,58 @@
 def get_metadata_extraction_prompt(text):
     """Returns the prompt for extracting structured metadata from resume text"""
-    return f"""Extract information from the resume text below following these EXTREMELY STRICT rules:
+    return f"""
+You are an expert resume parser. Extract a clean, structured JSON from the resume text below.
 
-1. LITERAL EXTRACTION ONLY:
-- Only extract information that is EXPLICITLY stated in the text
-- Treat this as a text parsing task, not interpretation
-- Every field must come verbatim from the text
+Rules for extraction (balanced and practical):
+1) Grounded extraction (no hallucination)
+   - Use only information present in the resume text.
+   - Prefer literal text, but you MAY infer skills and entities if they are clearly implied by experience/projects/achievements.
+   - Do NOT invent degrees, employers, or dates that are not present.
 
-2. ABSOLUTELY NO INFERENCE:
-- Do NOT assume any skills from job descriptions
-- Do NOT guess technologies from project names
-- Do NOT add anything not explicitly listed
+2) Skills extraction (flexible and comprehensive)
+   - Include skills listed in a dedicated Skills/Technical Skills section if present.
+   - ALSO include skills clearly mentioned in experience, projects, summary, or achievements (e.g., "Developed microservices using Java and Spring Boot" → add ["Java", "Spring Boot"]).
+   - Normalize skill tokens (trim, deduplicate, keep concise terms like "AWS", "Kubernetes", "TensorFlow").
 
-3. SKILLS MUST BE EXPLICIT:
-- ONLY include terms that appear in a clear "Skills"/"Technical Skills" section
-- Or when listed in format: "Skills: Java, Python" (extract ["Java", "Python"])
-- NEVER include skills from:
-    * Job descriptions ("Worked on Java projects" ≠ "Java" skill)
-    * Project descriptions
-    * Summary/objective statements
+3) Work experience structure
+   - Extract as an array of objects with fields: job_title, company, start_date, end_date, description.
+   - Dates can be any textual form present (e.g., "Jan 2021 - Present"). If missing, use null.
 
-4. EMPTY ARRAYS WHEN MISSING:
-- If section doesn't exist in text, return empty array
-- Never invent entries to fill arrays
+4) Certifications, projects, education
+   - Return arrays. Each item may be a string or an object with name/title and optional details.
+   - Do not fabricate items; include only what the text supports.
 
-Required output format (JSON):
+5) Contact & personal info
+   - Extract full_name, email, phone, location if present; otherwise use null.
+
+6) Output quality
+   - Keep arrays concise and deduplicated.
+   - Use proper JSON only. No markdown, no comments, no extra text.
+
+Required JSON schema:
 {{
-"full_name": "(exact characters from name field)",
-"email": "(exact email or null)",
-"phone": "(exact phone or null)",
-"location": "(exact location or null)",
-"skills": [], // MUST BE EMPTY UNLESS EXPLICIT SKILLS SECTION
-"work_experience": ["(exact bullet points)"],
-"certifications": ["(exact certification text)"],
-"projects": ["(exact project descriptions)"],
-"education": ["(exact education entries)"],
-"summary": "(exact summary text or null)"
+  "full_name": string|null,
+  "email": string|null,
+  "phone": string|null,
+  "location": string|null,
+  "skills": string[],
+  "work_experience": [
+    {{
+      "job_title": string|null,
+      "company": string|null,
+      "start_date": string|null,
+      "end_date": string|null,
+      "description": string|null
+    }}
+  ],
+  "certifications": [string|object],
+  "projects": [string|object],
+  "education": [string|object],
+  "summary": string|null
 }}
 
 Resume text:
 {text}
 
-Return ONLY the raw JSON with EXACT text matches."""
+Return ONLY the JSON object.
+"""
