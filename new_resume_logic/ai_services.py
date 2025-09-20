@@ -22,7 +22,7 @@ def get_metadata_from_bedrock(text):
         
         body = json.dumps({
             "anthropic_version": "bedrock-2023-05-31",
-            "max_tokens": 4096,
+            "max_tokens": 1536,
             "temperature": 0.1,
             "messages": [
                 {"role": "user", "content": [{"type": "text", "text": prompt_text}]}
@@ -147,7 +147,7 @@ def create_section_embeddings(metadata):
         experience_texts = []
         for exp in metadata.get('work_experience', []):
             if isinstance(exp, dict):
-                parts = [exp.get('title') or '', exp.get('company') or '', exp.get('description') or '']
+                parts = [exp.get('job_title') or exp.get('title') or '', exp.get('company') or '', exp.get('description') or '']
                 exp_text = ' '.join([p for p in parts if p]).strip()
                 if exp_text:
                     experience_texts.append(exp_text)

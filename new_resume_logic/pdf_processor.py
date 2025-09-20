@@ -4,10 +4,13 @@ import logging
 import base64
 import io
 import re
+import time
+import uuid
 from config import BUCKET_NAME, RESUME_PREFIX
 
 logger = logging.getLogger()
 s3 = boto3.client('s3')
+logging.getLogger("PyPDF2").setLevel(logging.ERROR)
 
 
 def parse_multipart_form(event):
@@ -251,6 +254,97 @@ def extract_text_from_pdf(pdf_content):
         except Exception as e:
             logger.warning(f"Alternative extraction method failed: {str(e)}")
         
+        # Method 3.5: (Removed) Sync Textract on PDF bytes is unreliable for many PDFs; prefer async S3-based OCR below
+
+        # Method 3.6: Fallback using pdfminer.six (pure Python) when available via Lambda Layer
+        try:
+            def _extract_with_pdfminer(pdf_bytes: bytes) -> str:
+                try:
+                    from pdfminer.high_level import extract_text as pdfminer_extract_text
+                    return pdfminer_extract_text(io.BytesIO(pdf_bytes))
+                except ImportError:
+                    logger.warning("pdfminer.six not available (layer missing); skipping pdfminer fallback")
+                    return ""
+                except Exception as e:
+                    logger.warning(f"pdfminer.six extraction failed: {str(e)}")
+                    return ""
+
+            pdf_stream.seek(0)
+            pdf_bytes_for_pdfminer = pdf_stream.read()
+            if pdf_bytes_for_pdfminer:
+                pm_text = _extract_with_pdfminer(pdf_bytes_for_pdfminer)
+                if pm_text and pm_text.strip():
+                    logger.info(f"pdfminer.six extracted {len(pm_text)} characters")
+                    return pm_text.strip()
+        except Exception as e:
+            logger.warning(f"pdfminer fallback threw an unexpected error: {str(e)}")
+
+        # Method 3.7: Textract asynchronous OCR via S3 for PDF (robust and supported)
+        try:
+            pdf_stream.seek(0)
+            pdf_bytes_for_async = pdf_stream.read()
+            if pdf_bytes_for_async:
+                textract = boto3.client('textract')
+                tmp_key = f"{RESUME_PREFIX}textract_tmp/{uuid.uuid4()}.pdf"
+                try:
+                    s3.put_object(Bucket=BUCKET_NAME, Key=tmp_key, Body=pdf_bytes_for_async)
+                    logger.info(f"Uploaded temp PDF to s3://{BUCKET_NAME}/{tmp_key} for Textract async OCR")
+
+                    start_resp = textract.start_document_text_detection(
+                        DocumentLocation={
+                            'S3Object': {'Bucket': BUCKET_NAME, 'Name': tmp_key}
+                        }
+                    )
+                    job_id = start_resp['JobId']
+                    logger.info(f"Textract async JobId: {job_id}")
+
+                    # Poll for completion up to ~15 seconds to improve completion chances
+                    max_wait_seconds = 15
+                    waited = 0
+                    status = 'IN_PROGRESS'
+                    pages = []
+                    while waited < max_wait_seconds and status in ('IN_PROGRESS', 'SUCCEEDED'):
+                        time.sleep(1)
+                        waited += 1
+                        get_resp = textract.get_document_text_detection(JobId=job_id, MaxResults=1000)
+                        status = get_resp.get('JobStatus', 'FAILED')
+                        if status == 'SUCCEEDED':
+                            pages.append(get_resp)
+                            # Handle pagination
+                            next_token = get_resp.get('NextToken')
+                            while next_token:
+                                get_resp = textract.get_document_text_detection(JobId=job_id, MaxResults=1000, NextToken=next_token)
+                                pages.append(get_resp)
+                                next_token = get_resp.get('NextToken')
+                            break
+                        elif status == 'FAILED':
+                            break
+
+                    if status == 'SUCCEEDED' and pages:
+                        ocr_lines = []
+                        for page in pages:
+                            for block in page.get('Blocks', []):
+                                if block.get('BlockType') == 'LINE' and 'Text' in block:
+                                    line = block['Text'].strip()
+                                    if line:
+                                        ocr_lines.append(line)
+                        if ocr_lines:
+                            ocr_text = '\n'.join(ocr_lines)
+                            logger.info(f"Textract async OCR extracted {len(ocr_text)} characters across {len(ocr_lines)} lines")
+                            return ocr_text
+                        else:
+                            logger.warning("Textract async OCR returned no LINE text")
+                    else:
+                        logger.warning(f"Textract async OCR job status: {status} after {waited}s (may still be running)")
+                finally:
+                    # Clean up temp object
+                    try:
+                        s3.delete_object(Bucket=BUCKET_NAME, Key=tmp_key)
+                    except Exception as cleanup_err:
+                        logger.warning(f"Failed to delete temp Textract object: {str(cleanup_err)}")
+        except Exception as e:
+            logger.warning(f"Textract async OCR fallback failed or unavailable: {str(e)}")
+
         # Method 4: Last resort - extract any readable content
         try:
             pdf_stream.seek(0)

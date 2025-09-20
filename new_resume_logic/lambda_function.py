@@ -54,6 +54,21 @@ def lambda_handler(event, context):
             # Extract text from PDF using dedicated stream
             text = extract_text_from_pdf(text_extraction_stream)
             logger.info(f"Extracted {len(text)} characters from multipart PDF")
+            # Fail fast if no usable text to prevent empty embeddings and bad records
+            min_chars = 50
+            if not text or len(text.strip()) < min_chars:
+                logger.warning("No usable text extracted from PDF after all fallbacks; aborting request")
+                return {
+                    'statusCode': 400,
+                    'headers': {
+                        'Content-Type': 'application/json',
+                        'Access-Control-Allow-Origin': '*'
+                    },
+                    'body': json.dumps({
+                        'error': 'no_extractable_text',
+                        'message': 'Unable to extract readable text from the uploaded PDF. It may be image-only/blank or unsupported. Please upload a text-based PDF or enable the OCR layer.',
+                    })
+                }
             
             # Set pdf_content to the S3 upload stream for later S3 operations
             pdf_content = s3_upload_stream

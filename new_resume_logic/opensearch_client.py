@@ -107,69 +107,106 @@ def normalize_metadata_for_opensearch(metadata, raw_text):
     try:
         normalized = {}
         
+        def to_string_list(items, kind):
+            """Convert a list potentially containing dicts/strings into a list of readable strings."""
+            result = []
+            if not isinstance(items, list):
+                return [str(items)] if items else []
+            for it in items:
+                try:
+                    if isinstance(it, dict):
+                        if kind == 'work':
+                            # Handle work experience objects
+                            parts = []
+                            if it.get('job_title') or it.get('title'):
+                                parts.append(f"Title: {it.get('job_title') or it.get('title')}")
+                            if it.get('company'):
+                                parts.append(f"Company: {it.get('company')}")
+                            if it.get('start_date') or it.get('end_date'):
+                                duration = f"{it.get('start_date', '')} - {it.get('end_date', '')}".strip(' -')
+                                if duration:
+                                    parts.append(f"Duration: {duration}")
+                            if it.get('description'):
+                                parts.append(f"Description: {it.get('description')}")
+                            text = '. '.join(parts) if parts else str(it)
+                        elif kind == 'project':
+                            # Handle project objects
+                            parts = []
+                            if it.get('name') or it.get('title'):
+                                parts.append(f"Project: {it.get('name') or it.get('title')}")
+                            if it.get('details') or it.get('description'):
+                                parts.append(it.get('details') or it.get('description'))
+                            text = '. '.join(parts) if parts else str(it)
+                        elif kind == 'cert':
+                            # Handle certification objects or strings
+                            if isinstance(it, str):
+                                text = it
+                            else:
+                                parts = []
+                                if it.get('name'):
+                                    parts.append(it.get('name'))
+                                if it.get('issuer'):
+                                    parts.append(f"by {it.get('issuer')}")
+                                if it.get('date'):
+                                    parts.append(f"({it.get('date')})")
+                                text = ' '.join(parts) if parts else str(it)
+                        elif kind == 'edu':
+                            # Handle education objects
+                            parts = []
+                            if it.get('name') or it.get('degree'):
+                                parts.append(it.get('name') or it.get('degree'))
+                            if it.get('details') or it.get('institution'):
+                                parts.append(it.get('details') or it.get('institution'))
+                            text = '. '.join(parts) if parts else str(it)
+                        elif kind == 'skill':
+                            # Handle skill objects (shouldn't happen, but just in case)
+                            if isinstance(it, str):
+                                text = it
+                            else:
+                                text = it.get('name') or it.get('skill') or str(it)
+                        else:
+                            # Fallback for any other dict
+                            text = str(it)
+                        result.append(text)
+                    elif isinstance(it, (str, int, float)):
+                        result.append(str(it))
+                    else:
+                        result.append(str(it))
+                except Exception as e:
+                    logger.warning(f"Error processing item {it} of kind {kind}: {str(e)}")
+                    result.append(str(it))
+            return result
+        
         # Handle simple fields
         for field in ['full_name', 'email', 'phone', 'location', 'summary']:
             value = metadata.get(field, None)
             normalized[field] = str(value) if value is not None else None
         
-        # Handle skills - convert array to both text and keyword list
+        # Handle skills - normalize to string list then join for text field
         skills = metadata.get('skills', [])
-        if isinstance(skills, list):
-            normalized['skills'] = ' '.join(skills) if skills else ''
-            normalized['skills_list'] = skills
-        else:
-            skills_str = str(skills) if skills else ''
-            normalized['skills'] = skills_str
-            normalized['skills_list'] = [skills_str] if skills_str else []
+        skills_list = to_string_list(skills, kind='skill')
+        normalized['skills'] = ' '.join(skills_list) if skills_list else ''
+        normalized['skills_list'] = skills_list
         
         # Flatten work experience to text
         work_exp = metadata.get('work_experience', [])
-        if isinstance(work_exp, list):
-            work_exp_texts = []
-            for exp in work_exp:
-                if isinstance(exp, dict):
-                    exp_text = f"Company: {exp.get('company', 'N/A')}, Title: {exp.get('title', 'N/A')}, Duration: {exp.get('duration', 'N/A')}, Description: {exp.get('description', 'N/A')}"
-                    work_exp_texts.append(exp_text)
-                elif isinstance(exp, str):
-                    work_exp_texts.append(exp)
-            normalized['work_experience_text'] = ' | '.join(work_exp_texts)
-        else:
-            normalized['work_experience_text'] = str(work_exp) if work_exp else ''
+        work_exp_texts = to_string_list(work_exp, kind='work')
+        normalized['work_experience_text'] = ' | '.join(work_exp_texts) if work_exp_texts else ''
         
         # Handle certifications - convert array to text
         certifications = metadata.get('certifications', [])
-        if isinstance(certifications, list):
-            normalized['certifications'] = ' '.join(certifications) if certifications else ''
-        else:
-            normalized['certifications'] = str(certifications) if certifications else ''
+        cert_texts = to_string_list(certifications, kind='cert')
+        normalized['certifications'] = ' | '.join(cert_texts) if cert_texts else ''
         
         # Flatten projects to text
         projects = metadata.get('projects', [])
-        if isinstance(projects, list):
-            project_texts = []
-            for project in projects:
-                if isinstance(project, dict):
-                    proj_text = f"Title: {project.get('title', 'N/A')}, Description: {project.get('description', 'N/A')}"
-                    project_texts.append(proj_text)
-                elif isinstance(project, str):
-                    project_texts.append(project)
-            normalized['projects_text'] = ' | '.join(project_texts)
-        else:
-            normalized['projects_text'] = str(projects) if projects else ''
+        project_texts = to_string_list(projects, kind='project')
+        normalized['projects_text'] = ' | '.join(project_texts) if project_texts else ''
         
         # Flatten education to text
         education = metadata.get('education', [])
-        if isinstance(education, list):
-            education_texts = []
-            for edu in education:
-                if isinstance(edu, dict):
-                    edu_text = f"Institution: {edu.get('institution', 'N/A')}, Degree: {edu.get('degree', 'N/A')}, Field: {edu.get('field', 'N/A')}, Year: {edu.get('year', 'N/A')}"
-                    education_texts.append(edu_text)
-                elif isinstance(edu, str):
-                    education_texts.append(edu)
-            normalized['education_text'] = ' | '.join(education_texts)
-        else:
-            normalized['education_text'] = str(education) if education else ''
+        education_texts = to_string_list(education, kind='edu')
+        normalized['education_text'] = ' | '.join(education_texts) if education_texts else ''
         
         # Add truncated raw text for debugging
         normalized['raw_text_preview'] = raw_text[:1000] if raw_text else ''
