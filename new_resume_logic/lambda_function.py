@@ -2,6 +2,7 @@ import json
 import uuid
 import logging
 import boto3
+import time
 from io import BytesIO
 from pdf_processor import extract_text_from_pdf, save_pdf_to_s3
 from ai_services import get_metadata_from_bedrock, create_section_embeddings
@@ -16,6 +17,7 @@ logger.setLevel(logging.INFO)
 def lambda_handler(event, context):
     """Main Lambda handler function"""
     try:
+        start_time = time.time()
         logger.info("Processing resume upload request")
         logger.info(f"Event: {json.dumps(event, default=str)}")
 
@@ -51,9 +53,11 @@ def lambda_handler(event, context):
             text_extraction_stream = BytesIO(pdf_content_bytes)
             s3_upload_stream = BytesIO(pdf_content_bytes)
             
-            # Extract text from PDF using dedicated stream
-            text = extract_text_from_pdf(text_extraction_stream)
-            logger.info(f"Extracted {len(text)} characters from multipart PDF")
+            # Extract text from PDF
+            pdf_start = time.time()
+            text = extract_text_from_pdf(pdf_content.getvalue())
+            pdf_time = time.time() - pdf_start
+            logger.info(f"Extracted {len(text)} characters from multipart PDF in {pdf_time:.2f}s")
             # Fail fast if no usable text to prevent empty embeddings and bad records
             min_chars = 50
             if not text or len(text.strip()) < min_chars:
@@ -96,22 +100,30 @@ def lambda_handler(event, context):
         opensearch = get_opensearch_client()
 
         # Get structured metadata using Bedrock
+        bedrock_start = time.time()
         raw_metadata = get_metadata_from_bedrock(text)
+        bedrock_time = time.time() - bedrock_start
         candidate_name = raw_metadata.get('full_name', 'Unknown')
-        logger.info(f"Extracted metadata for candidate: {candidate_name}")
+        logger.info(f"Extracted metadata for candidate: {candidate_name} in {bedrock_time:.2f}s")
 
         # Normalize metadata for OpenSearch compatibility
         normalized_metadata = normalize_metadata_for_opensearch(raw_metadata, text)
 
         # Create section-specific embeddings
+        embedding_start = time.time()
         embeddings = create_section_embeddings(raw_metadata)
-        logger.info("Generated section-specific embeddings")
+        embedding_time = time.time() - embedding_start
+        logger.info(f"Generated section-specific embeddings in {embedding_time:.2f}s")
 
         # Index document in OpenSearch
+        index_start = time.time()
         response = index_resume_document(
             opensearch, resume_id, job_description_id, filename, 
             candidate_name, s3_key, normalized_metadata, embeddings
         )
+        index_time = time.time() - index_start
+        total_time = time.time() - start_time
+        logger.info(f"Indexed document in {index_time:.2f}s. Total processing time: {total_time:.2f}s")
 
         return {
             'statusCode': 200,

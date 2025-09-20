@@ -101,10 +101,33 @@ def parse_multipart_form(event):
         
         # Get body content
         body = event.get('body', '')
-        if event.get('isBase64Encoded', False):
+        is_base64 = event.get('isBase64Encoded', False)
+        logger.info(f"Multipart parsing: isBase64Encoded={is_base64}, body_type={type(body)}, body_length={len(body) if body else 0}")
+        
+        if is_base64:
             body = base64.b64decode(body)
+            logger.info(f"Decoded base64 body to {len(body)} bytes")
         else:
-            body = body.encode('utf-8')
+            # For multipart data, body should already be bytes or need proper handling
+            if isinstance(body, str):
+                # Try to handle as latin-1 to preserve binary data
+                try:
+                    body = body.encode('latin-1')
+                    logger.info(f"Encoded string body as latin-1 to {len(body)} bytes")
+                except UnicodeEncodeError as e:
+                    logger.warning(f"Latin-1 encoding failed: {e}")
+                    # Fallback: assume it's base64 encoded even if flag is wrong
+                    try:
+                        body = base64.b64decode(body)
+                        logger.info(f"Fallback: decoded as base64 to {len(body)} bytes")
+                    except Exception as e2:
+                        logger.warning(f"Base64 fallback failed: {e2}")
+                        # Last resort: UTF-8 encoding (may corrupt binary data)
+                        body = body.encode('utf-8')
+                        logger.warning(f"Last resort: UTF-8 encoding to {len(body)} bytes (may corrupt binary)")
+            elif not isinstance(body, bytes):
+                body = str(body).encode('utf-8')
+                logger.info(f"Converted non-string body to UTF-8 bytes: {len(body)} bytes")
         
         # Parse multipart data
         boundary_bytes = f'--{boundary}'.encode()

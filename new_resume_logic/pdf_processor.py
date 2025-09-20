@@ -266,7 +266,15 @@ def extract_text_from_pdf(pdf_content):
                     logger.warning("pdfminer.six not available (layer missing); skipping pdfminer fallback")
                     return ""
                 except Exception as e:
-                    logger.warning(f"pdfminer.six extraction failed: {str(e)}")
+                    error_msg = str(e).lower()
+                    if "data-loss" in error_msg or "decompressing" in error_msg or "corrupted" in error_msg:
+                        # Mark corruption detected and fail fast to avoid timeout
+                        extract_text_from_pdf._corruption_detected = True
+                        logger.error(f"PDF corruption detected by pdfminer.six: {str(e)}")
+                        logger.error("Failing fast due to corruption to avoid API Gateway timeout")
+                        raise ValueError("PDF file is corrupted or damaged. The file contains invalid compressed data streams. Please try re-saving or re-exporting the PDF from the original application, or upload a different version of the file.")
+                    else:
+                        logger.warning(f"pdfminer.six extraction failed: {str(e)}")
                     return ""
 
             pdf_stream.seek(0)
@@ -298,16 +306,23 @@ def extract_text_from_pdf(pdf_content):
                     job_id = start_resp['JobId']
                     logger.info(f"Textract async JobId: {job_id}")
 
-                    # Poll for completion up to ~15 seconds to improve completion chances
-                    max_wait_seconds = 15
+                    # Poll for completion up to ~20 seconds to stay under API Gateway 29s limit
+                    max_wait_seconds = 20
                     waited = 0
                     status = 'IN_PROGRESS'
                     pages = []
+                    poll_interval = 1
+                    
                     while waited < max_wait_seconds and status in ('IN_PROGRESS', 'SUCCEEDED'):
-                        time.sleep(1)
-                        waited += 1
+                        time.sleep(poll_interval)
+                        waited += poll_interval
+                        
                         get_resp = textract.get_document_text_detection(JobId=job_id, MaxResults=1000)
                         status = get_resp.get('JobStatus', 'FAILED')
+                        
+                        # Exponential backoff: 1s, 2s, 3s, 5s, 5s, 5s...
+                        if poll_interval < 5:
+                            poll_interval = min(poll_interval + 1, 5)
                         if status == 'SUCCEEDED':
                             pages.append(get_resp)
                             # Handle pagination
@@ -370,14 +385,40 @@ def extract_text_from_pdf(pdf_content):
                 
                 # Basic cleanup and validation
                 if len(extracted_text) > 50:  # Reasonable minimum for a resume
-                    return extracted_text
+                    # Check if the text has reasonable quality (not just binary junk)
+                    readable_chars = sum(1 for c in extracted_text if c.isprintable() and not c.isspace())
+                    total_chars = len(extracted_text.replace(' ', '').replace('\n', ''))
+                    
+                    if total_chars > 0:
+                        readability_ratio = readable_chars / total_chars
+                        logger.info(f"Raw extraction readability: {readability_ratio:.2f} ({readable_chars}/{total_chars})")
+                        
+                        if readability_ratio > 0.7:  # At least 70% readable characters
+                            return extracted_text
+                        else:
+                            logger.warning(f"Raw extraction quality too low ({readability_ratio:.2f}), treating as corrupted")
+                            extract_text_from_pdf._corruption_detected = True
                     
         except Exception as e:
             logger.warning(f"Raw content extraction failed: {str(e)}")
         
-        # If all methods fail
-        logger.error("All text extraction methods failed - PDF may be image-based, heavily encrypted, or corrupted")
-        raise ValueError("No text content extracted from PDF - file may be image-based (scanned), corrupted, encrypted, or created by Google Docs with rendering issues. Please try uploading a different PDF or convert to text format.")
+        # If all methods fail, check if we detected corruption
+        corruption_detected = False
+        
+        # Check logs for corruption indicators (this is a simple heuristic)
+        try:
+            # If we got here and pdfminer was attempted, check for corruption signs
+            if hasattr(extract_text_from_pdf, '_corruption_detected'):
+                corruption_detected = True
+        except:
+            pass
+            
+        if corruption_detected:
+            logger.error("PDF file appears to be corrupted - detected decompression errors")
+            raise ValueError("PDF file is corrupted or damaged. The file contains invalid compressed data streams. Please try re-saving or re-exporting the PDF from the original application, or upload a different version of the file.")
+        else:
+            logger.error("All text extraction methods failed - PDF may be image-based, heavily encrypted, or corrupted")
+            raise ValueError("No text content extracted from PDF - file may be image-based (scanned), corrupted, encrypted, or created by Google Docs with rendering issues. Please try uploading a different PDF or convert to text format.")
         
     except Exception as e:
         logger.error(f"PDF text extraction error: {str(e)}")
