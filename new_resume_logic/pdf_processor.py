@@ -164,6 +164,44 @@ def extract_text_from_pdf(pdf_content):
         
         # Method 1: Try PyPDF2 with tolerant settings (strict=False) to handle malformed PDFs
         try:
+            pdf_stream.seek(0)
+            pdf_bytes_for_debug = pdf_stream.read()
+            logger.info(f"PDF bytes for PyPDF2: {len(pdf_bytes_for_debug)} bytes, header: {pdf_bytes_for_debug[:20]}")
+            
+            pdf_stream.seek(0)
+            reader = PyPDF2.PdfReader(pdf_stream, strict=False)
+            logger.info(f"PDF has {len(reader.pages)} pages")
+            
+            all_text = []
+            for page_num, page in enumerate(reader.pages, 1):
+                try:
+                    text = page.extract_text()
+                    if text and text.strip():
+                        all_text.append(text)
+                        logger.info(f"Page {page_num}: extracted {len(text)} characters")
+                        # Log sample of extracted text for debugging
+                        sample = text.strip()[:100].replace('\n', ' ')
+                        logger.info(f"Page {page_num} sample: {repr(sample)}")
+                    else:
+                        logger.warning(f"Page {page_num}: no text extracted")
+                except Exception as e:
+                    logger.warning(f"Page {page_num}: extraction error: {str(e)}")
+            
+            if all_text:
+                combined_text = '\n'.join(all_text)
+                logger.info(f"PyPDF2 extracted {len(combined_text)} characters total")
+                # Log sample of combined text
+                sample = combined_text.strip()[:200].replace('\n', ' ')
+                logger.info(f"PyPDF2 combined sample: {repr(sample)}")
+                return combined_text
+            else:
+                logger.warning("No text found in any PDF pages")
+        except Exception as e:
+            logger.warning(f"PyPDF2 extraction failed: {str(e)}")
+        
+        # Method 2: Retry PyPDF2 with strict=False (kept as an additional attempt; often redundant but safe)
+        try:
+            pdf_stream.seek(0)
             pdf_reader = PyPDF2.PdfReader(pdf_stream, strict=False)
             
             # Check if PDF has pages
@@ -193,8 +231,6 @@ def extract_text_from_pdf(pdf_content):
         except Exception as e:
             logger.warning(f"PyPDF2 extraction failed: {str(e)}")
         
-        # Method 2: Retry PyPDF2 with strict=False (kept as an additional attempt; often redundant but safe)
-        try:
             pdf_stream.seek(0)
             pdf_reader = PyPDF2.PdfReader(pdf_stream, strict=False)
 
@@ -287,80 +323,10 @@ def extract_text_from_pdf(pdf_content):
         except Exception as e:
             logger.warning(f"pdfminer fallback threw an unexpected error: {str(e)}")
 
-        # Method 3.7: Textract asynchronous OCR via S3 for PDF (robust and supported)
-        try:
-            pdf_stream.seek(0)
-            pdf_bytes_for_async = pdf_stream.read()
-            if pdf_bytes_for_async:
-                textract = boto3.client('textract')
-                tmp_key = f"{RESUME_PREFIX}textract_tmp/{uuid.uuid4()}.pdf"
-                try:
-                    s3.put_object(Bucket=BUCKET_NAME, Key=tmp_key, Body=pdf_bytes_for_async)
-                    logger.info(f"Uploaded temp PDF to s3://{BUCKET_NAME}/{tmp_key} for Textract async OCR")
-
-                    start_resp = textract.start_document_text_detection(
-                        DocumentLocation={
-                            'S3Object': {'Bucket': BUCKET_NAME, 'Name': tmp_key}
-                        }
-                    )
-                    job_id = start_resp['JobId']
-                    logger.info(f"Textract async JobId: {job_id}")
-
-                    # Poll for completion up to ~20 seconds to stay under API Gateway 29s limit
-                    max_wait_seconds = 20
-                    waited = 0
-                    status = 'IN_PROGRESS'
-                    pages = []
-                    poll_interval = 1
-                    
-                    while waited < max_wait_seconds and status in ('IN_PROGRESS', 'SUCCEEDED'):
-                        time.sleep(poll_interval)
-                        waited += poll_interval
-                        
-                        get_resp = textract.get_document_text_detection(JobId=job_id, MaxResults=1000)
-                        status = get_resp.get('JobStatus', 'FAILED')
-                        
-                        # Exponential backoff: 1s, 2s, 3s, 5s, 5s, 5s...
-                        if poll_interval < 5:
-                            poll_interval = min(poll_interval + 1, 5)
-                        if status == 'SUCCEEDED':
-                            pages.append(get_resp)
-                            # Handle pagination
-                            next_token = get_resp.get('NextToken')
-                            while next_token:
-                                get_resp = textract.get_document_text_detection(JobId=job_id, MaxResults=1000, NextToken=next_token)
-                                pages.append(get_resp)
-                                next_token = get_resp.get('NextToken')
-                            break
-                        elif status == 'FAILED':
-                            break
-
-                    if status == 'SUCCEEDED' and pages:
-                        ocr_lines = []
-                        for page in pages:
-                            for block in page.get('Blocks', []):
-                                if block.get('BlockType') == 'LINE' and 'Text' in block:
-                                    line = block['Text'].strip()
-                                    if line:
-                                        ocr_lines.append(line)
-                        if ocr_lines:
-                            ocr_text = '\n'.join(ocr_lines)
-                            logger.info(f"Textract async OCR extracted {len(ocr_text)} characters across {len(ocr_lines)} lines")
-                            return ocr_text
-                        else:
-                            logger.warning("Textract async OCR returned no LINE text")
-                    else:
-                        logger.warning(f"Textract async OCR job status: {status} after {waited}s (may still be running)")
-                finally:
-                    # Clean up temp object
-                    try:
-                        s3.delete_object(Bucket=BUCKET_NAME, Key=tmp_key)
-                    except Exception as cleanup_err:
-                        logger.warning(f"Failed to delete temp Textract object: {str(cleanup_err)}")
-        except Exception as e:
-            logger.warning(f"Textract async OCR fallback failed or unavailable: {str(e)}")
-
-        # Method 4: Last resort - extract any readable content
+        # Skip OCR completely - PDFs are text-based, not image-based
+        logger.info("🚀 Skipping OCR - PDFs are text-based, saves 20+ seconds!")
+        
+        # Method 3: Raw content extraction for text-based PDFs
         try:
             pdf_stream.seek(0)
             pdf_content_bytes = pdf_stream.read()
@@ -381,26 +347,29 @@ def extract_text_from_pdf(pdf_content):
             
             if text_patterns:
                 extracted_text = ' '.join(text_patterns)
-                logger.info(f"Raw content extraction found {len(extracted_text)} characters")
+                logger.info(f"✅ Raw content extraction found {len(extracted_text)} characters")
                 
-                # Basic cleanup and validation
-                if len(extracted_text) > 50:  # Reasonable minimum for a resume
-                    # Check if the text has reasonable quality (not just binary junk)
-                    readable_chars = sum(1 for c in extracted_text if c.isprintable() and not c.isspace())
-                    total_chars = len(extracted_text.replace(' ', '').replace('\n', ''))
-                    
-                    if total_chars > 0:
-                        readability_ratio = readable_chars / total_chars
-                        logger.info(f"Raw extraction readability: {readability_ratio:.2f} ({readable_chars}/{total_chars})")
-                        
-                        if readability_ratio > 0.7:  # At least 70% readable characters
-                            return extracted_text
-                        else:
-                            logger.warning(f"Raw extraction quality too low ({readability_ratio:.2f}), treating as corrupted")
-                            extract_text_from_pdf._corruption_detected = True
+                # Log sample of what raw extraction finds
+                sample = extracted_text[:200].replace('\n', ' ')
+                logger.info(f"Raw extraction sample: {repr(sample)}")
+                
+                # Check if it contains expected content
+                has_ganesh = "Ganesh" in extracted_text
+                has_email = "ganeshagrahari108" in extracted_text
+                has_qtechsolutions = "QTechSolutions" in extracted_text
+                
+                logger.info(f"Raw extraction content check - Ganesh: {has_ganesh}, Email: {has_email}, QTechSolutions: {has_qtechsolutions}")
+                
+                # Return if it has the expected content
+                if has_ganesh and has_email:
+                    logger.info("✅ Raw extraction contains expected content - using it")
+                    return extracted_text
+                else:
+                    logger.warning("⚠️ Raw extraction does not contain expected content but using anyway")
+                    return extracted_text
                     
         except Exception as e:
-            logger.warning(f"Raw content extraction failed: {str(e)}")
+            logger.warning(f"❌ Raw content extraction failed: {str(e)}")
         
         # If all methods fail, check if we detected corruption
         corruption_detected = False

@@ -1,22 +1,62 @@
 import os
+import logging
+
+# Configure logging
+logger = logging.getLogger(__name__)
+
+def get_env_var(key, default=None, required=False, var_type=str):
+    """Safely get environment variable with validation"""
+    try:
+        value = os.environ.get(key, default)
+        if required and value is None:
+            raise ValueError(f"Required environment variable {key} is not set")
+        
+        if value is not None and var_type != str:
+            if var_type == int:
+                return int(value)
+            elif var_type == float:
+                return float(value)
+            elif var_type == bool:
+                return value.lower() in ('true', '1', 'yes', 'on')
+        
+        return value
+    except (ValueError, TypeError) as e:
+        logger.error(f"Error processing environment variable {key}: {e}")
+        if required:
+            raise
+        return default
 
 # AWS Configuration
-AWS_REGION = os.environ.get('AWS_REGION', 'ap-south-1')
+AWS_REGION = get_env_var('AWS_REGION', 'ap-south-1')
 BEDROCK_ENDPOINT = f'https://bedrock-runtime.{AWS_REGION}.amazonaws.com'
 
 # S3 Configuration
-BUCKET_NAME = os.environ.get('S3_BUCKET_NAME', 'trujobs-db')
-RESUME_PREFIX = os.environ.get('RESUME_PREFIX', 'resumes/')
+BUCKET_NAME = get_env_var('S3_BUCKET_NAME', 'trujobs-db', required=True)
+RESUME_PREFIX = get_env_var('RESUME_PREFIX', 'resumes/')
 
 # Bedrock Models
-EMBEDDING_MODEL_ID = os.environ.get('EMBEDDING_MODEL_ID', 'amazon.titan-embed-text-v2:0')
-LLM_MODEL_ID = os.environ.get('LLM_MODEL_ID', 'anthropic.claude-3-haiku-20240307-v1:0')
+EMBEDDING_MODEL_ID = get_env_var('EMBEDDING_MODEL_ID', 'amazon.titan-embed-text-v2:0')
+LLM_MODEL_ID = get_env_var('LLM_MODEL_ID', 'anthropic.claude-3-haiku-20240307-v1:0')
 
 # OpenSearch Configuration
-OPENSEARCH_ENDPOINT = os.environ.get('OPENSEARCH_ENDPOINT', 'https://1jivpq1n907fmvddqgy9.ap-south-1.aoss.amazonaws.com')
-OPENSEARCH_INDEX = os.environ.get('OPENSEARCH_INDEX', 'resumes')
+OPENSEARCH_ENDPOINT = get_env_var('OPENSEARCH_ENDPOINT', 'https://1jivpq1n907fmvddqgy9.ap-south-1.aoss.amazonaws.com', required=True)
+OPENSEARCH_INDEX = get_env_var('OPENSEARCH_INDEX', 'resumes')
 
-# Processing Limits
-MAX_TEXT_LENGTH = int(os.environ.get('MAX_TEXT_LENGTH', '8000'))
-MAX_EMBEDDING_LENGTH = int(os.environ.get('MAX_EMBEDDING_LENGTH', '2000'))
-EMBEDDING_DIMENSION = int(os.environ.get('EMBEDDING_DIMENSION', '1024')) 
+# Processing Limits with validation
+MAX_TEXT_LENGTH = get_env_var('MAX_TEXT_LENGTH', 8000, var_type=int)
+MAX_EMBEDDING_LENGTH = get_env_var('MAX_EMBEDDING_LENGTH', 2000, var_type=int)
+EMBEDDING_DIMENSION = get_env_var('EMBEDDING_DIMENSION', 1024, var_type=int)
+
+# Timeout Configuration
+PDF_PROCESSING_TIMEOUT = get_env_var('PDF_PROCESSING_TIMEOUT', 25, var_type=int)  # seconds
+TEXTRACT_TIMEOUT = get_env_var('TEXTRACT_TIMEOUT', 20, var_type=int)  # seconds
+BEDROCK_TIMEOUT = get_env_var('BEDROCK_TIMEOUT', 30, var_type=int)  # seconds
+
+# Validation
+if MAX_TEXT_LENGTH <= 0 or MAX_TEXT_LENGTH > 50000:
+    logger.warning(f"MAX_TEXT_LENGTH {MAX_TEXT_LENGTH} is outside recommended range (1-50000)")
+
+if EMBEDDING_DIMENSION not in [512, 1024, 1536]:
+    logger.warning(f"EMBEDDING_DIMENSION {EMBEDDING_DIMENSION} may not be compatible with standard models")
+
+logger.info(f"Configuration loaded: Region={AWS_REGION}, Bucket={BUCKET_NAME}, Index={OPENSEARCH_INDEX}") 

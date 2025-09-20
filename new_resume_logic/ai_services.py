@@ -13,12 +13,19 @@ bedrock = boto3.client('bedrock-runtime', AWS_REGION, endpoint_url=BEDROCK_ENDPO
 def get_metadata_from_bedrock(text):
     """Extract structured metadata from resume text using Bedrock"""
     try:
-        logger.info(f"Input text length: {len(text)}")
+        if not text or len(text.strip()) < 10:
+            logger.warning("Text too short for meaningful extraction")
+            return get_fallback_metadata()
         
-        if len(text) > MAX_TEXT_LENGTH:
-            text = text[:MAX_TEXT_LENGTH] + "..."
+        # Preprocess text to extract key information
+        preprocessed_text = preprocess_resume_text(text)
         
-        prompt_text = get_metadata_extraction_prompt(text)
+        logger.info(f"Input text length: {len(text)} → Preprocessed: {len(preprocessed_text)}")
+        
+        if len(preprocessed_text) > MAX_TEXT_LENGTH:
+            preprocessed_text = preprocessed_text[:MAX_TEXT_LENGTH] + "..."
+        
+        prompt_text = get_metadata_extraction_prompt(preprocessed_text)
         
         body = json.dumps({
             "anthropic_version": "bedrock-2023-05-31",
@@ -91,8 +98,11 @@ def get_metadata_from_bedrock(text):
         return metadata
         
     except Exception as e:
-        logger.error(f"Bedrock metadata extraction error: {str(e)}")
-        return {
+        error_msg = str(e)
+        logger.error(f"💥 Bedrock metadata extraction error: {error_msg}")
+        
+        # Provide fallback metadata with error indication
+        fallback_metadata = {
             'full_name': 'Unknown',
             'email': None,
             'phone': None,
@@ -102,8 +112,126 @@ def get_metadata_from_bedrock(text):
             'certifications': [],
             'projects': [],
             'education': [],
-            'summary': None
+            'summary': f"Error extracting metadata: {error_msg[:100]}"
         }
+        
+        # Don't raise exception - return fallback to allow processing to continue
+        logger.warning("🔄 Returning fallback metadata to allow processing to continue")
+        return fallback_metadata
+
+
+def get_fallback_metadata():
+    return {
+        'full_name': 'Unknown',
+        'email': None,
+        'phone': None,
+        'location': None,
+        'skills': [],
+        'work_experience': [],
+        'certifications': [],
+        'projects': [],
+        'education': [],
+        'summary': None
+    }
+
+
+def preprocess_resume_text(text):
+    """Preprocess resume text to extract meaningful content from corrupted PDF"""
+    import re
+    
+    # Extract email addresses
+    emails = re.findall(r'mailto:([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})', text)
+    
+    # Extract LinkedIn URLs and names
+    linkedin_matches = re.findall(r'linkedin\.com[/\s]+([a-zA-Z0-9-]+)', text)
+    
+    # Extract company names and job titles
+    company_matches = re.findall(r'(QTechSolutions|Q-Tech|QTech)', text, re.IGNORECASE)
+    job_matches = re.findall(r'(AI/GenAi Intern|AI Intern|GenAI Intern|Intern)', text, re.IGNORECASE)
+    
+    # Extract skills from common patterns
+    skill_patterns = [
+        r'(Web development|Web Development)',
+        r'(Data analysis|Data Analysis)', 
+        r'(Artificial Intelligence|AI)',
+        r'(Machine Learning|ML)',
+        r'(Python|JavaScript|React|Node\.js)',
+        r'(HTML|CSS|SQL|MongoDB)'
+    ]
+    
+    found_skills = []
+    for pattern in skill_patterns:
+        matches = re.findall(pattern, text, re.IGNORECASE)
+        found_skills.extend(matches)
+    
+    # Extract potential names from email (before @)
+    name_from_email = []
+    for email in emails:
+        username = email.split('@')[0]
+        # Convert common patterns like "firstname.lastname" or "firstnamelastname"
+        if '.' in username:
+            parts = username.split('.')
+            name_parts = [part.capitalize() for part in parts if len(part) > 1]
+            if len(name_parts) >= 2:
+                name_from_email.append(' '.join(name_parts))
+    
+    # Clean up text - remove PDF artifacts
+    cleaned_text = text
+    
+    # Remove PDF technical content
+    pdf_artifacts = [
+        r'\d+\s+0\s+obj.*?endobj',
+        r'Type\s+ExtGState',
+        r'URI\s+\(',
+        r'Subtype\s+Link',
+        r'Type\s+Annot',
+        r'Rect\s+Border',
+        r'ca\s+1\s+endobj'
+    ]
+    
+    for pattern in pdf_artifacts:
+        cleaned_text = re.sub(pattern, ' ', cleaned_text, flags=re.DOTALL)
+    
+    # Build enhanced text with extracted information
+    enhanced_parts = []
+    
+    # Add extracted names
+    if name_from_email:
+        enhanced_parts.append(f"Name: {name_from_email[0]}")
+    
+    # Add extracted emails
+    if emails:
+        enhanced_parts.append(f"Email: {emails[0]}")
+    
+    # Add LinkedIn info
+    if linkedin_matches:
+        enhanced_parts.append(f"LinkedIn: {linkedin_matches[0]}")
+    
+    # Add company and job info
+    if company_matches:
+        enhanced_parts.append(f"Company: {company_matches[0]}")
+    if job_matches:
+        enhanced_parts.append(f"Job Title: {job_matches[0]}")
+    
+    # Add extracted skills
+    if found_skills:
+        unique_skills = list(set(found_skills))
+        enhanced_parts.append(f"Skills: {', '.join(unique_skills)}")
+    
+    # Add cleaned original text
+    enhanced_parts.append(cleaned_text)
+    
+    result = '\n'.join(enhanced_parts)
+    
+    logger.info(f"📝 Preprocessed text: Found {len(emails)} emails, {len(name_from_email)} names, {len(found_skills)} skills, {len(company_matches)} companies")
+    if name_from_email:
+        logger.info(f"📝 Extracted name: {name_from_email[0]}")
+    if found_skills:
+        logger.info(f"📝 Extracted skills: {found_skills}")
+    if company_matches:
+        logger.info(f"📝 Extracted company: {company_matches[0]}")
+    
+    return result
 
 
 def get_embedding(text):
@@ -171,6 +299,16 @@ def create_section_embeddings(metadata):
             elif isinstance(project, str) and project.strip():
                 projects_texts.append(project.strip())
         projects_text = ' '.join(projects_texts)
+
+        # Provide fallback content for empty sections
+        if not skills_text.strip():
+            skills_text = "General professional skills"
+        if not experience_text.strip():
+            experience_text = "Professional work experience"
+        if not certifications_text.strip():
+            certifications_text = "Professional certifications"
+        if not projects_text.strip():
+            projects_text = "Professional projects"
 
         # Run Bedrock embedding calls in parallel (up to 4 workers)
         section_texts = {

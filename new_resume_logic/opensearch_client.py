@@ -246,10 +246,27 @@ def index_resume_document(opensearch, resume_id, job_description_id, filename, c
             **embeddings
         }
 
-        response = opensearch.index(index=OPENSEARCH_INDEX, body=document)
+        # Add timeout setting for faster indexing
+        response = opensearch.index(
+            index=OPENSEARCH_INDEX, 
+            body=document,
+            timeout=30  # Set explicit timeout (seconds as number)
+        )
         logger.info(f"Indexed document with ID: {response.get('_id')}")
         return response
         
     except Exception as e:
-        logger.error(f"Document indexing error: {str(e)}")
-        raise 
+        error_msg = str(e)
+        logger.error(f"💥 Document indexing error: {error_msg}")
+        
+        # Provide specific error context
+        if "timeout" in error_msg.lower():
+            raise TimeoutError(f"OpenSearch indexing timed out: {error_msg}")
+        elif "connection" in error_msg.lower():
+            raise ConnectionError(f"OpenSearch connection failed: {error_msg}")
+        elif "unauthorized" in error_msg.lower() or "403" in error_msg:
+            raise PermissionError(f"OpenSearch access denied: {error_msg}")
+        elif "not found" in error_msg.lower() or "404" in error_msg:
+            raise ValueError(f"OpenSearch index not found: {error_msg}")
+        else:
+            raise RuntimeError(f"OpenSearch indexing failed: {error_msg}") 
