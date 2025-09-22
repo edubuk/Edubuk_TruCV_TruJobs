@@ -1,0 +1,1033 @@
+{
+  "test_date": "2025-09-21T00:10:28.023286",
+  "total_files": 12,
+  "results": {
+    "Abhishek Gupta.pdf": {
+      "resume_id": "ebe16ea8-ea08-4da9-a1fe-1b8364cb941e",
+      "filename": "Abhishek Gupta.pdf",
+      "file_size": 97134,
+      "processing_time": 0.7296206951141357,
+      "extraction_methods": {
+        "pypdf2_standard": {
+          "success": true,
+          "method": "PyPDF2 Standard",
+          "pages": 1,
+          "text_length": 1089,
+          "text": "Abhishek Gupta\n8076598427\nabhishekgupta874589@gmail.com\n LinkedIn\nGithub\n by Edubuk: Click to view verifiable CV\nEducation\nLajpat Rai (PG) College \nB.com Jul 11 2018 - May 20 2021\nGPA: 6.53/10\nS B S G Inter College \nClass XII | UP Board 65%\nS B S G Inter College \nClass X | UP Board 79%\nSkills\nCreativityLeadershipAdaptabilityTime management Teamwork\nExperience\nBelle lingeries pvt LTD 2021-06-20T18:30:00.000Z - 2023-08-24T18:30:00.000Z\nAccount assistant \n\u2022 Maintained stock records and monitored in...",
+          "error": null
+        },
+        "pypdf2_robust": {
+          "success": true,
+          "method": "PyPDF2 Robust",
+          "pages": 1,
+          "successful_pages": 1,
+          "text_length": 1089,
+          "text": "Abhishek Gupta\n8076598427\nabhishekgupta874589@gmail.com\n LinkedIn\nGithub\n by Edubuk: Click to view verifiable CV\nEducation\nLajpat Rai (PG) College \nB.com Jul 11 2018 - May 20 2021\nGPA: 6.53/10\nS B S G Inter College \nClass XII | UP Board 65%\nS B S G Inter College \nClass X | UP Board 79%\nSkills\nCreativityLeadershipAdaptabilityTime management Teamwork\nExperience\nBelle lingeries pvt LTD 2021-06-20T18:30:00.000Z - 2023-08-24T18:30:00.000Z\nAccount assistant \n\u2022 Maintained stock records and monitored in...",
+          "error": null
+        },
+        "pdfplumber": {
+          "success": true,
+          "method": "pdfplumber",
+          "pages": 1,
+          "text_length": 1076,
+          "text": "Abhishek Gupta\n8076598427 abhishekgupta874589@gmail.com LinkedIn Github\nby Edubuk: Click to view verifiable CV\nEducation\nLajpat Rai (PG) College Jul 11 2018 - May 20 2021\nB.com GPA: 6.53/10\nS B S G Inter College 65%\nClass XII | UP Board\nS B S G Inter College 79%\nClass X | UP Board\nSkills\nCreativity Leadership Adaptability Time management Teamwork\nExperience\nBelle lingeries pvt LTD 2021-06-20T18:30:00.000Z - 2023-08-24T18:30:00.000Z\nAccount assistant\n\u2022 Maintained stock records and monitored inven...",
+          "error": null
+        },
+        "pdfminer": {
+          "success": true,
+          "method": "pdfminer.six",
+          "pages": 1,
+          "text_length": 1139,
+          "text": "Abhishek Gupta\n\n8076598427\n\nabhishekgupta874589@gmail.com\n\nLinkedIn\n\nGithub\n\n by Edubuk: Click to view verifiable CV\n\nEducation\n\nLajpat Rai (PG) College \n\nB.com \n\nS B S G Inter College \n\nClass XII | UP Board \n\nS B S G Inter College \n\nClass X | UP Board \n\nSkills\n\nCreativity\n\nLeadership\n\nAdaptability\n\nTime management\n\nTeamwork\n\nJul 11 2018 - May 20 2021\n\nGPA: 6.53/10\n\n65%\n\n79%\n\n2021-06-20T18:30:00.000Z - 2023-08-24T18:30:00.000Z\n\nExperience\n\nBelle lingeries pvt LTD \n\nAccount assistant \n\n\u2022 Maintain...",
+          "error": null
+        },
+        "raw_binary": {
+          "success": true,
+          "method": "Raw Binary Extraction",
+          "pages": "unknown",
+          "text_length": 28523,
+          "text": "\u00f8\u00c1vb8 cgzf \u00d8lG\u00e1\u00df v\u00d3\u00fc\u00f0 \u00ff\u00fccz\u00fa\u00cb\u00cf 4T\u00fb \u00fd\u00f3\u00e1 \u00b2\u00dd\u00df\u00beB\u00d3 Lsm\u00b53 fP\u00f4\u00fb\u00ee\u00c3 X\u00c5\u00fb\u00f1 \u00ee\u00cb\u00e7 \u00c1\u00d4\u00da \u00d6\u00beO 9\u00d5\u00f45 \u00efRpa \u00d8Qt 8Jb pE\u00d65dM\u00e5 \u00da\u00e9\u00ef X\u00c7\u00cer O\u00db\u00df \u00cc\u00f0\u00e6z \u00c6vj\u00e7Ah \u00e7\u00f6NO\u00fcI \u00eb\u00cfc\u00db \u00fc\u00fa\u00e3 Z\u00ccy j\u00c2S 5\u00b5\u00d3\u00df \u00de\u00e8\u00ca \u00fe\u00f4\u00bd \u00d0\u00d8\u00ea \u00aa\u00c5\u00daF \u00dbar j\u00ed\u00fba86\u00bd qoK0 h\u00c0\u00c2Jm rv\u00bapP \u00d0pEY \u00c28\u00d3 NxzM v\u00d9\u00fb p\u00dd\u00fdowj\u00d9\u00f5R \u00e6\u00b9kn dqJ\u00cb K\u00e5\u00e3 g\u00f8\u00d4P l\u00dc\u00aa\u00e19 \u00bc\u00bcb\u00e3\u00d8 \u00fe\u00d2\u00fe V\u00ecK \u00d1\u00c7\u00fap\u00c3 \u00df\u00d31f \u00fe\u00f5\u00e1 \u00ech\u00c4 \u00cc8L \u00d5\u00c8S JJ\u00ca4 1nU\u00cc\u00e4 \u00cd\u00d5\u00c4 \u00d4\u00d5EA \u00e42\u00c2 L\u00dcv \u00f8P\u00c2 \u00d22\u00e5 \u00d2\u00fe\u00d1Zx\u00c4\u00c1 9\u00c2o u\u00e1gF \u00d1\u00ef\u00b5 3mb\u00c4 \u00d4\u00e058 7\u00d3\u00ca\u00ba 8hm \u00deC\u00b9 \u00f4pa\u00db\u00c7J\u00ee\u00d8 H\u00e9\u00de \u00fe\u00e4o cXnI\u00bdar \u00bc\u00de\u00ef \u00e1\u00fb\u00e4G\u00e5 pi\u00b9 \u00f0E\u00f9\u00b2 \u00d3\u00c3s hU\u00cb\u00cbYH \u00e6i\u00e2 \u00c9\u00edhe c\u00eb\u00f8 \u00b9Q\u00da\u00e7 \u00d3f2 cpJ \u00ce\u00c3\u00b2 \u00c3\u00e7t hr\u00c8P \u00c5h\u00b3\u00c8 \u00f9ZQ\u00c5v \u00c57\u00fd\u00f5N \u00d2\u00e5t\u00d6g \u00cc\u00d6G \u00df\u00f55\u00d2...",
+          "error": null
+        },
+        "combined_approach": {
+          "success": true,
+          "method": "Combined (PyPDF2 Robust, pdfplumber, pdfminer.six, Raw Binary Extraction)",
+          "pages": "multiple",
+          "text_length": 1011,
+          "text": "Abhishek Gupta 8076598427 abhishekgupta874589@gmail.com LinkedIn Github by Edubuk: Click to view verifiable CV Education Lajpat Rai (PG) College B.com Jul 11 2018 - May 20 2021 GPA: 6.53/10 S B G Inter Class XII | UP Board 65% X 79% Skills CreativityLeadershipAdaptabilityTime management Teamwork Experience Belle lingeries pvt LTD 2021-06-20T18:30:00.000Z 2023-08-24T18:30:00.000Z Account assistant \u2022 Maintained stock records and monitored in... Creativity Leadership Adaptability Time inven... Main...",
+          "methods_used": [
+            "PyPDF2 Robust",
+            "pdfplumber",
+            "pdfminer.six",
+            "Raw Binary Extraction"
+          ],
+          "error": null
+        },
+        "ocr_simulation": {
+          "success": false,
+          "method": "OCR Simulation",
+          "pages": 0,
+          "text_length": 0,
+          "text": "",
+          "note": "PDF doesn't appear to be image-based",
+          "error": "Not an image-based PDF"
+        }
+      },
+      "best_method": "raw_binary",
+      "best_text_length": 28523,
+      "s3_simulation": {
+        "saved_size": 97134,
+        "original_size": 97134,
+        "size_match": true,
+        "pages": 1,
+        "readability": "readable",
+        "status": "success"
+      },
+      "status": "success"
+    },
+    "Alex_Johnson.pdf": {
+      "resume_id": "8d8c7ed1-8113-4a08-9fae-0fc9898ea811",
+      "filename": "Alex_Johnson.pdf",
+      "file_size": 35622,
+      "processing_time": 1.0623388290405273,
+      "extraction_methods": {
+        "pypdf2_standard": {
+          "success": true,
+          "method": "PyPDF2 Standard",
+          "pages": 4,
+          "text_length": 2732,
+          "text": "Alex Johnson\n \n\u0000 Location: Pune, India| \u0000 (123) 456-7890 | \u0000\u00a0alex.johnson@email.com  | \u0000 LinkedIn: linkedin.com/\nin/alexjohnson | \u0000 GitHub: github.com/alexjohnson\n \n \nProfessional Summary\n \nResults-driven Senior Data Scientist with 7+ years of experience building advanced machine \nlearning models, leading data-driven initiatives, and mentoring teams. Skilled in predictive \nanalytics, big data processing, and deploying AI solutions at scale. Proven track record of \ndelivering impactful insights t...",
+          "error": null
+        },
+        "pypdf2_robust": {
+          "success": true,
+          "method": "PyPDF2 Robust",
+          "pages": 4,
+          "successful_pages": 4,
+          "text_length": 2732,
+          "text": "Alex Johnson\n \n\u0000 Location: Pune, India| \u0000 (123) 456-7890 | \u0000\u00a0alex.johnson@email.com  | \u0000 LinkedIn: linkedin.com/\nin/alexjohnson | \u0000 GitHub: github.com/alexjohnson\n \n \nProfessional Summary\n \nResults-driven Senior Data Scientist with 7+ years of experience building advanced machine \nlearning models, leading data-driven initiatives, and mentoring teams. Skilled in predictive \nanalytics, big data processing, and deploying AI solutions at scale. Proven track record of \ndelivering impactful insights t...",
+          "error": null
+        },
+        "pdfplumber": {
+          "success": true,
+          "method": "pdfplumber",
+          "pages": 4,
+          "text_length": 2585,
+          "text": "Alex Johnson\n\u0000L ocation: Pune, India| \u0000( 123) 456-7890 | \u0000a lex.johnson@email.com | \u0000L inkedIn: linkedin.com/\nin/alexjohnson | \u0000G itHub: github.com/alexjohnson\nProfessional Summary\nResults-driven Senior Data Scientist with 7+ years of experience building advanced machine\nlearning models, leading data-driven initiatives, and mentoring teams. Skilled in predictive\nanalytics, big data processing, and deploying AI solutions at scale. Proven track record of\ndelivering impactful insights that drive bu...",
+          "error": null
+        },
+        "pdfminer": {
+          "success": true,
+          "method": "pdfminer.six",
+          "pages": 4,
+          "text_length": 2768,
+          "text": "Alex Johnson\n\n\u0000 Location: Pune, India| \u0000 (123) 456-7890 | \u0000\u00a0alex.johnson@email.com | \u0000 LinkedIn: linkedin.com/\nin/alexjohnson | \u0000 GitHub: github.com/alexjohnson\n\nProfessional Summary\n\nResults-driven Senior Data Scientist with 7+ years of experience building advanced machine \nlearning models, leading data-driven initiatives, and mentoring teams. Skilled in predictive \nanalytics, big data processing, and deploying AI solutions at scale. Proven track record of \ndelivering impactful insights that dr...",
+          "error": null
+        },
+        "raw_binary": {
+          "success": true,
+          "method": "Raw Binary Extraction",
+          "pages": "unknown",
+          "text_length": 9563,
+          "text": "fU\u00f1 \u00e6\u00c1Nb\u00c0 \u00dd7\u00c3 \u00cd\u00c8N UlR\u00cd\u00d6 mo\u00cf \u00c4\u00d3d \u00fd\u00fe\u00db\u00fd\u00f1\u00cb\u00ce \u00fb\u00b9\u00fe \u00f6\u00ce\u00eec\u00cc \u00f9K\u00ff t\u00fb\u00cf 9\u00be\u00fc\u00cb\u00de\u00fe \u00ff\u00fc\u00c3\u00ee \u00c8W\u00e2 \u00f3\u00f5Z\u00ef\u00f3\u00e6 \u00ce3\u00b3\u00f9\u00c0\u00b2 \u00ea\u00d6d \u00c7\u00e8D 4\u00c4\u00b2 \u00f34F\u00f3 o\u00f8\u00ebc \u00f0\u00b3\u00c0R 7\u00e8Y\u00c7\u00fc q\u00e4\u00bd \u00cbG\u00d1 \u00b9bf \u00cf\u00cb\u00e7l \u00c4\u00f1\u00db \u00f0\u00c6\u00e7 \u00c5\u00ffc\u00b5\u00cd \u00ceB\u00eax ua\u00ec5\u00e0\u00f4 \u00d2\u00f6\u00fb 5\u00d1\u00ed\u00ff\u00f5\u00ce \u00d2\u00e6\u00d3\u00ee q1ya \u00d2\u00e8\u00e4M \u00c7\u00f1b2\u00d1\u00fb\u00e4\u00f3 CE3\u00aa \u00cd\u00dc\u00c4 9ZY\u00b5 3fa\u00c6\u00ec 3\u00b5\u00de\u00ffg \u00e3O\u00fc \u00de\u00df\u00f9\u00faa\u00c7\u00e6 u\u00c3H \u00cd\u00d6\u00f9\u00ee \u00be\u00fb\u00b3\u00bc aq\u00e5 o\u00fcC6 \u00d6\u00fcc 0\u00b5\u00ba \u00edch \u00d9PH DS\u00ced nZ\u00de \u00bca\u00ba Ul\u00f0\u00f4\u00b2g\u00eds \u00f25V \u00e8\u00e0\u00d2 \u00c8\u00e0n \u00dc\u00e5\u00dcHtY\u00e6 \u00ceQA\u00f5 vG\u00c5w \u00f1C0 Z\u00f9I\u00ed \u00e1B\u00f1\u00c2 r\u00f5\u00df\u00bd Yvc sw\u00d2A \u00c4\u00e2g 2M\u00d4HR\u00cd0\u00c9 \u00e4t\u00d6 \u00f6\u00c4\u00c6 \u00d8\u00c9w H\u00d6Q\u00e7 \u00b26c H\u00e2\u00ec1\u00cfFD\u00c9 \u00b9l\u00c4\u00be2 J\u00fc\u00ba y\u00cbh \u00ec9\u00d5D\u00d8Y E\u00e0G\u00d3t\u00e1 T\u00fc5\u00c7 4B2 m\u00d1z\u00d3 \u00c1\u00e34 Zms A\u00d0\u00f2\u00cae \u00f6\u00aa7C u\u00e1\u00cc\u00c8\u00d6\u00e4 \u00b5\u00f9qv ymN F\u00caR 5d3 \u00feN\u00c7 \u00bd\u00de\u00c5 \u00ed2k\u00e8\u00ce \u00dc\u00d5...",
+          "error": null
+        },
+        "combined_approach": {
+          "success": true,
+          "method": "Combined (PyPDF2 Robust, pdfplumber, pdfminer.six, Raw Binary Extraction)",
+          "pages": "multiple",
+          "text_length": 1063,
+          "text": "Alex Johnson \u0000 Location: Pune, India| (123) 456-7890 | alex.johnson@email.com LinkedIn: linkedin.com/ in/alexjohnson GitHub: github.com/alexjohnson Professional Summary Results-driven Senior Data Scientist with 7+ years of experience building advanced machine learning models, leading data-driven initiatives, and mentoring teams. Skilled in predictive analytics, big data processing, deploying AI solutions at scale. Proven track record delivering impactful insights t... \u0000L ocation: \u0000( 123) \u0000a lex....",
+          "methods_used": [
+            "PyPDF2 Robust",
+            "pdfplumber",
+            "pdfminer.six",
+            "Raw Binary Extraction"
+          ],
+          "error": null
+        },
+        "ocr_simulation": {
+          "success": false,
+          "method": "OCR Simulation",
+          "pages": 0,
+          "text_length": 0,
+          "text": "",
+          "note": "PDF doesn't appear to be image-based",
+          "error": "Not an image-based PDF"
+        }
+      },
+      "best_method": "raw_binary",
+      "best_text_length": 9563,
+      "s3_simulation": {
+        "saved_size": 35622,
+        "original_size": 35622,
+        "size_match": true,
+        "pages": 4,
+        "readability": "readable",
+        "status": "success"
+      },
+      "status": "success"
+    },
+    "Aman_Gupta_Java_Developer_Intern_Resume.pdf": {
+      "resume_id": "3f9cbda6-84a5-4d94-aa0a-aa168920249f",
+      "filename": "Aman_Gupta_Java_Developer_Intern_Resume.pdf",
+      "file_size": 3308,
+      "processing_time": 0.2287735939025879,
+      "extraction_methods": {
+        "pypdf2_standard": {
+          "success": true,
+          "method": "PyPDF2 Standard",
+          "pages": 1,
+          "text_length": 1778,
+          "text": "Aman Gupta\n\u25a0 Hyderabad, India | \u2709\u25a0 aman.gupta@email.com | \u25a0 +91-9876001234\n\u25a0 LinkedIn: linkedin.com/in/amang | \u25a0 GitHub: github.com/amang\nObjective\nMotivated Computer Science student with strong skills in Java development, OOP concepts, and database\nmanagement. Seeking a Java Developer Intern position at Microsoft to contribute to innovative projects, gain\nindustry experience, and learn from expert software engineers.\nEducation\nB.Tech in Computer Science and Engineering\nABC Institute of Technolo...",
+          "error": null
+        },
+        "pypdf2_robust": {
+          "success": true,
+          "method": "PyPDF2 Robust",
+          "pages": 1,
+          "successful_pages": 1,
+          "text_length": 1778,
+          "text": "Aman Gupta\n\u25a0 Hyderabad, India | \u2709\u25a0 aman.gupta@email.com | \u25a0 +91-9876001234\n\u25a0 LinkedIn: linkedin.com/in/amang | \u25a0 GitHub: github.com/amang\nObjective\nMotivated Computer Science student with strong skills in Java development, OOP concepts, and database\nmanagement. Seeking a Java Developer Intern position at Microsoft to contribute to innovative projects, gain\nindustry experience, and learn from expert software engineers.\nEducation\nB.Tech in Computer Science and Engineering\nABC Institute of Technolo...",
+          "error": null
+        },
+        "pdfplumber": {
+          "success": true,
+          "method": "pdfplumber",
+          "pages": 1,
+          "text_length": 1890,
+          "text": "Aman Gupta\nn Hyderabad, India | )n aman.gupta@email.com | n +91-9876001234\nn LinkedIn: linkedin.com/in/amang | n GitHub: github.com/amang\nObjective\nMotivated Computer Science student with strong skills in Java development, OOP concepts, and database\nmanagement. Seeking a Java Developer Intern position at Microsoft to contribute to innovative projects, gain\nindustry experience, and learn from expert software engineers.\nEducation\nB.Tech in Computer Science and Engineering\nABC Institute of Technolo...",
+          "error": null
+        },
+        "pdfminer": {
+          "success": true,
+          "method": "pdfminer.six",
+          "pages": 1,
+          "text_length": 1898,
+          "text": "Aman Gupta\nn Hyderabad, India | )n aman.gupta@email.com | n +91-9876001234\nn LinkedIn: linkedin.com/in/amang | n GitHub: github.com/amang\n\nObjective\nMotivated Computer Science student with strong skills in Java development, OOP concepts, and database\nmanagement. Seeking a Java Developer Intern position at Microsoft to contribute to innovative projects, gain\nindustry experience, and learn from expert software engineers.\n\nEducation\nB.Tech in Computer Science and Engineering\nABC Institute of Techno...",
+          "error": null
+        },
+        "raw_binary": {
+          "success": true,
+          "method": "Raw Binary Extraction",
+          "pages": "unknown",
+          "text_length": 767,
+          "text": "GatU4gJ lqIqH2 ACsl Uo6 8X9o T5GFq pJbg 6C2C FFp IJa BXnp 3lCE446C RdrD7Hu 9Se4 RFq hhrd 1lQ kOpX DhL9fP O4E03 cnnS 6B0 5oG NuM FV8gZ 9g6 622E KdSN brVUX BiC jGAc kmk uPV L8X7kJmepCTuACU iRUI YRnf08Me6u9IXV UR5 0Lne 9G9NhLSq I3Rl63rFaDUmLoCBu QNDto7o EbW 3aG D49 q329 ma8DMqDrt 2mS cJMiFce 3Sg2LP QV4P0KT kqt ckkM DXi rCZ 2m3rQt StU 2GB WJ0TMsGEDNSHl5mM FHFh0 6hXWeFkh Ubi ptB HTQ DU7 i1JMo NJc7bi UlO VeK ZPP iu4mIl rWdgeC WJUu6lMq WeYW t60HO5H0 o72 7n2m qHW mQR 4OU iHL cmc AcW5N2Se 0MQ KYI5GGhuN7q...",
+          "error": null
+        },
+        "combined_approach": {
+          "success": true,
+          "method": "Combined (PyPDF2 Robust, pdfplumber, pdfminer.six, Raw Binary Extraction)",
+          "pages": "multiple",
+          "text_length": 976,
+          "text": "Aman Gupta \u25a0 Hyderabad, India | \u2709\u25a0 aman.gupta@email.com +91-9876001234 LinkedIn: linkedin.com/in/amang GitHub: github.com/amang Objective Motivated Computer Science student with strong skills in Java development, OOP concepts, and database management. Seeking a Developer Intern position at Microsoft to contribute innovative projects, gain industry experience, learn from expert software engineers. Education B.Tech Engineering ABC Institute of Technolo... n )n Techno... GatU4gJ lqIqH2 ACsl Uo6 8X9...",
+          "methods_used": [
+            "PyPDF2 Robust",
+            "pdfplumber",
+            "pdfminer.six",
+            "Raw Binary Extraction"
+          ],
+          "error": null
+        },
+        "ocr_simulation": {
+          "success": false,
+          "method": "OCR Simulation",
+          "pages": 0,
+          "text_length": 0,
+          "text": "",
+          "note": "PDF doesn't appear to be image-based",
+          "error": "Not an image-based PDF"
+        }
+      },
+      "best_method": "pdfminer",
+      "best_text_length": 1898,
+      "s3_simulation": {
+        "saved_size": 3308,
+        "original_size": 3308,
+        "size_match": true,
+        "pages": 1,
+        "readability": "readable",
+        "status": "success"
+      },
+      "status": "success"
+    },
+    "Ganesh-Agrahari-Resume.pdf": {
+      "resume_id": "deb095e0-85f3-4726-a0d7-1a2bb84df154",
+      "filename": "Ganesh-Agrahari-Resume.pdf",
+      "file_size": 116670,
+      "processing_time": 2.3704819679260254,
+      "extraction_methods": {
+        "pypdf2_standard": {
+          "success": true,
+          "method": "PyPDF2 Standard",
+          "pages": 1,
+          "text_length": 3748,
+          "text": "Ganesh Agrahari\nganeshagrahari108@gmail.com\n+91 9044232872\nLucknow, India\nMy-Portfolio\nLinkedIn\nGitHub\nPROFILE\nFinal-year BCA (DS&AI) student with solid \nexpertise in Python, Data Structures & \nAlgorithms, Artificial Intelligence, and \nweb development. Built and deployed real-\nworld AI/ML and full-stack applications. \nSkilled in designing intelligent systems \nusing Machine Learning, Deep Learning, \nand NLP. Focused on creating scalable, AI-\npowered solutions that solve real problems.\nCERTIFICATE...",
+          "error": null
+        },
+        "pypdf2_robust": {
+          "success": true,
+          "method": "PyPDF2 Robust",
+          "pages": 1,
+          "successful_pages": 1,
+          "text_length": 3748,
+          "text": "Ganesh Agrahari\nganeshagrahari108@gmail.com\n+91 9044232872\nLucknow, India\nMy-Portfolio\nLinkedIn\nGitHub\nPROFILE\nFinal-year BCA (DS&AI) student with solid \nexpertise in Python, Data Structures & \nAlgorithms, Artificial Intelligence, and \nweb development. Built and deployed real-\nworld AI/ML and full-stack applications. \nSkilled in designing intelligent systems \nusing Machine Learning, Deep Learning, \nand NLP. Focused on creating scalable, AI-\npowered solutions that solve real problems.\nCERTIFICATE...",
+          "error": null
+        },
+        "pdfplumber": {
+          "success": true,
+          "method": "pdfplumber",
+          "pages": 1,
+          "text_length": 3741,
+          "text": "Ganesh Agrahari\nPROFESSIONAL EXPERIENCE\nEdubuk\nganeshagrahari108@gmail.com\nAi Intern\n+91 9044232872 08/2025 \u2013 Present\nAI Intern at Edubuk, enhancing products like TruCV with AI features while\nLucknow, India \u2022\nalso contributing as a developer for AI-driven solutions.\nMy-Portfolio\nAICTE\nLinkedIn AI/GenAi Intern at QTechSolutions\n03/2025 \u2013 08/2025\nGitHub\nWorking on a real-world healthcare site to develop and integrate an AI-\n\u2022\npowered chatbot for doctor consultations, medicine delivery, and\nprescri...",
+          "error": null
+        },
+        "pdfminer": {
+          "success": true,
+          "method": "pdfminer.six",
+          "pages": 1,
+          "text_length": 3801,
+          "text": "Ganesh Agrahari\n\nganeshagrahari108@gmail.com\n\n+91 9044232872\n\nLucknow, India\n\nMy-Portfolio\n\nLinkedIn\n\nGitHub\n\nPROFILE\n\nFinal-year BCA (DS&AI) student with solid \nexpertise in Python, Data Structures & \nAlgorithms, Artificial Intelligence, and \nweb development. Built and deployed real-\nworld AI/ML and full-stack applications. \nSkilled in designing intelligent systems \nusing Machine Learning, Deep Learning, \nand NLP. Focused on creating scalable, AI-\npowered solutions that solve real problems.\n\nCE...",
+          "error": null
+        },
+        "raw_binary": {
+          "success": true,
+          "method": "Raw Binary Extraction",
+          "pages": "unknown",
+          "text_length": 23587,
+          "text": "\u00ed\u00bd\u00d9\u00ced9 \u00d2\u00c3\u00ff \u00ff9\u00f4\u00c3\u00cdH\u00daF \u00c6f\u00fe\u00e7 \u00c9\u00e9k\u00d69 \u00fe\u00ed\u00ff\u00f8\u00f2 \u00fe\u00e7Ky\u00f8 \u00ff\u00f2\u00e5 \u00ff\u00e5\u00ff\u00e1 F3\u00ff\u00fa\u00e5\u00aa \u00ccT\u00f3 \u00ff\u00f4O \u00c7\u00c1\u00fc\u00e5 \u00fd\u00e9\u00cb \u00fd\u00cb\u00ff\u00f8 \u00eb\u00ff\u00e8m\u00e8\u00da\u00c6 \u00cd\u00e5o \u00cdP\u00d2 \u00fe\u00f6\u00eb T\u00ca\u00fc\u00f1 s\u00f5A \u00fa\u00c19\u00feA k4JY bCR LUB\u00f9\u00c5 \u00b2\u00fcC \u00baF\u00ea \u00fac\u00eb D\u00b3\u00d4I 2sc \u00fd\u00fb\u00df hj6\u00fa p\u00fai \u00eb\u00e3m \u00fdb4\u00edF gZgC \u00c3R\u00b9\u00e8\u00e8DQ zLU\u00d5rk O\u00ccU 3ms Jq\u00c6 \u00da\u00d5Jc\u00ea \u00f4\u00f2u SyM \u00b9mG\u00bd u\u00f9\u00b55\u00deg\u00d8\u00fa\u00cf e\u00d4e7\u00bd m\u00dd\u00e4 \u00d6\u00dbG \u00ecB\u00fb ho\u00cd B\u00eaZ \u00dbt\u00e8 \u00d0\u00d2v\u00dfb yX\u00daJ\u00c9 U\u00f2\u00e3 \u00d1\u00c7l\u00dd 6u\u00d9 tB\u00db \u00f6aLT f\u00d4\u00f81\u00dad jMx O\u00d8\u00cd DY\u00f0 \u00ca4\u00f0\u00c8WZ \u00e2R\u00f8P1J\u00d6\u00c9 Ji\u00d1 \u00e9\u00fe\u00aa v\u00c4\u00eb 1\u00d1\u00eaEo \u00f1\u00d3\u00d2 \u00c0\u00ecx Yx\u00aa l\u00c1\u00e1\u00f4U c1\u00da\u00b5\u00ef \u00f6\u00edK i\u00d15m\u00e6 N\u00d3Q\u00cd Z\u00c3\u00f4 7\u00d4r\u00f6\u00c9 \u00c6\u00efi j\u00ca\u00ed\u00e7XGK U\u00dd\u00d5\u00e8\u00faa \u00fd\u00d14\u00c9n\u00d2 uJ\u00c8 \u00bc\u00f4C\u00d8 \u00aa\u00ca\u00c49B tJ\u00e9 X\u00efq\u00eaS Jt\u00c0x q\u00c2WZob \u00f98x z\u00c2\u00d6\u00ba \u00f6\u00bd\u00e7\u00da\u00c4 \u00f2S\u00be \u00e4\u00cf\u00d035o ZE\u00c723 \u00c0rG...",
+          "error": null
+        },
+        "combined_approach": {
+          "success": true,
+          "method": "Combined (PyPDF2 Robust, pdfplumber, pdfminer.six, Raw Binary Extraction)",
+          "pages": "multiple",
+          "text_length": 1317,
+          "text": "Ganesh Agrahari ganeshagrahari108@gmail.com +91 9044232872 Lucknow, India My-Portfolio LinkedIn GitHub PROFILE Final-year BCA (DS&AI) student with solid expertise in Python, Data Structures & Algorithms, Artificial Intelligence, and web development. Built deployed real- world AI/ML full-stack applications. Skilled designing intelligent systems using Machine Learning, Deep NLP. Focused on creating scalable, AI- powered solutions that solve real problems. CERTIFICATE... PROFESSIONAL EXPERIENCE Edu...",
+          "methods_used": [
+            "PyPDF2 Robust",
+            "pdfplumber",
+            "pdfminer.six",
+            "Raw Binary Extraction"
+          ],
+          "error": null
+        },
+        "ocr_simulation": {
+          "success": false,
+          "method": "OCR Simulation",
+          "pages": 0,
+          "text_length": 0,
+          "text": "",
+          "note": "PDF doesn't appear to be image-based",
+          "error": "Not an image-based PDF"
+        }
+      },
+      "best_method": "raw_binary",
+      "best_text_length": 23587,
+      "s3_simulation": {
+        "saved_size": 116670,
+        "original_size": 116670,
+        "size_match": true,
+        "pages": 1,
+        "readability": "readable",
+        "status": "success"
+      },
+      "status": "success"
+    },
+    "Harishyam_Resume.pdf": {
+      "resume_id": "e6dc3835-108f-435f-bd60-bb1ee3bd2c76",
+      "filename": "Harishyam_Resume.pdf",
+      "file_size": 36180,
+      "processing_time": 0.9387528896331787,
+      "extraction_methods": {
+        "pypdf2_standard": {
+          "success": true,
+          "method": "PyPDF2 Standard",
+          "pages": 1,
+          "text_length": 1849,
+          "text": "GET IN TOUCH!\nMobile:\n \n+91-9305739292\nEmail:\n \nharishyamtripathi10@gmail.com\nSKILLS\n-\nData Analysis\n-\nData Cleansing\n-\nData Entry Operation\n-\nData Science\n-\nData Visualization\nLANGUAGES KNOWN\nEnglish ( Both )\nCERTIFICATIONS\n-\nData Science Foundations -Level 1-\n \n-\nIBM Cognos Analytics V11.1.xReporting\n \nEssentials\n \n-\nData Analytics Job Simulation\n \nHarishyam\nPERSONAL DETAILS\nDate of Birth\nMarch 3, 2005\nMale\nEDUCATION\nGraduation\nCourse\nBCA ( DATASCIENCE )\nCollege\nBabu Banarsi Das University Luc...",
+          "error": null
+        },
+        "pypdf2_robust": {
+          "success": true,
+          "method": "PyPDF2 Robust",
+          "pages": 1,
+          "successful_pages": 1,
+          "text_length": 1849,
+          "text": "GET IN TOUCH!\nMobile:\n \n+91-9305739292\nEmail:\n \nharishyamtripathi10@gmail.com\nSKILLS\n-\nData Analysis\n-\nData Cleansing\n-\nData Entry Operation\n-\nData Science\n-\nData Visualization\nLANGUAGES KNOWN\nEnglish ( Both )\nCERTIFICATIONS\n-\nData Science Foundations -Level 1-\n \n-\nIBM Cognos Analytics V11.1.xReporting\n \nEssentials\n \n-\nData Analytics Job Simulation\n \nHarishyam\nPERSONAL DETAILS\nDate of Birth\nMarch 3, 2005\nMale\nEDUCATION\nGraduation\nCourse\nBCA ( DATASCIENCE )\nCollege\nBabu Banarsi Das University Luc...",
+          "error": null
+        },
+        "pdfplumber": {
+          "success": true,
+          "method": "pdfplumber",
+          "pages": 1,
+          "text_length": 1804,
+          "text": "Harishyam\nPERSONAL DETAILS\nCurrent Location Lucknow\nDate of Birth March 3, 2005\nMale\nEDUCATION\nGraduation\nGET IN TOUCH! Course BCA ( DATASCIENCE )\nCollege Babu Banarsi Das University Lucknow Uttar Pradesh\nMobile:\nScore 7.04%\n+91-9305739292\nEmail: Schooling Class XII Class X\nharishyamtripathi10@gmail.com Board Name Uttar Pradesh Uttar Pradesh\nMedium Hindi Hindi\nYear of Passing 2022 2020\nSKILLS Score 75.2% 77.33%\n-Data Analysis\n-Data Cleansing\nINTERNSHIPS\n-Data Entry Operation\n-Data Science\nTamizh...",
+          "error": null
+        },
+        "pdfminer": {
+          "success": true,
+          "method": "pdfminer.six",
+          "pages": 1,
+          "text_length": 1899,
+          "text": "GET IN TOUCH!\n\nMobile: \n\n+91-9305739292\n\nEmail: \n\nharishyamtripathi10@gmail.com\n\nSKILLS\n\n- Data Analysis\n\n- Data Cleansing\n\n- Data Entry Operation\n\n- Data Science\n\n- Data Visualization\n\nLANGUAGES KNOWN\n\nEnglish ( Both )\n\nCERTIFICATIONS\n\n- Data Science Foundations -Level 1- \n\n- IBM Cognos Analytics V11.1.xReporting \n\nEssentials \n\n- Data Analytics Job Simulation \n\nHarishyam\n\nPERSONAL DETAILS\n\nCurrent Location Lucknow\n\nDate of Birth\n\nMarch 3, 2005\n\nMale\n\nEDUCATION\n\nGraduation\n\nCourse\n\nCollege\n\nScor...",
+          "error": null
+        },
+        "raw_binary": {
+          "success": true,
+          "method": "Raw Binary Extraction",
+          "pages": "unknown",
+          "text_length": 9449,
+          "text": "\u00ff\u00d8\u00ff\u00e0 JFIF 01444 22222222222222222222222222222222222222222222222222\u00ff\u00c0 R\u00d1\u00f0 3br 456789 CDEFGHIJSTUVWXYZcdefghijstuvwxyz \u00aa\u00b2\u00b3 \u00b9\u00ba\u00c2\u00c3\u00c4\u00c5\u00c6\u00c7\u00c8\u00c9\u00ca\u00d2\u00d3\u00d4\u00d5\u00d6 \u00d8\u00d9\u00da\u00e1\u00e2\u00e3\u00e4\u00e5\u00e6\u00e7\u00e8\u00e9\u00ea\u00f1\u00f2\u00f3\u00f4\u00f5\u00f6 \u00f8\u00f9\u00fa\u00ff\u00c4 3R\u00f0 br\u00d1 56789 CDEFGHIJSTUVWXYZcdefghijstuvwxyz \u00aa\u00b2\u00b3 \u00b9\u00ba\u00c2\u00c3\u00c4\u00c5\u00c6\u00c7\u00c8\u00c9\u00ca\u00d2\u00d3\u00d4\u00d5\u00d6 \u00d8\u00d9\u00da\u00e2\u00e3\u00e4\u00e5\u00e6\u00e7\u00e8\u00e9\u00ea\u00f2\u00f3\u00f4\u00f5\u00f6 \u00f8\u00f9\u00fa\u00ff\u00da \u00db93 \u00cd\u00d8\u00e1m\u00e2 6\u00d1Q k\u00f1s \u00deA\u00dd\u00d0 \u00c3\u00f0\u00efU\u00ec \u00c08\u00dc Mw0k\u00c4\u00c3 Z\u00f4o \u00f8\u00c1o \u00be\u00ce\u00d2nW ic\u00ef \u00fc\u00c7\u00e7\u00edS J\u00ccaQ z\u00d2R a\u00f4QEH\u00c2 3Z\u00d9 \u00aa\u00fd1 \u00edD\u00aav \u00f3\u00efM\u00dckgK\u00f0\u00c6 b1\u00c6z \u00c2u\u00b5\u00dc\u00e8 k\u00b2\u00f8 \u00f6\u00fd\u00bc \u00f8Z\u00ebH NQ\u00de \u00d6\u00e9N \u00d0VV j6\u00b3 \u00f1\u00faW \u00ec\u00dc\u00e5 B\u00c5M\u00dc \u00b26\u00de\u00db\u00cb GZ\u00e75 h\u00e5\u00db\u00fb\u00c8 \u00d2\u00b5\u00fb t\u00e2\u00c5G \u00deG\u00be O\u00c36WR \u00ecq\u00fd \u00e1\u00c5\u00cbi\u00fa Mz\u00dc \u00ee\u00c4\u00d3J\u00e5 sKQ\u00d3 yW\u00cd m\u00fe\u00d1 \u00c4\u00d6\u00bc2 \u00c9\u00f9\u00f9Q\u00ce\u00c3\u00d0\u00fdk \u00d3\u00d8\u00eb\u00c3...",
+          "error": null
+        },
+        "combined_approach": {
+          "success": true,
+          "method": "Combined (PyPDF2 Robust, pdfplumber, pdfminer.six, Raw Binary Extraction)",
+          "pages": "multiple",
+          "text_length": 1044,
+          "text": "GET IN TOUCH! Mobile: +91-9305739292 Email: harishyamtripathi10@gmail.com SKILLS - Data Analysis Cleansing Entry Operation Science Visualization LANGUAGES KNOWN English ( Both ) CERTIFICATIONS Foundations -Level 1- IBM Cognos Analytics V11.1.xReporting Essentials Job Simulation Harishyam PERSONAL DETAILS Date of Birth March 3, 2005 Male EDUCATION Graduation Course BCA DATASCIENCE College Babu Banarsi Das University Luc... Current Location Lucknow Uttar Pradesh Score 7.04% Schooling Class XII X B...",
+          "methods_used": [
+            "PyPDF2 Robust",
+            "pdfplumber",
+            "pdfminer.six",
+            "Raw Binary Extraction"
+          ],
+          "error": null
+        },
+        "ocr_simulation": {
+          "success": true,
+          "method": "OCR Simulation",
+          "pages": "unknown",
+          "text_length": 83,
+          "text": "OCR_SIMULATION: This PDF appears to be image-based and would require OCR processing",
+          "image_indicators": 4,
+          "note": "This is a simulation - real OCR would be needed",
+          "error": null
+        }
+      },
+      "best_method": "raw_binary",
+      "best_text_length": 9449,
+      "s3_simulation": {
+        "saved_size": 36180,
+        "original_size": 36180,
+        "size_match": true,
+        "pages": 1,
+        "readability": "readable",
+        "status": "success"
+      },
+      "status": "success"
+    },
+    "Neelu-Pandey-Resume.pdf": {
+      "resume_id": "56989574-c391-41ec-a4a0-10074df01b42",
+      "filename": "Neelu-Pandey-Resume.pdf",
+      "file_size": 33527,
+      "processing_time": 0.5785665512084961,
+      "extraction_methods": {
+        "pypdf2_standard": {
+          "success": true,
+          "method": "PyPDF2 Standard",
+          "pages": 1,
+          "text_length": 1699,
+          "text": "Neelu Pandey\n8433005041\nneelupandey5098@gmail.com\n LinkedIn\nGithub\nEducation\nBIET Lucknow\nBtechSep 03 2022 - Jun 01 2026\nGPA: 8.5/10\nSt Xaviers\nClass XII | CBSE75\nSt Xaviers\nClass X | CBSE75\nSkills\nProject management CreativityData analysisLeadershipProblem solving\nProjects\nDrowsiness Detection Nov 01 2024 - Feb 01 2025\n\u2022 Drowsiness Detection System \u2013 A real-time application designed to enhance driver safety by detecting signs of \nfatigue or drowsiness\n\u2022  The system uses computer vision techniqu...",
+          "error": null
+        },
+        "pypdf2_robust": {
+          "success": true,
+          "method": "PyPDF2 Robust",
+          "pages": 1,
+          "successful_pages": 1,
+          "text_length": 1699,
+          "text": "Neelu Pandey\n8433005041\nneelupandey5098@gmail.com\n LinkedIn\nGithub\nEducation\nBIET Lucknow\nBtechSep 03 2022 - Jun 01 2026\nGPA: 8.5/10\nSt Xaviers\nClass XII | CBSE75\nSt Xaviers\nClass X | CBSE75\nSkills\nProject management CreativityData analysisLeadershipProblem solving\nProjects\nDrowsiness Detection Nov 01 2024 - Feb 01 2025\n\u2022 Drowsiness Detection System \u2013 A real-time application designed to enhance driver safety by detecting signs of \nfatigue or drowsiness\n\u2022  The system uses computer vision techniqu...",
+          "error": null
+        },
+        "pdfplumber": {
+          "success": true,
+          "method": "pdfplumber",
+          "pages": 1,
+          "text_length": 1691,
+          "text": "Neelu Pandey\n8433005041 neelupandey5098@gmail.com LinkedIn Github\nEducation\nBIET Lucknow Sep 03 2022 - Jun 01 2026\nBtech GPA: 8.5/10\nSt Xaviers 75\nClass XII | CBSE\nSt Xaviers 75\nClass X | CBSE\nSkills\nProject management Creativity Data analysis Leadership Problem solving\nProjects\nDrowsiness Detection Nov 01 2024 - Feb 01 2025\n\u2022 Drowsiness Detection System \u2013 A real-time application designed to enhance driver safety by detecting signs of\nfatigue or drowsiness\n\u2022 The system uses computer vision techn...",
+          "error": null
+        },
+        "pdfminer": {
+          "success": true,
+          "method": "pdfminer.six",
+          "pages": 1,
+          "text_length": 1745,
+          "text": "Neelu Pandey\n\n8433005041\n\nneelupandey5098@gmail.com\n\nLinkedIn\n\nGithub\n\nSep 03 2022 - Jun 01 2026\n\nGPA: 8.5/10\n\n75\n\n75\n\nEducation\n\nBIET Lucknow\n\nBtech\nSt Xaviers\n\nClass XII | CBSE\n\nSt Xaviers\n\nClass X | CBSE\n\nSkills\n\nProject management\n\nCreativity\n\nData analysis\n\nLeadership\n\nProblem solving\n\nProjects\n\nDrowsiness Detection\n\nNov 01 2024 - Feb 01 2025\n\n\u2022 Drowsiness Detection System \u2013 A real-time application designed to enhance driver safety by detecting signs of \n\nfatigue or drowsiness\n\n\u2022  The syste...",
+          "error": null
+        },
+        "raw_binary": {
+          "success": true,
+          "method": "Raw Binary Extraction",
+          "pages": "unknown",
+          "text_length": 8150,
+          "text": "\u00d04\u00ef \u00f6\u00df\u00df\u00e0 \u00d0hZJ2 b\u00f0\u00cbJF \u00fdcy\u00f9\u00ef \u00fc\u00faD\u00c3c \u00aa\u00fd\u00fd B\u00ba\u00b9\u00f5 pz\u00f8\u00f2\u00fa\u00f4\u00f3 \u00fd\u00f1\u00c0 \u00ee\u00d2pf A\u00ed\u00e2 J\u00bd5 K\u00d3\u00d2 \u00fe\u00fe\u00f4 \u00cc\u00f93 \u00fc\u00f1\u00ff\u00d2X\u00e5 R\u00f8\u00ff 1\u00c7\u00ce OKo fYs \u00b5D\u00b9\u00ca \u00aaYL \u00e89a \u00ce\u00cf9\u00bd\u00f0 \u00dbfD b\u00f8\u00c9 \u00c5oMjv\u00bd \u00be\u00e8oI\u00d1 \u00df\u00da\u00e4 RK\u00db\u00fc 69O\u00ec \u00d0\u00d9\u00d0 \u00c0\u00d3\u00f1\u00e6 \u00e3\u00b3\u00dc\u00b9 vFjk \u00b2\u00efG \u00c8X\u00ea \u00fa\u00cdc \u00d4\u00ba\u00faZ\u00fd\u00c5 \u00beh\u00ff \u00db\u00e6\u00fb\u00cdE\u00fbgiH\u00c7 c\u00e9c4\u00dc0\u00e7X \u00c3v\u00db\u00f5\u00f3 \u00f3\u00d3\u00cf \u00e4\u00f3\u00c0\u00c8g \u00e16KR e\u00aa\u00e2D \u00dfs\u00e4\u00e6\u00f3 \u00fa\u00c5R 0\u00d3\u00e4\u00e2 T\u00c8kT \u00fbh8q \u00e9\u00dc\u00c9 WK\u00c6 r\u00cff\u00c8 \u00cf\u00c7u \u00e3\u00f4\u00ed 7a\u00f9 rhv \u00c0z\u00ee\u00bdc \u00e3J\u00ef nEe6\u00dc q\u00ecc 3\u00e4\u00fe3d\u00e0\u00efr z\u00bc\u00e0Z \u00f3\u00f1l\u00bdLd \u00dd177\u00c4\u00bd\u00d6 R\u00ce9o\u00ed\u00bc \u00e4\u00e2\u00db\u00c1c\u00e9RMHSD \u00e1\u00e8\u00ddK\u00c8\u00d2Vs \u00c7y\u00e0 \u00d28\u00aat \u00e9\u00ff5 \u00ea2\u00c0 \u00c6G\u00db\u00e2\u00dd \u00db\u00c6K eyA\u00c2ZA\u00f2K\u00cb\u00e1\u00f5 \u00c9\u00f6\u00c3 \u00b2\u00c4H\u00c8V8 \u00d6GH\u00cc \u00cc\u00e7\u00e1 NQ1 \u00e4\u00d5Q9k Nc\u00eeH sl\u00c4\u00b2\u00b9 \u00eb\u00b5\u00cc j\u00f8\u00e9 bK\u00d8\u00ed \u00fc\u00c0s\u00b3 \u00e5\u00c5\u00c8\u00f1\u00da k\u00d6\u00ec \u00cblT 5f8 \u00c2M\u00e89E 1\u00c9j...",
+          "error": null
+        },
+        "combined_approach": {
+          "success": true,
+          "method": "Combined (PyPDF2 Robust, pdfplumber, pdfminer.six, Raw Binary Extraction)",
+          "pages": "multiple",
+          "text_length": 1027,
+          "text": "Neelu Pandey 8433005041 neelupandey5098@gmail.com LinkedIn Github Education BIET Lucknow BtechSep 03 2022 - Jun 01 2026 GPA: 8.5/10 St Xaviers Class XII | CBSE75 X Skills Project management CreativityData analysisLeadershipProblem solving Projects Drowsiness Detection Nov 2024 Feb 2025 \u2022 System \u2013 A real-time application designed to enhance driver safety by detecting signs of fatigue or drowsiness The system uses computer vision techniqu... Sep Btech 75 CBSE Creativity Data analysis Leadership Pr...",
+          "methods_used": [
+            "PyPDF2 Robust",
+            "pdfplumber",
+            "pdfminer.six",
+            "Raw Binary Extraction"
+          ],
+          "error": null
+        },
+        "ocr_simulation": {
+          "success": false,
+          "method": "OCR Simulation",
+          "pages": 0,
+          "text_length": 0,
+          "text": "",
+          "note": "PDF doesn't appear to be image-based",
+          "error": "Not an image-based PDF"
+        }
+      },
+      "best_method": "raw_binary",
+      "best_text_length": 8150,
+      "s3_simulation": {
+        "saved_size": 33527,
+        "original_size": 33527,
+        "size_match": true,
+        "pages": 1,
+        "readability": "readable",
+        "status": "success"
+      },
+      "status": "success"
+    },
+    "Resume_Ajeet.pdf": {
+      "resume_id": "bb384672-44ac-4bd4-8b37-bae48a3bfdc0",
+      "filename": "Resume_Ajeet.pdf",
+      "file_size": 129024,
+      "processing_time": 0.8064475059509277,
+      "extraction_methods": {
+        "pypdf2_standard": {
+          "success": true,
+          "method": "PyPDF2 Standard",
+          "pages": 2,
+          "text_length": 4901,
+          "text": "Ajeet Ram Verma\n\u2642phone9555437698 /envel\u2322peajeetramverma10@gmail.com /linkedinlinkedin /githubgithub\nEducation\nIIIT Naya Raipur 8.34/10\nB.Tech in Electronics and Communication Dec. 2020 \u2013 June 2024\nHaji Nurool Hasan Memorial Inter College 84.2%/100\nUP Board - Class-XII April. 2019\nHaji Nurool Hasan Memorial Inter College 87.1%/100\nUP Board - Class-X May. 2017\nExperience\nFull Stack Blockchain Developer Sep 2024 \u2013 Present\nEdubuk Full-Time\n\u2022Designed and deployed smart contracts in Solidity across mu...",
+          "error": null
+        },
+        "pypdf2_robust": {
+          "success": true,
+          "method": "PyPDF2 Robust",
+          "pages": 2,
+          "successful_pages": 2,
+          "text_length": 4901,
+          "text": "Ajeet Ram Verma\n\u2642phone9555437698 /envel\u2322peajeetramverma10@gmail.com /linkedinlinkedin /githubgithub\nEducation\nIIIT Naya Raipur 8.34/10\nB.Tech in Electronics and Communication Dec. 2020 \u2013 June 2024\nHaji Nurool Hasan Memorial Inter College 84.2%/100\nUP Board - Class-XII April. 2019\nHaji Nurool Hasan Memorial Inter College 87.1%/100\nUP Board - Class-X May. 2017\nExperience\nFull Stack Blockchain Developer Sep 2024 \u2013 Present\nEdubuk Full-Time\n\u2022Designed and deployed smart contracts in Solidity across mu...",
+          "error": null
+        },
+        "pdfplumber": {
+          "success": true,
+          "method": "pdfplumber",
+          "pages": 2,
+          "text_length": 4922,
+          "text": "Ajeet Ram Verma\n(cid:131) 9555437698 # ajeetramverma10@gmail.com (cid:239) linkedin \u00a7 github\nEducation\nIIIT Naya Raipur 8.34/10\nB.Tech in Electronics and Communication Dec. 2020 \u2013 June 2024\nHaji Nurool Hasan Memorial Inter College 84.2%/100\nUP Board - Class-XII April. 2019\nHaji Nurool Hasan Memorial Inter College 87.1%/100\nUP Board - Class-X May. 2017\nExperience\nFull Stack Blockchain Developer Sep 2024 \u2013 Present\nEdubuk Full-Time\n\u2022 Designed and deployed smart contracts in Solidity across multiple...",
+          "error": null
+        },
+        "pdfminer": {
+          "success": true,
+          "method": "pdfminer.six",
+          "pages": 2,
+          "text_length": 4983,
+          "text": "Ajeet Ram Verma\n\n(cid:131) 9555437698 # ajeetramverma10@gmail.com (cid:239) linkedin \u00a7 github\n\nEducation\n\nIIIT Naya Raipur\nB.Tech in Electronics and Communication\n\nHaji Nurool Hasan Memorial Inter College\nUP Board - Class-XII\n\nHaji Nurool Hasan Memorial Inter College\nUP Board - Class-X\n\nExperience\n\nFull Stack Blockchain Developer\nEdubuk\n\n8.34/10\nDec. 2020 \u2013 June 2024\n\n84.2%/100\nApril. 2019\n\n87.1%/100\nMay. 2017\n\nSep 2024 \u2013 Present\nFull-Time\n\n\u2022 Designed and deployed smart contracts in Solidity acr...",
+          "error": null
+        },
+        "raw_binary": {
+          "success": true,
+          "method": "Raw Binary Extraction",
+          "pages": "unknown",
+          "text_length": 40906,
+          "text": "cbd D\u00aa\u00d8 Hic \u00b3\u00cdA su\u00cc \u00c4f\u00c7 \u00c2\u00beA\u00e0 \u00cd\u00c8\u00c0\u00c0 \u00c5ZYs\u00e36 Pekk M\u00e2Y\u00ef\u00c89 HX\u00c2 \u00ec8\u00f9\u00f3\u00db 3\u00db\u00cc 83\u00e2\u00dbQ \u00b9\u00b3\u00db nd\u00b3 V\u00ed\u00e8\u00fc \u00eb\u00db1Q Ibc G80 qbb \u00ff\u00dbS\u00b3z3c \u00dfu\u00fe\u00b9\u00d9Q \u00dbi\u00b9 3\u00cb\u00e0\u00d9 \u00daK\u00e2\u00d9 j54 O\u00ec\u00c0 q\u00ed\u00d0\u00f5\u00d5\u00c0 g\u00c7q \u00d1\u00c3H\u00ce\u00e5 2vm 7DB7 \u00e3Y\u00ec 1\u00fcHIt \u00bdcb \u00f1\u00f3\u00c4 ab\u00c7N \u00c4\u00ed\u00c4 \u00f8C\u00c5 \u00ef\u00dbJ \u00e5\u00e4l \u00c0O\u00d4\u00f83\u00fbv \u00dbM5 Zd\u00ea\u00e2\u00bc\u00dc\u00edZ \u00df\u00baPo\u00das 9\u00f4\u00ff \u00be\u00de\u00d0 \u00ea\u00d95\u00db \u00b9\u00fa\u00b5 q\u00e7e \u00bd\u00fa6\u00f9 Py9 \u00ef\u00f5\u00be \u00d2\u00eas g\u00e9h \u00f9kU \u00eft\u00f5j WS\u00f4 \u00c4Cv\u00f8e t\u00e4Xx\u00e3\u00bd \u00c1\u00f2r \u00dd\u00d8AO W\u00b3K n\u00dcT \u00f6r\u00f6\u00c4 \u00e43\u00cf B\u00d0zT 6\u00b5z Ve\u00ce3\u00de iU\u00d68 \u00d5jF b\u00ed\u00eeT\u00fd\u00fc\u00e1\u00e2 \u00fe\u00e6\u00f2T\u00bd i\u00fe\u00dd x\u00d1\u00ffXmi\u00c5 \u00f9\u00e5\u00cd LfN \u00caE\u00d4\u00c3 \u00c2A\u00de Qe\u00fb q\u00b3T\u00c6d dI\u00db\u00baQ \u00df\u00cf\u00c1 \u00d8\u00daS \u00fbmM r\u00c2\u00b2\u00db 6\u00f9\u00e3 \u00cb\u00f4\u00dbo \u00cc\u00ee\u00c5U DV\u00d9 \u00bcP\u00e6 \u00cd\u00bcs N\u00db2U \u00bay\u00be JoT w\u00f6\u00ed R\u00ed\u00cf\u00fb \u00baGH \u00fd\u00df\u00f3 I\u00c2v \u00dc\u00f5\u00f0l\u00e7 4\u00ce\u00c4\u00fb \u00ff...",
+          "error": null
+        },
+        "combined_approach": {
+          "success": true,
+          "method": "Combined (PyPDF2 Robust, pdfplumber, pdfminer.six, Raw Binary Extraction)",
+          "pages": "multiple",
+          "text_length": 1048,
+          "text": "Ajeet Ram Verma \u2642phone9555437698 /envel\u2322peajeetramverma10@gmail.com /linkedinlinkedin /githubgithub Education IIIT Naya Raipur 8.34/10 B.Tech in Electronics and Communication Dec. 2020 \u2013 June 2024 Haji Nurool Hasan Memorial Inter College 84.2%/100 UP Board - Class-XII April. 2019 87.1%/100 Class-X May. 2017 Experience Full Stack Blockchain Developer Sep Present Edubuk Full-Time \u2022Designed deployed smart contracts Solidity across mu... (cid:131) 9555437698 # ajeetramverma10@gmail.com (cid:239) lin...",
+          "methods_used": [
+            "PyPDF2 Robust",
+            "pdfplumber",
+            "pdfminer.six",
+            "Raw Binary Extraction"
+          ],
+          "error": null
+        },
+        "ocr_simulation": {
+          "success": false,
+          "method": "OCR Simulation",
+          "pages": 0,
+          "text_length": 0,
+          "text": "",
+          "note": "PDF doesn't appear to be image-based",
+          "error": "Not an image-based PDF"
+        }
+      },
+      "best_method": "raw_binary",
+      "best_text_length": 40906,
+      "s3_simulation": {
+        "saved_size": 129024,
+        "original_size": 129024,
+        "size_match": true,
+        "pages": 2,
+        "readability": "readable",
+        "status": "success"
+      },
+      "status": "success"
+    },
+    "Rishi Sonker (3).pdf": {
+      "resume_id": "b572fe25-794f-4962-81aa-78cbeeaac9c6",
+      "filename": "Rishi Sonker (3).pdf",
+      "file_size": 97580,
+      "processing_time": 0.6349170207977295,
+      "extraction_methods": {
+        "pypdf2_standard": {
+          "success": true,
+          "method": "PyPDF2 Standard",
+          "pages": 1,
+          "text_length": 1266,
+          "text": "Rishi Sonker\n6388462103\nrishisonkersonker123@gmail.com\n LinkedIn\nGithub\n by Edubuk: Click to view verifiable CV\nEducation\nAmity University\nMBA Sep 01 2023 - May 31 2025\nGPA: 7.56/10\nLala lajpat rai college of commerce and economics \nBMS Sep 01 2020 - Jul 05 2023\nGPA: 8.55/10\nSinghania educational institute \nClass XII | CBSE 68.4%\nSumitra modern school\nClass X | CBSE 56.4%\nSkills\nProblem solvingCreativityLeadershipTeamworkAdaptability\nExperience\nSharekhan Pvt Ltd 2024-05-31T18:30:00.000Z - 2024-0...",
+          "error": null
+        },
+        "pypdf2_robust": {
+          "success": true,
+          "method": "PyPDF2 Robust",
+          "pages": 1,
+          "successful_pages": 1,
+          "text_length": 1266,
+          "text": "Rishi Sonker\n6388462103\nrishisonkersonker123@gmail.com\n LinkedIn\nGithub\n by Edubuk: Click to view verifiable CV\nEducation\nAmity University\nMBA Sep 01 2023 - May 31 2025\nGPA: 7.56/10\nLala lajpat rai college of commerce and economics \nBMS Sep 01 2020 - Jul 05 2023\nGPA: 8.55/10\nSinghania educational institute \nClass XII | CBSE 68.4%\nSumitra modern school\nClass X | CBSE 56.4%\nSkills\nProblem solvingCreativityLeadershipTeamworkAdaptability\nExperience\nSharekhan Pvt Ltd 2024-05-31T18:30:00.000Z - 2024-0...",
+          "error": null
+        },
+        "pdfplumber": {
+          "success": true,
+          "method": "pdfplumber",
+          "pages": 1,
+          "text_length": 1257,
+          "text": "Rishi Sonker\n6388462103 rishisonkersonker123@gmail.com LinkedIn Github\nby Edubuk: Click to view verifiable CV\nEducation\nAmity University Sep 01 2023 - May 31 2025\nMBA GPA: 7.56/10\nLala lajpat rai college of commerce and economics Sep 01 2020 - Jul 05 2023\nBMS GPA: 8.55/10\nSinghania educational institute 68.4%\nClass XII | CBSE\nSumitra modern school 56.4%\nClass X | CBSE\nSkills\nProblem solving Creativity Leadership Teamwork Adaptability\nExperience\nSharekhan Pvt Ltd 2024-05-31T18:30:00.000Z - 2024-0...",
+          "error": null
+        },
+        "pdfminer": {
+          "success": true,
+          "method": "pdfminer.six",
+          "pages": 1,
+          "text_length": 1319,
+          "text": "6388462103\n\nRishi Sonker\nrishisonkersonker123@gmail.com\n\nLinkedIn\n\nGithub\n\n by Edubuk: Click to view verifiable CV\n\nEducation\n\nAmity University\n\nMBA \n\nLala lajpat rai college of commerce and economics \n\nBMS \n\nSinghania educational institute \n\nClass XII | CBSE \n\nSumitra modern school\n\nClass X | CBSE \n\nSkills\n\nSep 01 2023 - May 31 2025\n\nGPA: 7.56/10\n\nSep 01 2020 - Jul 05 2023\n\nGPA: 8.55/10\n\n68.4%\n\n56.4%\n\nProblem solving\n\nCreativity\n\nLeadership\n\nTeamwork\n\nAdaptability\n\nExperience\n\nSharekhan Pvt Ltd...",
+          "error": null
+        },
+        "raw_binary": {
+          "success": true,
+          "method": "Raw Binary Extraction",
+          "pages": "unknown",
+          "text_length": 28793,
+          "text": "P4\u00df q7\u00e0 2\u00cb6 \u00f5\u00df\u00df\u00e0K 2\u00b3\u00f3U \u00d4\u00d4t d\u00c4\u00c7 lG\u00e1\u00e7 7r2 1\u00ebo\u00ff\u00ee \u00c3\u00ff\u00fds \u00c7\u00df\u00d8\u00ee\u00ef \u00ffya \u00fdIq\u00ed \u00d0o\u00fa \u00fe\u00bcct E2\u00c6 \u00f4\u00f9\u00c5 \u00eaXQ \u00e5\u00b2U \u00fe\u00b2\u00c3 oP\u00c9 YeIU\u00bc\u00e6 cIx Nir yEM lEoQS\u00dd\u00fccM 1v\u00d6Ux\u00f8\u00f05 k\u00fc0 \u00aa\u00fb5 x\u00d3\u00fb\u00be PA\u00e2\u00f9\u00c3 9\u00c2a8s yEM lEoQS\u00dd\u00fccM 7Ux 5\u00cek \u00d0D\u00e9 cb\u00c2 \u00cbV\u00f4 5\u00d5\u00cd \u00d8\u00c6g \u00ec\u00e0\u00b3\u00e2 s\u00d5\u00fd \u00d5\u00c7\u00e7r\u00e7 \u00c4\u00c0D krLL8 3u\u00f9 W\u00f1\u00ed 8\u00d5\u00dd 2\u00ebl 5\u00e1\u00ba\u00f9own\u00da\u00ed \u00fc\u00ccz\u00f0q\u00c5 4\u00fa\u00ed 8\u00c5\u00fb sEFmP \u00c6\u00be10 R\u00ee\u00fc \u00fa\u00cfT \u00cevk\u00dd\u00f5\u00cb9 qP\u00f1 \u00c1L\u00e1\u00fe\u00cb9 \u00e6s\u00c0 TkX\u00d5H \u00cd\u00da\u00f6 D0\u00f2 UE9 \u00c6\u00e07 \u00efV\u00ef\u00d4 \u00c9\u00c4c 3\u00ccC \u00d1Zl \u00e0\u00ccA\u00c8\u00fe \u00da\u00f1e q\u00fa\u00fe\u00d2 0b\u00fa \u00b5qU\u00f6\u00bdx d\u00fe\u00e9HY 3\u00ed\u00e1 J0\u00f0 PK\u00e6\u00b5 \u00e29r5b C\u00b9W\u00c3 H\u00c2\u00c4\u00ca VIL \u00d8\u00de\u00b3\u00ef \u00e2\u00c3g w\u00e2\u00b3\u00c0 F\u00db\u00e0G \u00fefg4 V2\u00ef\u00cd\u00c3\u00f8u l\u00f46N \u00c76\u00d3 nc\u00f2 J\u00c8M \u00d2jb\u00b5 t\u00f9\u00ccq N\u00df\u00de8\u00c2\u00d6\u00b3 g\u00f8\u00fd \u00c8q\u00c9 \u00c2\u00d4\u00beBhx\u00da\u00f4\u00e3...",
+          "error": null
+        },
+        "combined_approach": {
+          "success": true,
+          "method": "Combined (PyPDF2 Robust, pdfplumber, pdfminer.six, Raw Binary Extraction)",
+          "pages": "multiple",
+          "text_length": 1014,
+          "text": "Rishi Sonker 6388462103 rishisonkersonker123@gmail.com LinkedIn Github by Edubuk: Click to view verifiable CV Education Amity University MBA Sep 01 2023 - May 31 2025 GPA: 7.56/10 Lala lajpat rai college of commerce and economics BMS 2020 Jul 05 8.55/10 Singhania educational institute Class XII | CBSE 68.4% Sumitra modern school X 56.4% Skills Problem solvingCreativityLeadershipTeamworkAdaptability Experience Sharekhan Pvt Ltd 2024-05-31T18:30:00.000Z 2024-0... solving Creativity Leadership Team...",
+          "methods_used": [
+            "PyPDF2 Robust",
+            "pdfplumber",
+            "pdfminer.six",
+            "Raw Binary Extraction"
+          ],
+          "error": null
+        },
+        "ocr_simulation": {
+          "success": false,
+          "method": "OCR Simulation",
+          "pages": 0,
+          "text_length": 0,
+          "text": "",
+          "note": "PDF doesn't appear to be image-based",
+          "error": "Not an image-based PDF"
+        }
+      },
+      "best_method": "raw_binary",
+      "best_text_length": 28793,
+      "s3_simulation": {
+        "saved_size": 97580,
+        "original_size": 97580,
+        "size_match": true,
+        "pages": 1,
+        "readability": "readable",
+        "status": "success"
+      },
+      "status": "success"
+    },
+    "Vishul_AI_Intern_Resume.pdf": {
+      "resume_id": "2d5aec24-60e3-45f8-b0a8-401be2778d52",
+      "filename": "Vishul_AI_Intern_Resume.pdf",
+      "file_size": 3247,
+      "processing_time": 0.1849079132080078,
+      "extraction_methods": {
+        "pypdf2_standard": {
+          "success": true,
+          "method": "PyPDF2 Standard",
+          "pages": 1,
+          "text_length": 1613,
+          "text": "Vishul\n\u25a0 Lucknow, India | \u2709\u25a0 vishul@email.com | \u25a0 +91-9876543210\n\u25a0 LinkedIn: linkedin.com/in/vishul | \u25a0 GitHub: github.com/vishul\nObjective\nPassionate and motivated AI enthusiast seeking an internship role to apply machine learning and data science\nskills, gain hands-on experience, and contribute to impactful AI-driven projects.\nEducation\nBCA in Data Science & Artificial Intelligence\nXYZ University, Lucknow\nCGPA: 8.2/10 (2022 \u2013 2025)\nTechnical Skills\n\u007f Programming: Python, R, Java, C++\n\u007f Machine...",
+          "error": null
+        },
+        "pypdf2_robust": {
+          "success": true,
+          "method": "PyPDF2 Robust",
+          "pages": 1,
+          "successful_pages": 1,
+          "text_length": 1613,
+          "text": "Vishul\n\u25a0 Lucknow, India | \u2709\u25a0 vishul@email.com | \u25a0 +91-9876543210\n\u25a0 LinkedIn: linkedin.com/in/vishul | \u25a0 GitHub: github.com/vishul\nObjective\nPassionate and motivated AI enthusiast seeking an internship role to apply machine learning and data science\nskills, gain hands-on experience, and contribute to impactful AI-driven projects.\nEducation\nBCA in Data Science & Artificial Intelligence\nXYZ University, Lucknow\nCGPA: 8.2/10 (2022 \u2013 2025)\nTechnical Skills\n\u007f Programming: Python, R, Java, C++\n\u007f Machine...",
+          "error": null
+        },
+        "pdfplumber": {
+          "success": true,
+          "method": "pdfplumber",
+          "pages": 1,
+          "text_length": 1725,
+          "text": "Vishul\nn Lucknow, India | )n vishul@email.com | n +91-9876543210\nn LinkedIn: linkedin.com/in/vishul | n GitHub: github.com/vishul\nObjective\nPassionate and motivated AI enthusiast seeking an internship role to apply machine learning and data science\nskills, gain hands-on experience, and contribute to impactful AI-driven projects.\nEducation\nBCA in Data Science & Artificial Intelligence\nXYZ University, Lucknow\nCGPA: 8.2/10 (2022 \u2013 2025)\nTechnical Skills\n(cid:127) Programming: Python, R, Java, C++\n(...",
+          "error": null
+        },
+        "pdfminer": {
+          "success": true,
+          "method": "pdfminer.six",
+          "pages": 1,
+          "text_length": 1733,
+          "text": "Vishul\nn Lucknow, India | )n vishul@email.com | n +91-9876543210\nn LinkedIn: linkedin.com/in/vishul | n GitHub: github.com/vishul\n\nObjective\nPassionate and motivated AI enthusiast seeking an internship role to apply machine learning and data science\nskills, gain hands-on experience, and contribute to impactful AI-driven projects.\n\nEducation\nBCA in Data Science & Artificial Intelligence\nXYZ University, Lucknow\nCGPA: 8.2/10 (2022 \u2013 2025)\n\nTechnical Skills\n(cid:127) Programming: Python, R, Java, C+...",
+          "error": null
+        },
+        "raw_binary": {
+          "success": true,
+          "method": "Raw Binary Extraction",
+          "pages": "unknown",
+          "text_length": 608,
+          "text": "GatU3 EWB fGOcqo ZTioBA4 RhUSp Qhba Ib4a TGe 7ODI uL4 elM1lcJkbAc 87ggI RrBrg7c7W cYYgopY oV2 q2M8 GYt7K7 FWi NpV Tc8 nBC NmlTAecg mec DG5l NOHO 9hPW 4Md JGu jUO3 UQH6 Yutt7 Ies8R6 IK3hP sNUqrC uth0c 494 NGEBY EjhDd NIY 1Jm 1UCo uFUokhTco 5o58 1r0HfhSWD1VY 0ol 0a1L CmH b7mPY fQn6KeMC RP9 ZVTsC DDoR DYnjic LmnZ X2oK63 F7bhN opce6scD8qX tZQ aSMoGtPR54 M67FoaJ QtK ELcD4 iBg AWbR1U nTI 08n COI NTiS YIn V1CF4 Q3o qLHm 6EHsZoNi GEI4ArV9 ebmE Ooe CTK 7WW NdK RRCU R2Gb 0qSkdf QgM6Fllua Vgc 9B2WEm Wiq LT...",
+          "error": null
+        },
+        "combined_approach": {
+          "success": true,
+          "method": "Combined (PyPDF2 Robust, pdfplumber, pdfminer.six, Raw Binary Extraction)",
+          "pages": "multiple",
+          "text_length": 1010,
+          "text": "Vishul \u25a0 Lucknow, India | \u2709\u25a0 vishul@email.com +91-9876543210 LinkedIn: linkedin.com/in/vishul GitHub: github.com/vishul Objective Passionate and motivated AI enthusiast seeking an internship role to apply machine learning data science skills, gain hands-on experience, contribute impactful AI-driven projects. Education BCA in Data Science & Artificial Intelligence XYZ University, Lucknow CGPA: 8.2/10 (2022 \u2013 2025) Technical Skills \u007f Programming: Python, R, Java, C++ Machine... n )n (cid:127) (......",
+          "methods_used": [
+            "PyPDF2 Robust",
+            "pdfplumber",
+            "pdfminer.six",
+            "Raw Binary Extraction"
+          ],
+          "error": null
+        },
+        "ocr_simulation": {
+          "success": false,
+          "method": "OCR Simulation",
+          "pages": 0,
+          "text_length": 0,
+          "text": "",
+          "note": "PDF doesn't appear to be image-based",
+          "error": "Not an image-based PDF"
+        }
+      },
+      "best_method": "pdfminer",
+      "best_text_length": 1733,
+      "s3_simulation": {
+        "saved_size": 3247,
+        "original_size": 3247,
+        "size_match": true,
+        "pages": 1,
+        "readability": "readable",
+        "status": "success"
+      },
+      "status": "success"
+    },
+    "anurag_gupta_cv.pdf": {
+      "resume_id": "e265f6b3-6daa-4676-a7d2-6457217c7661",
+      "filename": "anurag_gupta_cv.pdf",
+      "file_size": 181432,
+      "processing_time": 0.5905067920684814,
+      "extraction_methods": {
+        "pypdf2_standard": {
+          "success": true,
+          "method": "PyPDF2 Standard",
+          "pages": 1,
+          "text_length": 3709,
+          "text": "(+91) 9755863914\nBengaluru, India\nanurag19100@gmail.comAnurag Gupta\nDevOps EngineerPortfolio: anurag-cv.com\ngithub.com/anurag19100\nlinkedin.com/in/anurag19100\nDevOps Engineer with 2+ years of experience in designing, implementing, and optimizing robust cloud infrastructure and\nautomation solutions at BigBasket. With a strong background in AWS, Kubernetes, Jenkins, Terraform, and programming, I have a\nproven track record of enhancing system efficiency, reliability and maintainability. I\u2019m passion...",
+          "error": null
+        },
+        "pypdf2_robust": {
+          "success": true,
+          "method": "PyPDF2 Robust",
+          "pages": 1,
+          "successful_pages": 1,
+          "text_length": 3709,
+          "text": "(+91) 9755863914\nBengaluru, India\nanurag19100@gmail.comAnurag Gupta\nDevOps EngineerPortfolio: anurag-cv.com\ngithub.com/anurag19100\nlinkedin.com/in/anurag19100\nDevOps Engineer with 2+ years of experience in designing, implementing, and optimizing robust cloud infrastructure and\nautomation solutions at BigBasket. With a strong background in AWS, Kubernetes, Jenkins, Terraform, and programming, I have a\nproven track record of enhancing system efficiency, reliability and maintainability. I\u2019m passion...",
+          "error": null
+        },
+        "pdfplumber": {
+          "success": true,
+          "method": "pdfplumber",
+          "pages": 1,
+          "text_length": 3311,
+          "text": "Anurag Gupta\n(+91)9755863914 Portfolio:anurag-cv.com\nBengaluru,India github.com/anurag19100\nDevOpsEngineer\nanurag19100@gmail.com linkedin.com/in/anurag19100\nDevOpsEngineerwith2+yearsofexperienceindesigning,implementing,andoptimizingrobustcloudinfrastructureand\nautomationsolutionsatBigBasket.WithastrongbackgroundinAWS,Kubernetes,Jenkins,Terraform,andprogramming,Ihavea\nproventrackrecordofenhancingsystemefficiency,reliabilityandmaintainability.I\u2019mpassionateaboutallthingscloud\ninfrastructureandautom...",
+          "error": null
+        },
+        "pdfminer": {
+          "success": true,
+          "method": "pdfminer.six",
+          "pages": 1,
+          "text_length": 3746,
+          "text": "(+91) 9755863914\nBengaluru, India\nanurag19100@gmail.com\n\nAnurag Gupta\nDevOps Engineer\n\nPortfolio: anurag-cv.com\ngithub.com/anurag19100\nlinkedin.com/in/anurag19100\n\nDevOps Engineer with 2+ years of experience in designing, implementing, and optimizing robust cloud infrastructure and\nautomation solutions at BigBasket. With a strong background in AWS, Kubernetes, Jenkins, Terraform, and programming, I have a\nproven track record of enhancing system efficiency, reliability and maintainability. I\u2019m pa...",
+          "error": null
+        },
+        "raw_binary": {
+          "success": true,
+          "method": "Raw Binary Extraction",
+          "pages": "unknown",
+          "text_length": 56269,
+          "text": "w\u00db6 \u00d0\u00c3vW \u00bcJ\u00e2\u00c6 \u00d3\u00f4A u\u00d2\u00d8 \u00d4q\u00e3pp E\u00ea\u00c1\u00c5\u00b3l\u00dfu 8H\u00bd\u00d0\u00fa\u00f5\u00ee \u00cb\u00cb\u00b9\u00e5\u00c5\u00c3I\u00d1 v\u00b3\u00e3\u00d1 kL\u00cafm\u00f9\u00e1p2 R\u00cfu\u00ff Y\u00be7 tF\u00c9\u00c8\u00e3 z\u00e9\u00c8 \u00c3d\u00e0\u00fbN\u00c4\u00ef\u00f0 \u00eb9\u00ee\u00f8\u00aaYY\u00be \u00dc\u00f0\u00e9\u00fe\u00c8\u00ce n\u00bd\u00d0 \u00c2\u00d8\u00c7\u00b5 \u00d8\u00fa\u00d2 \u00b9eG\u00c3\u00c7 \u00cc\u00f3uW \u00ddF\u00be\u00ef \u00fc\u00c0Ii U\u00c1\u00aa\u00ef\u00ff \u00d0Tm\u00cf ZA4\u00dc \u00cfMM \u00cf\u00d9f\u00d1L\u00b9 L\u00f3\u00ff \u00fcv\u00e2\u00c1 \u00d9\u00f2\u00e4 x\u00e7\u00da \u00f0D\u00f1\u00ef3 \u00f0\u00fad \u00bc\u00e6\u00e0 \u00d9\u00bcd\u00e5 kRf4\u00e5\u00ca\u00f2F\u00c3 \u00b2\u00df\u00e1 6\u00b5\u00e5 V\u00c1\u00e7\u00ebf\u00c6\u00c7o \u00f1Z\u00de\u00ce f\u00c3e\u00aa WE\u00c3\u00ff \u00eb\u00f0Hq \u00b5Mh \u00e07\u00e7\u00f8 3Sc \u00d0L\u00f3uI \u00c2\u00df\u00bc o\u00f2\u00f2 \u00e3e1y Iz\u00f4FS\u00c0 v\u00bd\u00c1 \u00d6l9\u00c6 7p\u00d9L\u00f8 tV\u00ca \u00c6\u00ff\u00b2\u00bc \u00ccMv\u00f6Z\u00e1 UCv Y3\u00cd\u00c0\u00e0 \u00e2\u00f6P \u00dfz\u00f5 E9o H\u00c8\u00d3\u00c5\u00fb\u00d8 \u00efw\u00f1 v\u00f0\u00dd D\u00d3\u00e3e\u00ba \u00d1\u00e8c\u00c9\u00be \u00d2\u00c1u \u00c5\u00f8\u00eb\u00e5 w\u00d6\u00c8 VUAX\u00f2O\u00bc\u00bc\u00e6\u00f3 \u00f9g\u00d0c\u00b5 8\u00bcM3 T3\u00cc \u00ebj\u00f0 LJ\u00ff \u00ef\u00f8k \u00df\u00e9\u00cd\u00f8hingk C\u00d9\u00c1 U\u00f9\u00f2 \u00fdt\u00fb\u00d3 \u00daiz \u00c0\u00fb\u00c9T \u00d1\u00c8q O\u00b9qSPz\u00f3 \u00bc\u00c2\u00deQ G\u00be\u00e3\u00fb B\u00e5K 9\u00c3\u00db\u00bc \u00e7nm\u00f3h\u00ba \u00c4\u00e76...",
+          "error": null
+        },
+        "combined_approach": {
+          "success": true,
+          "method": "Combined (PyPDF2 Robust, pdfplumber, pdfminer.six, Raw Binary Extraction)",
+          "pages": "multiple",
+          "text_length": 1444,
+          "text": "(+91) 9755863914 Bengaluru, India anurag19100@gmail.comAnurag Gupta DevOps EngineerPortfolio: anurag-cv.com github.com/anurag19100 linkedin.com/in/anurag19100 Engineer with 2+ years of experience in designing, implementing, and optimizing robust cloud infrastructure automation solutions at BigBasket. With a strong background AWS, Kubernetes, Jenkins, Terraform, programming, I have proven track record enhancing system efficiency, reliability maintainability. I\u2019m passion... Anurag (+91)9755863914 ...",
+          "methods_used": [
+            "PyPDF2 Robust",
+            "pdfplumber",
+            "pdfminer.six",
+            "Raw Binary Extraction"
+          ],
+          "error": null
+        },
+        "ocr_simulation": {
+          "success": false,
+          "method": "OCR Simulation",
+          "pages": 0,
+          "text_length": 0,
+          "text": "",
+          "note": "PDF doesn't appear to be image-based",
+          "error": "Not an image-based PDF"
+        }
+      },
+      "best_method": "raw_binary",
+      "best_text_length": 56269,
+      "s3_simulation": {
+        "saved_size": 181432,
+        "original_size": 181432,
+        "size_match": true,
+        "pages": 1,
+        "readability": "readable",
+        "status": "success"
+      },
+      "status": "success"
+    },
+    "john_doe.pdf": {
+      "resume_id": "1445d9f0-2430-4f3f-82b0-5f3b015d6532",
+      "filename": "john_doe.pdf",
+      "file_size": 2818,
+      "processing_time": 0.18050026893615723,
+      "extraction_methods": {
+        "pypdf2_standard": {
+          "success": true,
+          "method": "PyPDF2 Standard",
+          "pages": 1,
+          "text_length": 1198,
+          "text": "John Doe\n Data Analyst\nEmail: johndoe@example.com | Phone: +1-234-567-8901 | LinkedIn: linkedin.com/in/johndoe\nProfessional Summary\nDetail-oriented Data Analyst with 3+ years of experience in interpreting and analyzing complex datasets to drive\nbusiness insights. Skilled in SQL, Python, Excel, Tableau, and Power BI.\nSkills\nTechnical Skills:\nPython, SQL, R, Tableau, Power BI, Excel, Pandas, NumPy\nSoft Skills:\nProblem-Solving, Critical Thinking, Communication, Teamwork\nProfessional Experience\nData...",
+          "error": null
+        },
+        "pypdf2_robust": {
+          "success": true,
+          "method": "PyPDF2 Robust",
+          "pages": 1,
+          "successful_pages": 1,
+          "text_length": 1198,
+          "text": "John Doe\n Data Analyst\nEmail: johndoe@example.com | Phone: +1-234-567-8901 | LinkedIn: linkedin.com/in/johndoe\nProfessional Summary\nDetail-oriented Data Analyst with 3+ years of experience in interpreting and analyzing complex datasets to drive\nbusiness insights. Skilled in SQL, Python, Excel, Tableau, and Power BI.\nSkills\nTechnical Skills:\nPython, SQL, R, Tableau, Power BI, Excel, Pandas, NumPy\nSoft Skills:\nProblem-Solving, Critical Thinking, Communication, Teamwork\nProfessional Experience\nData...",
+          "error": null
+        },
+        "pdfplumber": {
+          "success": true,
+          "method": "pdfplumber",
+          "pages": 1,
+          "text_length": 1253,
+          "text": "John Doe\nData Analyst\nEmail: johndoe@example.com | Phone: +1-234-567-8901 | LinkedIn: linkedin.com/in/johndoe\nProfessional Summary\nDetail-oriented Data Analyst with 3+ years of experience in interpreting and analyzing complex datasets to drive\nbusiness insights. Skilled in SQL, Python, Excel, Tableau, and Power BI.\nSkills\nTechnical Skills: Python, SQL, R, Tableau, Power BI, Excel, Pandas, NumPy\nSoft Skills: Problem-Solving, Critical Thinking, Communication, Teamwork\nProfessional Experience\nData ...",
+          "error": null
+        },
+        "pdfminer": {
+          "success": true,
+          "method": "pdfminer.six",
+          "pages": 1,
+          "text_length": 1271,
+          "text": "Data Analyst\n\nEmail: johndoe@example.com | Phone: +1-234-567-8901 | LinkedIn: linkedin.com/in/johndoe\n\nJohn Doe\n\nProfessional Summary\n\nDetail-oriented Data Analyst with 3+ years of experience in interpreting and analyzing complex datasets to drive\nbusiness insights. Skilled in SQL, Python, Excel, Tableau, and Power BI.\n\nSkills\n\nTechnical Skills:\n\nPython, SQL, R, Tableau, Power BI, Excel, Pandas, NumPy\n\nSoft Skills:\n\nProblem-Solving, Critical Thinking, Communication, Teamwork\n\nProfessional Experi...",
+          "error": null
+        },
+        "raw_binary": {
+          "success": true,
+          "method": "Raw Binary Extraction",
+          "pages": "unknown",
+          "text_length": 622,
+          "text": "Gau0BgN Slq uU7 c80k GTn sUAbtq hQl1 r2HN4 gIYdrlf UplLb GJk LC7nQap4 sXaK Jfqo XFS S0nfni Zd6M 1brG Zd1i h7Me ghE SuWP5i fGS qukjg l3CXdG49OZ8mKYr Vji XRuIWgqE lRXuK6 7e5 qojWihan K45 DhF JiB NV8 siO612V bOARRJ 7NbB41r6D Ap9uL EIkuqR KoH GhK j5QgPtL UCB 9CKHj0cI bOBh71OM YotaT 99P DAme c0s9AK Ao7c U2OTb82SJq gTGe oZRsoGbJi0ir3 I224g mWh QZ5 Zhe 2Cb60uRF j2KsLM 4CGJ 0Vi g5GrIN6 f77fB nCQRt ANDMF RIPZf I1Y AGgVr cYTsO5enML D0c 181US HtS WGNg egDa7L2c6N 7V9 W7f D6QW BUp r4D4P tjLUPO bSQG lSFLPHnR ...",
+          "error": null
+        },
+        "combined_approach": {
+          "success": true,
+          "method": "Combined (PyPDF2 Robust, pdfplumber, pdfminer.six, Raw Binary Extraction)",
+          "pages": "multiple",
+          "text_length": 938,
+          "text": "John Doe Data Analyst Email: johndoe@example.com | Phone: +1-234-567-8901 LinkedIn: linkedin.com/in/johndoe Professional Summary Detail-oriented with 3+ years of experience in interpreting and analyzing complex datasets to drive business insights. Skilled SQL, Python, Excel, Tableau, Power BI. Skills Technical Skills: R, BI, Pandas, NumPy Soft Problem-Solving, Critical Thinking, Communication, Teamwork Experience Data... ... Experi... Gau0BgN Slq uU7 c80k GTn sUAbtq hQl1 r2HN4 gIYdrlf UplLb GJk ...",
+          "methods_used": [
+            "PyPDF2 Robust",
+            "pdfplumber",
+            "pdfminer.six",
+            "Raw Binary Extraction"
+          ],
+          "error": null
+        },
+        "ocr_simulation": {
+          "success": false,
+          "method": "OCR Simulation",
+          "pages": 0,
+          "text_length": 0,
+          "text": "",
+          "note": "PDF doesn't appear to be image-based",
+          "error": "Not an image-based PDF"
+        }
+      },
+      "best_method": "pdfminer",
+      "best_text_length": 1271,
+      "s3_simulation": {
+        "saved_size": 2818,
+        "original_size": 2818,
+        "size_match": true,
+        "pages": 1,
+        "readability": "readable",
+        "status": "success"
+      },
+      "status": "success"
+    },
+    "vikas_sir.pdf": {
+      "resume_id": "f72811a2-1c85-4a1d-8dcf-fb5f4aedd4a8",
+      "filename": "vikas_sir.pdf",
+      "file_size": 510745,
+      "processing_time": 1.0012214183807373,
+      "extraction_methods": {
+        "pypdf2_standard": {
+          "success": true,
+          "method": "PyPDF2 Standard",
+          "pages": 2,
+          "text_length": 4601,
+          "text": "Vikash Kumar\n\u2642phone8651246817 /envel\u2322pevkgupta993468@gmail.com\n/linkedinwww.linkedin.com/in/hello-vikash /githubgithub.com/profile\nEducation\nIIIT Naya Raipur 84.6/100\nB.Tech in Electronics and Communication engineering Dec. 2020 \u2013 jul 2024\nExperience\nEdubuk Jan 2025 \u2013 Present\nDevOps Engineer Lucknow, India\n\u2022Google Cloud Platform (GCP): Deployed multiple EduBuk web platforms and chatbot UI on GCP Compute\nEngine. Configured HTTP(S) load balancers with managed SSL certificates for high-availability...",
+          "error": null
+        },
+        "pypdf2_robust": {
+          "success": true,
+          "method": "PyPDF2 Robust",
+          "pages": 2,
+          "successful_pages": 2,
+          "text_length": 4601,
+          "text": "Vikash Kumar\n\u2642phone8651246817 /envel\u2322pevkgupta993468@gmail.com\n/linkedinwww.linkedin.com/in/hello-vikash /githubgithub.com/profile\nEducation\nIIIT Naya Raipur 84.6/100\nB.Tech in Electronics and Communication engineering Dec. 2020 \u2013 jul 2024\nExperience\nEdubuk Jan 2025 \u2013 Present\nDevOps Engineer Lucknow, India\n\u2022Google Cloud Platform (GCP): Deployed multiple EduBuk web platforms and chatbot UI on GCP Compute\nEngine. Configured HTTP(S) load balancers with managed SSL certificates for high-availability...",
+          "error": null
+        },
+        "pdfplumber": {
+          "success": true,
+          "method": "pdfplumber",
+          "pages": 2,
+          "text_length": 4617,
+          "text": "Vikash Kumar\n(cid:131) 8651246817 # vkgupta993468@gmail.com\n(cid:239) www.linkedin.com/in/hello-vikash \u00a7 github.com/profile\nEducation\nIIIT Naya Raipur 84.6/100\nB.Tech in Electronics and Communication engineering Dec. 2020 \u2013 jul 2024\nExperience\nEdubuk Jan 2025 \u2013 Present\nDevOps Engineer Lucknow, India\n\u2022 Google Cloud Platform (GCP): Deployed multiple EduBuk web platforms and chatbot UI on GCP Compute\nEngine. Configured HTTP(S) load balancers with managed SSL certificates for high-availability acces...",
+          "error": null
+        },
+        "pdfminer": {
+          "success": true,
+          "method": "pdfminer.six",
+          "pages": 2,
+          "text_length": 4669,
+          "text": "Vikash Kumar\n\n(cid:131) 8651246817 # vkgupta993468@gmail.com\n(cid:239) www.linkedin.com/in/hello-vikash \u00a7 github.com/profile\n\nEducation\n\nIIIT Naya Raipur\nB.Tech in Electronics and Communication engineering\n\nExperience\n\nEdubuk\nDevOps Engineer\n\n84.6/100\nDec. 2020 \u2013 jul 2024\n\nJan 2025 \u2013 Present\nLucknow, India\n\n\u2022 Google Cloud Platform (GCP): Deployed multiple EduBuk web platforms and chatbot UI on GCP Compute\n\nEngine. Configured HTTP(S) load balancers with managed SSL certificates for high-availabil...",
+          "error": null
+        },
+        "raw_binary": {
+          "success": true,
+          "method": "Raw Binary Extraction",
+          "pages": "unknown",
+          "text_length": 168701,
+          "text": "cbd H\u00b2\u00ce\u00d3 H2J \u00b3\u00cdA \u00ba0s X60 \u00e64\u00d8I \u00ea\u00e4dl\u00e0 \u00f0Nn\u00d0 \u00fb\u00d6N \u00cd\u00c8\u00c0\u00c0\u00f3 XU\u00c9\u00fb\u00c7\u00f9\u00ffv \u00dcu\u00c3 \u00ee\u00ee\u00ee \u00ffw\u00ceQ\u00f6J x\u00ef\u00f5\u00dcs\u00e6\u00cc\u00bc\u00f3\u00ce\u00e7 z\u00f3\u00de\u00e3 \u00bcq\u00e7a\u00f1 \u00f4lTfE\u00f9 g\u00cfo\u00df o\u00f1\u00e1 p\u00e4\u00cc\u00f1s x\u00f2\u00cf\u00f3\u00d8 \u00ffyN x\u00fc\u00f4\u00f1\u00d3 r\u00ed\u00f6 \u00f8\u00f0\u00de\u00c3 \u00bdx\u00e3\u00e4\u00f9\u00eb \u00ff\u00c4\u00f9\u00eb8\u00ff\u00ca XUWv\u00fc\u00fc\u00e5 s\u00e9\u00e6\u00dd\u00b3 \u00ef\u00f0\u00e9\u00dc\u00caS\u00c7\u00ce 9w\u00f5\u00f6\u00d5\u00db \u00e6\u00f2\u00f9 \u00beUz\u00fc \u00fc\u00c4y \u00ea4\u00d2s\u00e9\u00c6 \u00b5\u00e8\u00d8\u00de\u00dc \u00eb\u00e0uJ\u00d1 kwj \u00deL\u00c8 r\u00e3\u00e8 \u00b9Ge G\u00c2pq Bq\u00f5 \u00caS\u00fb\u00f2 TNR uRau\u00c1\u00d13\u00c8 \u00f9xpdWDzY\u00e9 \u00f3\u00c7\u00ce 9w\u00b5\u00b2\u00f6bD\u00fa \u00b3WnEgW\u00e05\u00c9\u00e7\u00fc \u00b9UX \u00e4\u00e2\u00c8\u00cc U5\u00e7 F\u00e6\u00e0\u00d6 HX\u00c5 Y\u00be\u00fb\u00c0 \u00fc\u00f0\u00f4\u00b2 \u00ccr\u00ff PZ\u00f1 C5\u00e7 dFd p\u00f0H\u00e1\u00d13\u00d9 \u00b3\u00bdbr \u00e9\u00e5\u00fbK k\u00c6\u00e7 \u00b9EeGgU\u00e2 \u00f6\u00e6Z 5\u00d1\u00d9 \u00bdc\u00f3\u00f2 d3\u00f6\u00e0 \u00dc78 nUl\u00f6\u00e1 \u00e5x\u00ba W\u00c3\u00d2J\u00b3\u00cbk 2\u00c8SX\u00efL 5\u00da\u00efJ\u00cf8t\u00d23 \u00e3\u00b37 \u00d6h\u00e0 W\u00d95\u00ca \u00c4f\u00e7\u00fe hy\u00c5 \u00batC\u00c68 \u00f3\u00fc\u00c5\u00cb\u00c0 \u00e03Wn9 g\u00ce\u00df\u00ec l\u00eea\u00bc \u00c5Fe \u00efH\u00fck \u00cbf\u00c7H8\u00c9...",
+          "error": null
+        },
+        "combined_approach": {
+          "success": true,
+          "method": "Combined (PyPDF2 Robust, pdfplumber, pdfminer.six, Raw Binary Extraction)",
+          "pages": "multiple",
+          "text_length": 1166,
+          "text": "Vikash Kumar \u2642phone8651246817 /envel\u2322pevkgupta993468@gmail.com /linkedinwww.linkedin.com/in/hello-vikash /githubgithub.com/profile Education IIIT Naya Raipur 84.6/100 B.Tech in Electronics and Communication engineering Dec. 2020 \u2013 jul 2024 Experience Edubuk Jan 2025 Present DevOps Engineer Lucknow, India \u2022Google Cloud Platform (GCP): Deployed multiple EduBuk web platforms chatbot UI on GCP Compute Engine. Configured HTTP(S) load balancers with managed SSL certificates for high-availability... (c...",
+          "methods_used": [
+            "PyPDF2 Robust",
+            "pdfplumber",
+            "pdfminer.six",
+            "Raw Binary Extraction"
+          ],
+          "error": null
+        },
+        "ocr_simulation": {
+          "success": false,
+          "method": "OCR Simulation",
+          "pages": 0,
+          "text_length": 0,
+          "text": "",
+          "note": "PDF doesn't appear to be image-based",
+          "error": "Not an image-based PDF"
+        }
+      },
+      "best_method": "raw_binary",
+      "best_text_length": 168701,
+      "s3_simulation": {
+        "saved_size": 510745,
+        "original_size": 510745,
+        "size_match": true,
+        "pages": 2,
+        "readability": "readable",
+        "status": "success"
+      },
+      "status": "success"
+    }
+  },
+  "summary": {
+    "total_files": 12,
+    "successful": 12,
+    "failed": 0,
+    "success_rate": 100.0,
+    "method_stats": {
+      "raw_binary": 9,
+      "pdfminer": 3
+    },
+    "s3_save_success": 12,
+    "s3_readable": 12,
+    "top_performers": [
+      {
+        "file": "vikas_sir.pdf",
+        "method": "raw_binary",
+        "text_length": 168701
+      },
+      {
+        "file": "anurag_gupta_cv.pdf",
+        "method": "raw_binary",
+        "text_length": 56269
+      },
+      {
+        "file": "Resume_Ajeet.pdf",
+        "method": "raw_binary",
+        "text_length": 40906
+      }
+    ],
+    "problem_files": []
+  }
+}
