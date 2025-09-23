@@ -22,13 +22,15 @@ def parse_request_body(event):
             if isinstance(event['body'], dict):
                 request_data = event['body']
             elif isinstance(event['body'], str):
-                if event['body']:
+                if event.get('isBase64Encoded', False):
+                    # Handle base64 encoded body
+                    decoded_body = base64.b64decode(event['body']).decode('utf-8')
+                    request_data = json.loads(decoded_body)
+                elif event['body']:
+                    # Handle regular string body
                     request_data = json.loads(event['body'])
                 else:
                     raise ValueError('Empty request body')
-            elif event.get('isBase64Encoded', False):
-                decoded_body = base64.b64decode(event['body']).decode('utf-8')
-                request_data = json.loads(decoded_body)
         except json.JSONDecodeError as e:
             raise ValueError(f'Invalid JSON in request body: {str(e)}')
     else:
@@ -317,10 +319,13 @@ def process_resume_matching(opensearch, job_description_id, resume_id, top_k,
     if not resume_embeddings:
         return [], {'total_resumes_found': 0}
 
-    # If similarity calculation is disabled, return all resumes without scores
+    # If similarity calculation is disabled, return resumes without scores but apply top_k
     if not calculate_similarity:
+        # Apply top_k filtering even without similarity calculation
+        limited_resumes = resume_embeddings[:top_k] if top_k > 0 else resume_embeddings
+        
         matches = []
-        for resume in resume_embeddings:
+        for resume in limited_resumes:
             matches.append({
                 'resume_id': resume['resume_id'],
                 'candidate_name': resume['candidate_name'],
@@ -332,6 +337,8 @@ def process_resume_matching(opensearch, job_description_id, resume_id, top_k,
         
         return matches, {
             'total_resumes_found': len(resume_embeddings),
+            'matches_returned': len(matches),
+            'top_k_applied': top_k,
             'similarity_calculation': 'skipped'
         }
 
@@ -344,9 +351,11 @@ def process_resume_matching(opensearch, job_description_id, resume_id, top_k,
     job_data = get_job_description_embedding(opensearch, job_description_id)
     
     if not job_data.get('embedding'):
-        # Return resumes without similarity scores if no embedding available
+        # Return resumes without similarity scores if no embedding available, but apply top_k
+        limited_resumes = resume_embeddings[:top_k] if top_k > 0 else resume_embeddings
+        
         matches = []
-        for resume in resume_embeddings:
+        for resume in limited_resumes:
             matches.append({
                 'resume_id': resume['resume_id'],
                 'candidate_name': resume['candidate_name'],
@@ -358,6 +367,8 @@ def process_resume_matching(opensearch, job_description_id, resume_id, top_k,
         
         return matches, {
             'total_resumes_found': len(resume_embeddings),
+            'matches_returned': len(matches),
+            'top_k_applied': top_k,
             'similarity_calculation': 'no job embedding available',
             'job_title': job_data.get('job_title')
         }
@@ -366,6 +377,19 @@ def process_resume_matching(opensearch, job_description_id, resume_id, top_k,
     similarities = calculate_multi_vector_similarity(
         job_data['embedding'], resume_embeddings, similarity_threshold
     )
+
+    # Apply similarity threshold filtering
+    if similarity_threshold > 0.0:
+        similarities = [s for s in similarities if s['similarity_score'] >= similarity_threshold]
+        logger.info(f"After similarity threshold {similarity_threshold}: {len(similarities)} matches")
+
+    # Sort by similarity score (descending)
+    similarities.sort(key=lambda x: x['similarity_score'], reverse=True)
+    
+    # Apply top_k filtering
+    if top_k > 0:
+        similarities = similarities[:top_k]
+        logger.info(f"After top_k filtering ({top_k}): {len(similarities)} matches")
 
     # Create match explanations
     matches = []
@@ -385,8 +409,11 @@ def process_resume_matching(opensearch, job_description_id, resume_id, top_k,
 
     return matches, {
         'total_resumes_found': len(resume_embeddings),
+        'matches_after_threshold': len(similarities) if similarity_threshold > 0.0 else len(resume_embeddings),
+        'matches_returned': len(matches),
         'job_embedding_dimension': len(job_data['embedding']),
         'similarity_threshold': similarity_threshold,
+        'top_k_applied': top_k,
         'job_title': job_data.get('job_title')
     }
 

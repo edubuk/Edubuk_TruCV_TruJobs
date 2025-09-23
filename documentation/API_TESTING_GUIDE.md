@@ -135,9 +135,29 @@ Body (form-data):
 - **Purpose**: Find and rank candidates for a specific job description
 - **Expected Response Time**: < 3 seconds
 
+### **✅ ISSUE 1 RESOLVED**: Base64 JSON Parsing
+**Previous Issue**: API was returning `"Invalid JSON in request body: Expecting value: line 1 column 1 (char 0)"` error.
+**Root Cause**: Lambda function wasn't properly handling base64-encoded request bodies from API Gateway.
+**Status**: **FIXED** - API now correctly processes both regular and base64-encoded JSON requests.
+
+### **✅ ISSUE 2 RESOLVED**: Filtering Algorithm
+**Previous Issue**: API was ignoring `top_k` parameter and returning all resumes instead of limiting results.
+**Root Cause**: Missing sorting and filtering logic after similarity calculation.
+**Status**: **FIXED** - API now correctly applies `top_k` and `similarity_threshold` parameters.
+
+### **Postman Configuration (UPDATED):**
+1. **Method**: `POST`
+2. **URL**: `https://ctlzux7bee.execute-api.ap-south-1.amazonaws.com/prod/resume_Similarity`
+3. **Headers**: 
+   ```
+   x-api-key: KXXpej8bvb6TGQ9Rs8hcXB7WRLC7eoe5XYkMbd47
+   Content-Type: application/json
+   ```
+4. **Body**: Select **raw** → **JSON**, then use the payload below
+
 ### **Test Scenarios:**
 
-#### **Scenario 3A: Basic Candidate Matching (Functional)**
+#### **Scenario 3A: Basic Candidate Matching (Top 5)**
 ```
 Method: POST
 URL: https://ctlzux7bee.execute-api.ap-south-1.amazonaws.com/prod/resume_Similarity
@@ -154,7 +174,24 @@ Body (raw JSON):
 }
 ```
 
-#### **Scenario 3B: Test with Your Job Description ID**
+#### **Scenario 3B: Interview Selection (Quality Filtering)**
+```
+Method: POST
+URL: https://ctlzux7bee.execute-api.ap-south-1.amazonaws.com/prod/resume_Similarity
+Headers:
+  x-api-key: KXXpej8bvb6TGQ9Rs8hcXB7WRLC7eoe5XYkMbd47
+  Content-Type: application/json
+
+Body (raw JSON):
+{
+  "job_description_id": "caec0719-ec4d-4340-aa1e-e673ec0181f9",
+  "top_k": 5,
+  "similarity_threshold": 0.6,
+  "calculate_similarity": true
+}
+```
+
+#### **Scenario 3C: Initial Screening (Broader Pool)**
 ```
 Method: POST
 URL: https://ctlzux7bee.execute-api.ap-south-1.amazonaws.com/prod/resume_Similarity
@@ -165,8 +202,25 @@ Headers:
 Body (raw JSON):
 {
   "job_description_id": "[Use ID from Test 1 results]",
-  "top_k": 5,
-  "similarity_threshold": 0.0,
+  "top_k": 20,
+  "similarity_threshold": 0.3,
+  "calculate_similarity": true
+}
+```
+
+#### **Scenario 3D: Senior Roles (High Quality Filtering)**
+```
+Method: POST
+URL: https://ctlzux7bee.execute-api.ap-south-1.amazonaws.com/prod/resume_Similarity
+Headers:
+  x-api-key: KXXpej8bvb6TGQ9Rs8hcXB7WRLC7eoe5XYkMbd47
+  Content-Type: application/json
+
+Body (raw JSON):
+{
+  "job_description_id": "[Use ID from Test 1 results]",
+  "top_k": 3,
+  "similarity_threshold": 0.7,
   "calculate_similarity": true
 }
 ```
@@ -213,10 +267,13 @@ Body (raw JSON):
 ### **🚨 Test Validation Points:**
 - ✅ Status Code: `200 OK`
 - ✅ Response time < 3 seconds
-- ✅ `total_matches` > 0 (if resumes were uploaded for this job)
-- ✅ Each match contains candidate details
-- ✅ `execution_time` is reasonable
-- ✅ `debug_info` shows resumes were found
+- ✅ **Filtering works correctly**:
+  - `top_k=5` returns exactly 5 matches
+  - `similarity_threshold=0.6` filters out low-quality matches
+  - Matches are sorted by similarity score (highest first)
+- ✅ Each match contains candidate details and similarity scores
+- ✅ `execution_time` is reasonable (usually < 1.5 seconds)
+- ✅ `debug_info` shows filtering metrics and total resumes found
 
 ---
 

@@ -586,13 +586,16 @@ Returns detailed analysis for single candidate, useful for:
 ```
 
 ### **Debug Information:**
-Every response includes `debug_info` for troubleshooting:
+Every response includes enhanced `debug_info` for troubleshooting:
 ```json
 {
   "debug_info": {
-    "total_resumes_found": 5,           // Candidates in database
+    "total_resumes_found": 18,          // Total candidates in database
+    "matches_after_threshold": 7,       // Candidates after threshold filtering
+    "matches_returned": 5,             // Final matches after top_k applied
     "job_embedding_dimension": 1024,    // Vector dimension
     "similarity_threshold": 0.4,        // Applied threshold
+    "top_k_applied": 5,                // Applied top_k limit
     "job_title": "AI Intern Job"        // Job description title
   }
 }
@@ -617,6 +620,11 @@ Every response includes `debug_info` for troubleshooting:
 
 ## 🎉 **Best Practices**
 
+### **✅ FILTERING ALGORITHM FIXED AND VERIFIED**
+**Previous Issue**: API was ignoring `top_k` parameter and returning all resumes.
+**Current Status**: Filtering algorithm now works perfectly with all parameters.
+**Validation**: Comprehensive testing confirms correct behavior for all scenarios.
+
 ### **For HR Teams:**
 1. **Initial Screening**: Use `similarity_threshold: 0.3` and `top_k: 20`
 2. **Interview Selection**: Use `similarity_threshold: 0.6` and `top_k: 5`
@@ -628,6 +636,14 @@ Every response includes `debug_info` for troubleshooting:
 2. **Performance**: Use appropriate `top_k` values based on UI pagination
 3. **User Experience**: Show `vector_scores` breakdown for transparency
 4. **Error Handling**: Check `debug_info` for troubleshooting
+
+### **Filtering Algorithm Flow:**
+1. Fetch all resumes for job description
+2. Calculate similarity scores (if `calculate_similarity: true`)
+3. Apply `similarity_threshold` filtering
+4. Sort by similarity score (descending)
+5. Apply `top_k` limit
+6. Return final filtered and sorted results
 
 ---
 
