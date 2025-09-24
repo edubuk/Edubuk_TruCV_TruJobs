@@ -1,6 +1,5 @@
 import { Routes, Route} from "react-router-dom";
 import { lazy, Suspense, useEffect } from "react";
-import { OktoClientConfig,OktoProvider } from "@okto_web3/react-sdk";
 import Navbar from "./pages/Navbar";
 import ThreeDotLoader from "./components/Loader/ThreeDotLoader";
 
@@ -29,11 +28,6 @@ import InvalidTokenModal from "./pages/InvalidTokenModel";
 
 
 function App() {
-   const config: OktoClientConfig = {
-      environment:"production",
-      clientPrivateKey:import.meta.env.VITE_OKTO_CLIENT_PRIVATE_KEY,
-      clientSWA:import.meta.env.VITE_OKTO_CLIENT_SWA,
-    };
 
       useEffect(() => {
     AOS.init({
@@ -60,7 +54,6 @@ function App() {
 
   return (
     <div>
-        <OktoProvider  config={config}>
           <Navbar handlerLogout={handlerLogout}/>
           <Suspense fallback={<div className="flex justify-center items-center text-3xl text-[#03257e] font-bold h-[80vh]" data-aos="zoom-in">Loading {""} <ThreeDotLoader w={2} h={2} yPos={'end'} /></div>}>
             <Routes>
@@ -86,7 +79,6 @@ function App() {
                 <Route path="/dashboard" element={<ProtectedRoute><DashBoard /></ProtectedRoute>} />
             </Routes>
           </Suspense>
-        </OktoProvider>
     </div>
   );
 }
