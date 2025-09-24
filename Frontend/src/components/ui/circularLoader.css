@@ -1,0 +1,115 @@
+.loader-container {
+  background-color: white;
+  font-family: sans-serif;
+  text-align: center;
+  width: 150px;
+  height: 150px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  row-gap: 20px;
+}
+
+.container {
+  position: relative;
+}
+
+.text {
+  color: #006666;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font: bold;
+  font-size: 36px;
+}
+
+.container svg {
+  width: 150px;
+  height: 150px;
+  transform: rotate(-90deg);
+}
+
+.container svg circle {
+  fill: transparent;
+  stroke: #415262;
+  stroke-width: 4;
+  transform: translate(5px, 5px);
+  transition: all 2s;
+  z-index: 0;
+  
+}
+
+.container svg circle:nth-child(2) {
+  
+  fill: transparent;
+  stroke: rgb(255, 102, 0);
+  stroke-width: 6;
+  stroke-dasharray: 440;
+  transition: all 0.1s;
+}
+
+.dot {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  transition: all 0.1s;
+  z-index: 999;
+  color: blue;
+}
+
+.dot::before {
+  content: "";
+  width: 20px;
+  height: 20px;
+  position: absolute;
+  background-color: rgb(255, 94, 0);
+  z-index: 1000;
+  border-radius: 10px;
+  top: -3px;
+  transform: translate(-10px);
+  box-shadow: 0 0 20px 4px rgb(255, 102, 0);
+}
+
+.status-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  flex-direction: column;
+}
+
+.status-container > P {
+  font-weight: bold;
+  color: #006666;
+}
+
+.status-progress {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  row-gap: 10px;
+  position: relative;
+  border-left: 2px solid #415262;
+  padding-left: 20px;
+}
+
+.status {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+#status-point {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  background-color: #415262;
+  border-radius: 50%;
+  left: -26px;
+  top: 50%;
+  transform: translateY(-50%);
+  box-shadow: 0 0 10px #415262;
+}
