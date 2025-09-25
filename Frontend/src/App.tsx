@@ -14,6 +14,8 @@ const About = lazy(() => import("./pages/About"));
 const TermsAndConditions = lazy(() => import("./pages/TermCond"));
 const CancellationPolicy = lazy(() => import("./pages/CancellationPol"));
 const ContactUs = lazy(() => import("./pages/ContactUs"));
+const HR = lazy(() => import("./pages/HR"));
+const TruJobs = lazy(() => import("./pages/TruJobs"));
 const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy"));
 const NotFoundPage = lazy(() => import("./pages/NotFoundPage"));
 import AOS from "aos";
@@ -73,8 +75,10 @@ function App() {
               <Route path="/privacy-policy" element={<PrivacyPolicy />} />
               <Route path="/login" element={<GoogleLoginModal />} />
               <Route path="/cv/:id" element={<CvOutputPage />} />
-              <Route path="/admin" element={<AdminUsersPage/>} />
+              <Route path="/tru-jobs" element={<TruJobs />} />
               <Route path="/subscription" element={<ProtectedRoute><SubscriptionPlans /></ProtectedRoute>} />
+              <Route path="/hr" element={<ProtectedRoute><HR /></ProtectedRoute>} />
+              <Route path="/admin" element={<ProtectedRoute><AdminUsersPage/></ProtectedRoute>} />
                 <Route path="/create-cv" element={<HomePage />} />
                 <Route path="/dashboard" element={<ProtectedRoute><DashBoard /></ProtectedRoute>} />
             </Routes>
