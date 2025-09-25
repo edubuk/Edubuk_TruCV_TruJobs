@@ -1,3 +1,4 @@
+#1. Imports
 import json
 import uuid
 import logging
@@ -9,11 +10,19 @@ from ai_services import get_metadata_from_bedrock, create_section_embeddings
 from opensearch_client import get_opensearch_client, index_resume_document, normalize_metadata_for_opensearch
 from input_parser import determine_input_type, parse_multipart_form, parse_json_input, parse_s3_event, get_s3_pdf_content
 
-# Configure logging
+#2. Logging Setup
+'''lambda_handler is the entry point for AWS Lambda.
+
+event: data triggering Lambda (API request, S3 upload, test JSON, etc.).
+
+context: runtime info (like remaining time before Lambda times out).
+
+start_time tracks execution time for logging and timeout checks.'''
+
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 
-
+#3. Lambda Handler Function
 def lambda_handler(event, context):
     """Main Lambda handler function with comprehensive error handling"""
     start_time = time.time()
@@ -21,7 +30,8 @@ def lambda_handler(event, context):
     
     try:
         logger.info("🚀 Processing resume upload request")
-        
+
+#4. Basic Event Validation        
         # Validate event structure
         if not event:
             raise ValueError("Empty event received")
@@ -33,38 +43,44 @@ def lambda_handler(event, context):
         else:
             logger.info(f"Event: {event_str}")
 
-        # Determine input type and process accordingly
+#5. Input Type Detection
+        # Determine input type and process accordingly --> input_parser module
         input_type = determine_input_type(event)
         logger.info(f"✅ Detected input type: {input_type}")
         
+#6. Unique Identifier Generation
         # Generate unique identifiers
         resume_id = str(uuid.uuid4())
         filename = f"{resume_id}.pdf"
         logger.info(f"📝 Generated resume ID: {resume_id}")
         
+#7. Variable Initialization
         # Initialize variables with validation
         pdf_content = None
         job_description_id = None
         text = None
-        
-        # Validate remaining execution time
+
+#8. Remaining Time Validation        
+        # Validate remaining execution time --> Lambda has a max execution time. If less than 5 seconds remain, we abort early to avoid incomplete processing.
         remaining_time = context.get_remaining_time_in_millis() if context else 30000
         if remaining_time < 5000:  # Less than 5 seconds remaining
             raise TimeoutError(f"Insufficient time remaining: {remaining_time}ms")
-        
+
+#9. Handling Different Input Types
+        # Handle different input types --> input_parser module
         if input_type == 'json':
-            # Handle JSON input (test events)
+            # Handle JSON input (test events) --> No PDF processing needed.
             data = parse_json_input(event)
             text = data['resume_content']
             job_description_id = data.get('job_description_id', 'test-jd-001')
             logger.info("Processing JSON input with embedded resume text")
             
         elif input_type == 'multipart':
-            # Handle multipart form uploads
+            # Handle multipart form uploads --> pdf_processor module
             pdf_content, job_description_id = parse_multipart_form(event)
             
             # Read PDF content once and create separate streams for different operations
-            pdf_content.seek(0)
+            pdf_content.seek(0) 
             pdf_content_bytes = pdf_content.read()
             
             # Create separate streams for text extraction and S3 upload
@@ -73,7 +89,7 @@ def lambda_handler(event, context):
             
             # Extract text from PDF with timeout check
             pdf_start = time.time()
-            elapsed_so_far = pdf_start - start_time
+            elapsed_so_far = pdf_start - start_time  # Calculate elapsed time
             
             # Check if we're already close to timeout (25s limit to be safe)
             if elapsed_so_far > 25:
@@ -89,7 +105,7 @@ def lambda_handler(event, context):
                 }
             
             logger.info(f" Starting PDF extraction at {elapsed_so_far:.2f}s elapsed")
-            text = extract_text_from_pdf(pdf_content)
+            text = extract_text_from_pdf(pdf_content) # pdf_processor module
             pdf_time = time.time() - pdf_start
             total_elapsed = time.time() - start_time
             logger.info(f"Extracted {len(text)} characters from multipart PDF in {pdf_time:.2f}s (total elapsed: {total_elapsed:.2f}s)")
@@ -115,11 +131,11 @@ def lambda_handler(event, context):
                 logger.info(f"✅ Preserved clean_pdf_bytes: {len(pdf_content.clean_pdf_bytes)} bytes")
             
             # Set pdf_content to the S3 upload stream for later S3 operations
-            pdf_content = s3_upload_stream
+            pdf_content = s3_upload_stream # pdf_processor module
             
         elif input_type == 's3':
             # Handle S3 event triggers
-            bucket, key = parse_s3_event(event)
+            bucket, key = parse_s3_event(event) # input_parser module
             
             # Skip all S3 event processing for resume uploads to prevent duplicates
             # The multipart form upload already handles complete processing
@@ -128,7 +144,7 @@ def lambda_handler(event, context):
                 'statusCode': 200,
                 'body': json.dumps({'message': 'Resume already processed via multipart upload - skipping S3 event'})
             }
-        
+#10. Save PDF to S3
         # Save PDF to S3 if we have pdf_content
         s3_key = None
         if pdf_content:
@@ -179,29 +195,32 @@ def lambda_handler(event, context):
                 else:
                     logger.warning(f"⚠️ BytesIO PDF bytes have invalid header: {pdf_content_bytes[:10]}")
             
-            s3_key = save_pdf_to_s3(pdf_content_bytes, filename)
+            s3_key = save_pdf_to_s3(pdf_content_bytes, filename) # pdf_processor module
             logger.info(f"✅ Saved PDF to S3: {s3_key}")
+
+#11. AI Metadata Extraction
 
         # Initialize OpenSearch
         opensearch = get_opensearch_client()
 
         # Get structured metadata using Bedrock
         bedrock_start = time.time()
-        raw_metadata = get_metadata_from_bedrock(text)
+        raw_metadata = get_metadata_from_bedrock(text) # ai_services module
         bedrock_time = time.time() - bedrock_start
         candidate_name = raw_metadata.get('full_name', 'Unknown')
         logger.info(f"Extracted metadata for candidate: {candidate_name} in {bedrock_time:.2f}s")
 
         # Normalize metadata for OpenSearch compatibility
-        normalized_metadata = normalize_metadata_for_opensearch(raw_metadata, text)
+        normalized_metadata = normalize_metadata_for_opensearch(raw_metadata, text) # opensearch_client module
 
+#12. Create Section-Specific Embeddings
         # Create section-specific embeddings
         embedding_start = time.time()
-        embeddings = create_section_embeddings(raw_metadata)
+        embeddings = create_section_embeddings(raw_metadata) # ai_services module
         embedding_time = time.time() - embedding_start
         logger.info(f"Generated section-specific embeddings in {embedding_time:.2f}s")
 
-        # Check timeout before indexing (slowest operation)
+#13. Check timeout before indexing (slowest operation)
         pre_index_elapsed = time.time() - start_time
         if pre_index_elapsed > 25:
             logger.error(f"⏰ Timeout before indexing. Elapsed: {pre_index_elapsed:.2f}s")
@@ -217,7 +236,7 @@ def lambda_handler(event, context):
                 })
             }
         
-        # Index document in OpenSearch
+#14. Index document in OpenSearch
         index_start = time.time()
         logger.info(f"⏱️ Starting OpenSearch indexing at {pre_index_elapsed:.2f}s elapsed")
         response = index_resume_document(
@@ -228,7 +247,7 @@ def lambda_handler(event, context):
         total_time = time.time() - start_time
         logger.info(f"Indexed document in {index_time:.2f}s. Total processing time: {total_time:.2f}s")
         
-        # Final timeout check
+# 15. Final timeout check
         if total_time > 28:
             logger.warning(f"⚠️ Processing completed but took {total_time:.2f}s (close to 29s limit)")
 
@@ -248,7 +267,7 @@ def lambda_handler(event, context):
                 # 'opensearch_id': response.get('_id')
             })
         }
-
+#16. Exception Handling ,errors handling
     except TimeoutError as e:
         elapsed = time.time() - start_time
         logger.error(f"⏰ Timeout error after {elapsed:.2f}s: {str(e)}")
