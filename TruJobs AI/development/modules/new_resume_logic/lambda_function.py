@@ -1,3 +1,24 @@
+'''
+This Lambda does the following in sequence:
+
+Validates event and type.
+
+Generates a unique resume ID.
+
+Handles input (JSON, multipart, S3 event).
+
+Extracts text from PDF (or uses JSON text).
+
+Saves PDF to S3 (validates content).
+
+Extracts AI metadata (Bedrock) and normalizes.
+
+Generates embeddings.
+
+Indexes everything in OpenSearch.
+
+Returns success/failure with proper error handling and logging.
+'''
 #1. Imports
 import json
 import uuid

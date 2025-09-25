@@ -1,3 +1,18 @@
+'''
+Summary
+This module robustly handles PDF extraction from multipart uploads.
+It uses multiple extraction strategies to maximize text extraction success, especially for tricky PDFs.
+It validates and uploads the PDF to S3 for storage.
+All steps are logged for debugging and reliability.
+'''
+#1. Imports and Logger Setup
+'''
+1. Imports and Setup
+Imports AWS SDK (boto3), PDF libraries (PyPDF2, pdfplumber, pdfminer), and standard libraries for logging, encoding, IO, regex, etc.
+Sets up logging and initializes the S3 client.
+Loads S3 bucket and prefix from config.
+'''
+
 import boto3
 import PyPDF2
 import logging
@@ -12,6 +27,20 @@ logger = logging.getLogger()
 s3 = boto3.client('s3')
 logging.getLogger("PyPDF2").setLevel(logging.ERROR)
 
+
+#2. Multipart Form Parsing 
+'''
+Purpose: Extracts the PDF file and job description ID from a multipart form upload (from API Gateway).
+How:
+Reads headers and finds the Content-Type and boundary.
+Decodes the body (base64 or utf-8).
+Splits the body into parts using the boundary.
+Iterates through each part:
+If it finds a part with name="pdf_file" or filename=, it checks for a valid PDF header and extracts the file.
+If it finds a part with name="job_description_id", it extracts the job ID.
+Validates that both PDF and job ID are found and that the PDF is not too small.
+Returns the PDF (as a BytesIO object) and the job description ID
+'''
 
 def parse_multipart_form(event):
     """Parse multipart form data from API Gateway event with enhanced validation"""
@@ -134,6 +163,19 @@ def parse_multipart_form(event):
         raise
 
 
+#3. PDF Text Extraction
+'''
+Purpose: Extracts text from a PDF file using multiple robust methods.
+How:
+Gets the PDF bytes from the input.
+Validates the PDF header.
+Tries three extraction strategies:
+Standard Extraction: Uses pdfplumber, PyPDF2, and pdfminer (via try_standard_extraction_methods). Returns if any method extracts >100 chars.
+Enhanced Raw Binary Extraction: Decodes PDF bytes with various encodings, extracts text from PDF streams and direct content, then cleans it.
+Combined Approach: Runs all extraction methods, combines and deduplicates results.
+Returns the extracted text or an empty string if all methods fail.
+'''
+
 def extract_text_from_pdf(pdf_content):
     """
     Enhanced PDF text extraction with raw binary fallback
@@ -191,6 +233,18 @@ def extract_text_from_pdf(pdf_content):
     return ""
 
 
+#4. Standard Extraction Methods(helper functions- pdfplumber, PyPDF2, pdfminer)
+'''
+Tries pdfplumber, PyPDF2, and pdfminer in order.
+Returns the first successful result with non-empty text.
+
+Helper Functions:
+try_pypdf2_extraction(pdf_bytes): Uses PyPDF2 to extract text from each page.
+try_pdfplumber_extraction(pdf_bytes): Uses pdfplumber to extract text from each page.
+try_pdfminer_extraction(pdf_bytes): Uses pdfminer.six to extract text.
+
+
+'''
 def try_standard_extraction_methods(pdf_bytes):
     """Try standard PDF extraction methods"""
     
@@ -279,6 +333,23 @@ def try_pdfminer_extraction(pdf_bytes):
         logger.debug(f"pdfminer extraction failed: {str(e)}")
         return None
 
+
+#5. Enhanced Raw Binary Extraction
+'''
+Decodes PDF bytes with different encodings (latin-1, cp1252, utf-8).
+For each decoded version:
+Extracts text from PDF streams (extract_text_from_streams).
+Extracts direct text content (extract_direct_text_content).
+Combines and cleans all extracted content (clean_extracted_text).
+
+Helper Functions:
+extract_text_from_streams(decoded_content): Finds and cleans text between stream ... endstream blocks.
+extract_direct_text_content(decoded_content): Extracts text using regex patterns for parentheses, brackets, and PDF text operators.
+clean_stream_content(stream_content): Removes non-printable characters and filters for meaningful words.
+clean_text_match(text_match): Cleans and filters individual text matches.
+clean_extracted_text(raw_text): Final cleaning, removes excessive whitespace and very short words.
+
+'''
 
 def enhanced_raw_binary_extraction(pdf_bytes):
     """
@@ -445,6 +516,11 @@ def clean_extracted_text(raw_text):
         return raw_text
 
 
+#6. Combined Extraction
+'''
+Runs all extraction methods (PyPDF2, pdfplumber, pdfminer, and raw binary).
+Combines all results, deduplicates words, and returns the combined text.
+'''
 def try_combined_extraction(pdf_bytes):
     """Combined approach using multiple methods"""
     
@@ -488,6 +564,11 @@ def try_combined_extraction(pdf_bytes):
         return ""
 
 
+#7. S3 PDF Upload
+'''
+Purpose: Saves the PDF file to the configured S3 bucket under the resume prefix.
+How: Uses the S3 client to upload the file and returns the S3 key.
+'''
 def save_pdf_to_s3(pdf_content, filename):
     """Save PDF file to S3 bucket"""
     try:
