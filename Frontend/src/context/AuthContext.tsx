@@ -7,12 +7,14 @@ const UserContext = createContext<UserContextType | undefined>(undefined);
 interface UserContextType {
   userEmail: string;
   subscriptionPlan: string;
+  nanoId: string[];
 }
 
 export const UserContextProvider = ({ children }: { children: React.ReactNode }) => {
   const [userData, setUserData] = useState<UserContextType>({
     userEmail: "",
     subscriptionPlan: "Free",
+    nanoId: []
   });
 
   useEffect(() => {
@@ -42,6 +44,7 @@ export const UserContextProvider = ({ children }: { children: React.ReactNode })
         setUserData({
           userEmail: data.userData.email || "",
           subscriptionPlan: data.userData.subscriptionPlan || "Free",
+          nanoId: data.userData.nanoIds || []
         });
 
         console.log("user-data",userData.userEmail,userData.subscriptionPlan)

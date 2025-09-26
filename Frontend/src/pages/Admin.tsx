@@ -354,7 +354,7 @@ const AdminUsersPage = () => {
                         <div className="flex gap-2 mt-1">
                           {c.documents && c.documents.length > 0 ? (
                             c.documents.map((d, i) => (
-                              <a key={i} href={d} target="_blank" rel="noreferrer" className="text-sm px-3 py-1 rounded bg-[#006666] text-white">Doc {i+1}</a>
+                              <a key={i} href={`https://trucvstorage.blob.core.windows.net/uploads/${d}`} target="_blank" rel="noreferrer" className="text-sm px-3 py-1 rounded bg-[#006666] text-white">Doc {i+1}</a>
                             ))
                           ) : <span className="text-gray-500">No docs</span>}
                         </div>

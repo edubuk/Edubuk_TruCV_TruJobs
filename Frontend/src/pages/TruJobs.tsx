@@ -1,69 +1,35 @@
-import React, { useEffect, useMemo, useState } from "react";
-
 // TruJobsPortal.tsx
-// React + TypeScript + Tailwind single-file demo for job seekers
-// Colors used: #03257e, #006666, #f14491
+import React, { useEffect, useMemo, useState } from "react";
+import { useUserData } from "@/context/AuthContext";
+import { Link } from "react-router-dom";
+import { ArrowRightIcon } from "lucide-react";
+import { Cv_resoponse_type } from "@/types";
+import { API_BASE_URL } from "@/main";
+import toast from "react-hot-toast";
+
 
 type Job = {
   id: string;
+  _id?: string;
   title: string;
   company: string;
+  job_description_id?: string;
   location?: string;
   role?: string;
-  packageLPA?: number; // annual package in LPA (lakhs per annum)
+  employmentType?: string;
+  isRemote?: boolean;
+  salary?: { min?: number; max?: number; currency?: string } | string;
   description?: string;
-  postedAt: string;
   applyUrl?: string;
+  status?: string;
+  tags?: string[];
+  applicationCount?: number;
+  postedAt?: string;
 };
 
-const DUMMY_JOBS: Job[] = [
-  {
-    id: "t1",
-    title: "Blockchain Developer",
-    company: "Edubuk Tech",
-    location: "Remote",
-    role: "Fulltime",
-    packageLPA: 20,
-    description: "Work on smart contracts, Algorand SDK and blockchain integrations.",
-    postedAt: new Date().toISOString(),
-    applyUrl: "#apply_t1",
-  },
-  {
-    id: "t2",
-    title: "Frontend Engineer (React)",
-    company: "Nova Labs",
-    location: "Bengaluru, India",
-    role: "Fulltime",
-    packageLPA: 12,
-    description: "Build beautiful, accessible React apps using TypeScript and Tailwind.",
-    postedAt: new Date(Date.now() - 1000 * 60 * 60 * 24 * 2).toISOString(),
-    applyUrl: "#apply_t2",
-  },
-  {
-    id: "t3",
-    title: "SRE / DevOps Engineer",
-    company: "CloudX",
-    location: "Hyderabad, India",
-    role: "Contract",
-    packageLPA: 18,
-    description: "Improve platform reliability, CI/CD and observability.",
-    postedAt: new Date(Date.now() - 1000 * 60 * 60 * 24 * 7).toISOString(),
-    applyUrl: "#apply_t3",
-  },
-  {
-    id: "t4",
-    title: "Product Designer",
-    company: "Edubuk Tech",
-    location: "Remote",
-    role: "Part-time",
-    packageLPA: 6,
-    description: "Design delightful product experiences and prototypes.",
-    postedAt: new Date(Date.now() - 1000 * 60 * 60 * 24 * 10).toISOString(),
-    applyUrl: "#apply_t4",
-  },
-];
+const API_BASE = process.env.REACT_APP_API_URL || "http://localhost:8000";
 
-export default function TruJobsPortal() {
+function TruJobsPortal() {
   const [jobs, setJobs] = useState<Job[]>([]);
   const [search, setSearch] = useState("");
   const [companyFilter, setCompanyFilter] = useState("");
@@ -73,15 +39,75 @@ export default function TruJobsPortal() {
   const [sortBy, setSortBy] = useState<"relevance" | "newest" | "package_desc" | "package_asc">("newest");
   const [appliedJob, setAppliedJob] = useState<Job | null>(null);
   const [showApplyModal, setShowApplyModal] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const {nanoId} = useUserData();
+  const [applyJsonData, setApplyJsonData] = useState(
+    {
+      "resume_json": {
+        "nano_Id":"",
+        "name": "",
+        "contact":{"email": "","phone": "","location":"","profession":"","yearOfExperience":""},
+        "education":null,
+        "experience": null,
+        "achievements": null,
 
+        "skills": null
+      },
+      "job_description_id":""
+    }
+  );
+
+  // fetch server jobs on mount and when filters change
   useEffect(() => {
-    // simulate API
-    setTimeout(() => setJobs(DUMMY_JOBS), 200);
+    fetchServerJobs();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const companies = useMemo(() => Array.from(new Set(jobs.map((j) => j.company))), [jobs]);
-  const roles = useMemo(() => Array.from(new Set(jobs.map((j) => j.role || ""))).filter(Boolean), [jobs]);
+  // helper to call the /allJobs endpoint with optional server-side params
+  const fetchServerJobs = async (overrides?: Record<string, any>) => {
+    setLoading(true);
+    try {
+      const qParams: any = {
+        page: 1,
+        limit: 100,
+        sort: sortBy === "newest" ? "postedAt:desc" : sortBy === "package_desc" ? "salary:desc" : sortBy === "package_asc" ? "salary:asc" : "postedAt:desc",
+        q: search || undefined,
+        company: companyFilter || undefined,
+        role: roleFilter || undefined,
+        minSalary: minPackage !== "" ? minPackage : undefined,
+        maxSalary: maxPackage !== "" ? maxPackage : undefined,
+        ...overrides
+      };
 
+      const query = Object.entries(qParams)
+        .filter(([, v]) => v !== undefined && v !== "")
+        .map(([k, v]) => `${encodeURIComponent(k)}=${encodeURIComponent(String(v))}`)
+        .join("&");
+
+      const res = await fetch(`${API_BASE}/job/all-jobs?${query}`);
+      if (!res.ok) {
+        console.error("Failed to fetch jobs", await res.text());
+        setLoading(false);
+        return;
+      }
+      const data = await res.json();
+      const list: Job[] = data.jobs?.map((j: any) => ({
+        ...j,
+        id: j._id || j.id || String(j._id)
+      })) || [];
+      setJobs(list);
+    } catch (err) {
+      console.error("fetchServerJobs error", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // client-side derived lists (companies, roles) from server data
+  const companies = useMemo(() => Array.from(new Set(jobs.map((j) => j.company || "").filter(Boolean))), [jobs]);
+  const roles = useMemo(() => Array.from(new Set(jobs.map((j) => j.role || "").filter(Boolean))), [jobs]);
+
+  // client-side filtering (keeps your original UX); you can opt to rely fully on server
   const filtered = useMemo(() => {
     let out = jobs.slice();
     if (search.trim()) {
@@ -90,12 +116,28 @@ export default function TruJobsPortal() {
     }
     if (companyFilter) out = out.filter((j) => j.company === companyFilter);
     if (roleFilter) out = out.filter((j) => j.role === roleFilter);
-    if (minPackage !== "") out = out.filter((j) => (j.packageLPA ?? 0) >= Number(minPackage));
-    if (maxPackage !== "") out = out.filter((j) => (j.packageLPA ?? 0) <= Number(maxPackage));
+    if (minPackage !== "") out = out.filter((j) => {
+      const s = j.salary as any;
+      const val = typeof s === "string" ? undefined : (s?.min ?? ((s?.max ?? 0) + (s?.min ?? 0)) / 2);
+      return (val ?? 0) >= Number(minPackage);
+    });
+    if (maxPackage !== "") out = out.filter((j) => {
+      const s = j.salary as any;
+      const val = typeof s === "string" ? undefined : (s?.max ?? ((s?.max ?? 0) + (s?.min ?? 0)) / 2);
+      return (val ?? 0) <= Number(maxPackage);
+    });
 
-    if (sortBy === "newest") out.sort((a, b) => +new Date(b.postedAt) - +new Date(a.postedAt));
-    if (sortBy === "package_desc") out.sort((a, b) => (b.packageLPA ?? 0) - (a.packageLPA ?? 0));
-    if (sortBy === "package_asc") out.sort((a, b) => (a.packageLPA ?? 0) - (b.packageLPA ?? 0));
+    if (sortBy === "newest") out.sort((a, b) => +new Date(b.postedAt || 0) - +new Date(a.postedAt || 0));
+    if (sortBy === "package_desc") out.sort((a, b) => {
+      const avga = computeSalaryAvg(a.salary);
+      const avgb = computeSalaryAvg(b.salary);
+      return (avgb ?? 0) - (avga ?? 0);
+    });
+    if (sortBy === "package_asc") out.sort((a, b) => {
+      const avga = computeSalaryAvg(a.salary);
+      const avgb = computeSalaryAvg(b.salary);
+      return (avga ?? 0) - (avgb ?? 0);
+    });
 
     return out;
   }, [jobs, search, companyFilter, roleFilter, minPackage, maxPackage, sortBy]);
@@ -110,12 +152,86 @@ export default function TruJobsPortal() {
     setAppliedJob(null);
   }
 
-  function submitApply(e?: React.FormEvent) {
-    e?.preventDefault();
-    // for demo just close and show a success toast (alert)
-    closeApply();
-    alert(`Application submitted for ${appliedJob?.title} at ${appliedJob?.company}`);
+  // salary formatting helpers
+  function computeSalaryAvg(s: any): number | undefined {
+    if (!s) return undefined;
+    if (typeof s === "string") return undefined;
+    const min = s.min ?? undefined;
+    const max = s.max ?? undefined;
+    if (min !== undefined && max !== undefined) return (min + max) / 2;
+    if (max !== undefined) return max;
+    if (min !== undefined) return min;
+    return undefined;
   }
+
+  function displaySalary(s: any) {
+    if (!s) return "-";
+    if (typeof s === "string") return s;
+    const min = s.min, max = s.max, cur = s.currency || "INR";
+    if (min !== undefined && max !== undefined) return `${min/1000}K-${max/1000}K ${cur}`;
+    if (min !== undefined) return `From ${min/1000}K ${cur}`;
+    if (max !== undefined) return `Up to ${max/1000}K ${cur}`;
+    return "-";
+  }
+
+
+
+ const getCvRequest = async (selectedNanoId:string): Promise<Cv_resoponse_type> => {
+     const response = await fetch(`${API_BASE_URL}/cv/getCvByNanoId/${selectedNanoId}`);
+     if (!response.ok) {
+       throw new Error("Could not get cv!");
+     }
+    const data= await response.json();
+    console.log("cv data",data)
+    setApplyJsonData({
+      "resume_json": {
+        "nano_Id":data.nanoId,
+        "name": data.personalDetails.name,
+        "contact": {"email": data.personalDetails.email,"phone": data.personalDetails.phone,"location": data.personalDetails.location,"profession": data.personalDetails.profession,"yearOfExperience": data.personalDetails.years_of_experience},
+        "education":data.education,
+        "experience": data.experience,
+        "achievements": data.achievements,
+        "skills": data.skills
+      },
+      "job_description_id":""
+    })
+    console.log("apply json data",applyJsonData)
+    return data;
+     
+   };
+
+
+  const applyJobHandler = async (job_description_id:string) => {
+    setLoading(true);
+    try {
+    const response = await fetch(`${API_BASE_URL}/job/apply-job`, {
+      method: "POST",
+      body: JSON.stringify({
+        "resume_json": applyJsonData.resume_json,
+        "job_description_id": job_description_id
+      }),
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("googleIdToken")}`,
+      },
+    });
+    const data = await response.json();
+    console.log("apply job data",data)
+    if(data.success){
+      toast.success("Job applied successfully!");
+      closeApply();
+    }
+    if (!data.success) {
+      console.log("apply job error",data.error)
+      toast.error(data.error);
+    }
+    setLoading(false);
+    } catch (error:any) {
+      console.log("apply job error",error)
+      toast.error(error?.message);
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-gray-50 p-4 md:p-8 font-sans">
@@ -127,7 +243,8 @@ export default function TruJobsPortal() {
           </div>
 
           <div className="flex gap-2">
-            <button onClick={() => setJobs(DUMMY_JOBS)} className="px-4 py-2 rounded-lg border border-[#03257e] text-[#03257e]">Reset</button>
+            <button onClick={() => fetchServerJobs()} className="px-4 py-2 rounded-lg border border-[#03257e] text-[#03257e]">Refresh</button>
+            <button onClick={() => { setJobs([]); fetchServerJobs(); }} className="px-4 py-2 rounded-lg bg-[#03257e] text-white">Load Jobs</button>
           </div>
         </header>
 
@@ -178,8 +295,8 @@ export default function TruJobsPortal() {
               </div>
 
               <div className="flex gap-2 mt-2">
-                <button onClick={()=>{setSearch("");setCompanyFilter("");setRoleFilter("");setMinPackage("");setMaxPackage("");setSortBy("newest")}} className="px-3 py-2 rounded-lg border">Clear</button>
-                <button onClick={()=>{}} className="px-3 py-2 rounded-lg bg-[#03257e] text-white">Apply</button>
+                <button onClick={()=>{setSearch("");setCompanyFilter("");setRoleFilter("");setMinPackage("");setMaxPackage("");setSortBy("newest");fetchServerJobs();}} className="px-3 py-2 rounded-lg border">Clear</button>
+                <button onClick={()=>fetchServerJobs()} className="px-3 py-2 rounded-lg bg-[#03257e] text-white">Apply</button>
               </div>
             </div>
           </aside>
@@ -188,38 +305,40 @@ export default function TruJobsPortal() {
           <main className="lg:col-span-3">
             <div className="mb-4 flex items-center justify-between">
               <div className="text-sm text-gray-600">{filtered.length} jobs found</div>
-              <div className="text-sm text-gray-500">Showing results</div>
+              <div className="text-sm text-gray-500">{loading ? "Loading…" : "Showing results"}</div>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {filtered.map(job=> (
-                <div key={job.id} className="bg-white rounded-2xl shadow p-4 flex flex-col justify-between">
+                <article key={job.id || job._id} className="bg-white rounded-2xl shadow p-4 flex flex-col justify-between">
                   <div>
                     <div className="flex items-start justify-between gap-3">
                       <div>
                         <div className="font-semibold text-lg text-[#03257e]">{job.title}</div>
-                        <div className="text-sm text-gray-500">{job.company} • {job.location}</div>
+                        <div className="text-sm text-gray-500">{job.company} • {job.location} {job.isRemote ? "• Remote" : ""}</div>
+                        <div className="mt-2 text-xs">
+                          {job.tags?.slice(0,4).map(t=> <span key={t} className="inline-block mr-2 px-2 py-1 bg-gray-100 rounded text-xs">{t}</span>)}
+                        </div>
                       </div>
                       <div className="text-right">
-                        <div className="text-sm text-gray-500">{job.role}</div>
-                        <div className="text-xl font-bold text-[#006666]">{job.packageLPA ? `${job.packageLPA} LPA` : "-"}</div>
+                        <div className="text-sm text-gray-500">{job.employmentType}</div>
+                        <div className="text-xl font-bold text-[#006666]">{displaySalary(job.salary) || "-"}</div>
                       </div>
                     </div>
 
-                    <p className="mt-3 text-sm text-gray-700">{job.description}</p>
+                    <p className="mt-3 text-sm text-gray-700 line-clamp-3">{job.description}</p>
                   </div>
 
                   <div className="mt-4 flex items-center justify-between">
-                    <div className="text-xs text-gray-500">Posted: {new Date(job.postedAt).toLocaleDateString()}</div>
+                    <div className="text-xs text-gray-500">Posted: {job.postedAt ? new Date(job.postedAt).toLocaleDateString() : "-"}</div>
                     <div className="flex gap-2">
-                      <a href={job.applyUrl} onClick={(e)=>{e.preventDefault(); openApply(job)}} className="px-4 py-2 rounded-lg bg-[#f14491] text-white text-sm">Apply</a>
-                      <a href="#" className="px-4 py-2 rounded-lg border text-sm">Save</a>
+                      <a href={job.applyUrl || "#"} onClick={(e)=>{e.preventDefault(); openApply(job);}} className="px-4 py-2 rounded-lg bg-[#f14491] text-white text-sm">Apply</a>
                     </div>
                   </div>
-                </div>
+                </article>
               ))}
 
-              {filtered.length===0 && (
+              {filtered.length===0 && !loading && (
                 <div className="lg:col-span-3 bg-white rounded-2xl shadow p-6 text-center text-gray-500">No jobs match your filters. Try clearing filters.</div>
               )}
             </div>
@@ -236,23 +355,24 @@ export default function TruJobsPortal() {
               <h3 className="text-lg font-semibold">Apply — {appliedJob.title} @ {appliedJob.company}</h3>
               <button onClick={closeApply} className="px-2 py-1 rounded border">Close</button>
             </div>
-
-            <form onSubmit={submitApply} className="space-y-3">
-              <input required placeholder="Your full name" className="w-full border rounded-lg px-3 py-2" />
-              <input required placeholder="Email" type="email" className="w-full border rounded-lg px-3 py-2" />
-              <input placeholder="Phone" className="w-full border rounded-lg px-3 py-2" />
-              <textarea placeholder="Short message / cover note" className="w-full border rounded-lg px-3 py-2 h-24" />
-
-              <div className="flex justify-end gap-3">
-                <button type="button" onClick={closeApply} className="px-3 py-2 rounded-lg border">Cancel</button>
-                <button type="submit" className="px-4 py-2 rounded-lg bg-[#03257e] text-white">Submit Application</button>
-              </div>
-            </form>
-
-            <div className="mt-3 text-xs text-gray-500">Note: This is a demo form — in production this will POST to the employer's application endpoint or create a candidate profile in TruJobs.</div>
+            {nanoId?.length>0?<div className="mt-4 flex flex-col gap-4">
+              <p className="text-sm text-[#03257e]">You have <span className="font-semibold text-[#006666]">{nanoId?.length}</span> resume uploaded. Please select one to apply.</p>
+              <select className="w-full border rounded-lg px-3 py-2 " onChange={(e)=>{getCvRequest(e.target.value)}}>
+                <option value="">Select a resume</option>
+                {nanoId.map(id=> <option key={id} value={id}>Resume {id}</option>)}
+              </select>
+              {!loading?<button className="mt-4 w-full bg-[#03257e] text-white text-sm font-semibold py-2 px-4 rounded hover:bg-[#006666] transition" onClick={()=>{applyJobHandler(appliedJob?.job_description_id || "")}}>Apply</button>:<p className="mt-4 w-full text-center text-[#006666] text-sm font-semibold py-2 px-4 rounded hover:bg-[#006666] transition">Applying...</p>}
+            </div>:<div className="mt-4 flex justify-center justify-items-center flex-col gap-4">
+              <p className="text-sm text-[#f14419]">We didn't find any resume in your account. Please create a resume to apply.</p>
+              <Link to="/create-cv" className="mt-4 bg-[#03257e] text-center text-white text-sm font-semibold py-2 px-4 rounded hover:bg-[#006666] transition">Create Resume <ArrowRightIcon className="inline w-4 h-4 ml-2" /></Link>
+            </div>}
+            <div className="mt-3 text-xs text-gray-500">Note: This will POST to the employer's application endpoint or create a candidate profile in production.</div>
           </div>
         </div>
       )}
     </div>
   );
 }
+
+export default TruJobsPortal;
+

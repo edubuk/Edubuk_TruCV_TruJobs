@@ -3,6 +3,8 @@ import React, { useState } from "react";
 import { GoogleLogin, CredentialResponse } from "@react-oauth/google";
 import {jwtDecode} from "jwt-decode";
 import { useNavigate } from "react-router-dom";
+import { uploadFile } from "@/uploadFile";
+import { Check } from "lucide-react";
 
 interface DecodedGooglePayload {
   sub: string;
@@ -13,6 +15,20 @@ interface DecodedGooglePayload {
   email_verified?: boolean;
 }
 
+interface UploadResponse {
+  data: {
+    success: boolean;
+    fileHashWithTimeStampExt: string;
+    error?: string;
+  };
+  response?: {
+    data: {
+      success: boolean;
+      error: string;
+    };
+  };
+}
+
 const API_BASE = process.env.REACT_APP_API_URL || "http://localhost:8000";
 
 const GoogleLoginWithHR: React.FC = () => {
@@ -20,14 +36,16 @@ const GoogleLoginWithHR: React.FC = () => {
   const [step, setStep] = useState<
     "confirm" | "companyForm" | "pending" | "idle"
   >("idle");
+  const [uploading, setUploading] = useState(false);
   const [infoMessage, setInfoMessage] = useState<string | null>(null);
   const [googleToken, setGoogleToken] = useState<string | null>(null);
   const [profile, setProfile] = useState<DecodedGooglePayload | null>(null);
   const [companyName, setCompanyName] = useState<string>("");
   const [mobileNumber, setMobileNumber] = useState<string>("");
   const [address, setAddress] = useState<string>("");
-  const [documents, setDocuments] = useState<string>(""); // comma separated URLs
+  const [documents, setDocuments] = useState<File | null>(null);
   const navigate = useNavigate();
+  const [uri, setUri] = useState<string>("");
 
   // Step 1: Google sign-in
   const handleGoogleLogin = async (credentialResponse: CredentialResponse | any) => {
@@ -67,7 +85,7 @@ const GoogleLoginWithHR: React.FC = () => {
     if (profile?.picture) localStorage.setItem("userImage", profile.picture);
     if (profile?.exp) localStorage.setItem("tokenExpiry", String(profile.exp));
 
-    navigate("/jobs"); // ✅ redirect Users to job listing
+    navigate("/"); // ✅ redirect Users to job listing
   };
 
   // Step 2: HR flow
@@ -139,8 +157,8 @@ const GoogleLoginWithHR: React.FC = () => {
         companyName: companyName.trim(),
         mobileNumber: mobileNumber.trim() || undefined,
         address: address.trim() || undefined,
-        documents: documents
-          ? documents.split(",").map((s) => s.trim()).filter(Boolean)
+        documents: uri
+          ? [uri]
           : [],
       };
 
@@ -157,14 +175,14 @@ const GoogleLoginWithHR: React.FC = () => {
         setStep("pending");
         setInfoMessage("Registered successfully. Awaiting admin approval.");
         setLoading(false);
-        navigate("/hr/pending"); // ✅ HR pending approval page
+        navigate("/hr"); // ✅ HR pending approval page
         return;
       }
 
       if (res.ok) {
         setInfoMessage("Account linked — redirecting to HR dashboard.");
         setLoading(false);
-        navigate("/hr/dashboard");
+        navigate("/hr");
         return;
       }
 
@@ -175,6 +193,27 @@ const GoogleLoginWithHR: React.FC = () => {
       console.error("submitCompanyRegistration error", err);
       setInfoMessage("Server error while registering company.");
       setLoading(false);
+    }
+  };
+
+
+  const uploadDocuments = async () => {
+    try {
+      setUploading(true);
+      const fromdata = new FormData();
+      fromdata.append("file",documents || "");
+      const res = await uploadFile(fromdata) as UploadResponse;
+      if(res.data.success){
+        setInfoMessage("Document uploaded successfully.");
+        setUploading(false);
+        setUri(res.data.fileHashWithTimeStampExt);
+        console.log("Document uploaded successfully.",res?.data?.fileHashWithTimeStampExt);
+      }
+      
+    } catch (error) {
+      console.error(error);
+      setInfoMessage("Document upload failed.");
+      setUploading(false);
     }
   };
 
@@ -250,13 +289,15 @@ const GoogleLoginWithHR: React.FC = () => {
               />
             </label>
             <label className="flex flex-col text-sm">
-              Documents (comma-separated URLs)
+              Documents
+              <div className="flex gap-2">
               <input
-                type="text"
-                value={documents}
-                onChange={(e) => setDocuments(e.target.value)}
+                type="file"
+                onChange={(e) => setDocuments(e.target.files?.[0] || null)}
                 className="mt-1 p-2 border rounded"
               />
+              {!uri ? <button type="button" onClick={uploadDocuments} className="mt-1 py-2 px-4 rounded text-white font-semibold bg-[#006666]">{uploading ? "Uploading..." : "Upload"}</button>:<div className="flex items-center gap-2"><Check className="w-5 h-5" /> Uploaded</div>}
+              </div>
             </label>
             <button type="submit" className="px-4 py-2 bg-green-600 text-white rounded">
               Submit Company
