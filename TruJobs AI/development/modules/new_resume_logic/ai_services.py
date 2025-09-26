@@ -1,3 +1,15 @@
+'''
+Summary
+This module is the AI/ML engine for your resume pipeline.
+It extracts structured metadata from raw resume text using Bedrock Claude.
+It generates high-dimensional embeddings for the entire resume and for each section, enabling advanced semantic search and matching.
+It is robust to errors and PDF corruption, and logs all key steps for debugging.
+'''
+#1. Imports and Logger Setup
+'''
+Imports standard libraries (json, logging, re, concurrent.futures), AWS SDK (boto3), and project configs/prompts.
+Sets up logging and initializes the Bedrock client for AI model calls.
+'''
 import json
 import boto3
 import logging
@@ -9,6 +21,20 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 logger = logging.getLogger()
 bedrock = boto3.client('bedrock-runtime', AWS_REGION, endpoint_url=BEDROCK_ENDPOINT)
 
+#2. Metadata Extraction from Resume Text
+'''
+Purpose: Extracts structured metadata (name, email, skills, etc.) from resume text using an LLM (Bedrock Claude).
+How:
+Checks if the text is long enough for extraction.
+Preprocesses the text to extract key info and remove noise.
+Trims text if too long.
+Builds a prompt for the LLM using get_metadata_extraction_prompt.
+Calls Bedrock Claude with the prompt and parses the response.
+Handles JSON parsing errors robustly (tries to extract JSON from messy output).
+Ensures all required metadata fields exist, filling in defaults if missing.
+Cleans up the skills list for concise entries.
+On error, logs and returns fallback metadata with an error summary.
+'''
 
 def get_metadata_from_bedrock(text):
     """Extract structured metadata from resume text using Bedrock"""
@@ -119,6 +145,11 @@ def get_metadata_from_bedrock(text):
         logger.warning("🔄 Returning fallback metadata to allow processing to continue")
         return fallback_metadata
 
+#3. Fallback Metadata
+'''
+Purpose: Provides a default metadata structure if extraction fails.
+How: Returns a dictionary with all fields set to safe defaults.
+'''
 
 def get_fallback_metadata():
     return {
@@ -134,6 +165,18 @@ def get_fallback_metadata():
         'summary': None
     }
 
+
+#4. Resume Text Preprocessing
+'''
+Purpose: Cleans and enriches resume text before sending to the LLM.
+How:
+Extracts emails using several regex patterns (handles common PDF corruption).
+Extracts LinkedIn URLs, company names, job titles, and skills using regex.
+Attempts to reconstruct names from email addresses.
+Removes PDF artifacts and technical content.
+Builds an enhanced text block with extracted info and cleaned original text.
+Logs what was found for debugging.
+'''
 
 def preprocess_resume_text(text):
     """Preprocess resume text to extract meaningful content from corrupted PDF"""
@@ -312,7 +355,15 @@ def preprocess_resume_text(text):
     
     return result
 
-
+#5. Embedding Generation
+'''
+Purpose: Generates a 1024-dimensional embedding vector for a given text using Bedrock Titan.
+How:
+Checks for empty or too-long text.
+Calls Bedrock Titan embedding model.
+Returns the embedding if valid, otherwise returns a zero vector.
+On error, logs and returns a zero vector.
+'''
 def get_embedding(text):
     """Generate embedding vector for given text using Bedrock"""
     try:
@@ -343,6 +394,17 @@ def get_embedding(text):
         logger.error(f"Embedding generation error: {str(e)}")
         return [0.0] * EMBEDDING_DIMENSION
 
+
+#6. Section Embedding Creation
+'''
+Purpose: Generates separate embeddings for different resume sections (skills, experience, certifications, projects).
+How:
+Prepares clean text for each section from the metadata.
+Provides fallback text if a section is empty.
+Uses a thread pool to call get_embedding for each section in parallel (improves speed).
+Collects results into a dictionary with four vectors.
+On error, logs and returns zero vectors for all sections.
+'''
 
 def create_section_embeddings(metadata):
     """Create separate embeddings for different resume sections"""

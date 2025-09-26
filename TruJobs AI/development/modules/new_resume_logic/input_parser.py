@@ -1,3 +1,15 @@
+#summary:
+'''
+ This module is responsible for robustly handling all possible input types (JSON, multipart, S3 event) for resume uploads.
+It ensures the PDF and job description ID are reliably extracted and ready for downstream processing, regardless of how the data arrives.
+It includes advanced error handling and logging for easier debugging and production reliability.
+'''  
+
+#1. Imports and Logger Setup
+'''
+Imports standard libraries for JSON, base64, regex, logging, IO, and boto3 for AWS.
+Sets up a logger for debugging and info messages.
+'''
 import json
 import base64
 import re
@@ -5,7 +17,17 @@ import logging
 from io import BytesIO
 import boto3
 
+
 logger = logging.getLogger()
+
+#2.  PDF Reconstruction
+'''
+Purpose: Fixes binary corruption that can happen when API Gateway passes PDF data as a string.
+How:
+Tries to encode the string as latin-1 (simple case).
+If that fails, reconstructs the bytes manually, handling surrogate escapes and skipping replacement characters.
+'''
+
 
 def apply_proven_pdf_reconstruction(body_string):
     """
@@ -34,6 +56,21 @@ def apply_proven_pdf_reconstruction(body_string):
                 reconstructed_bytes.append(char_code & 0xFF)
         
         return bytes(reconstructed_bytes)
+
+# 3. Input Type Detection:
+'''
+Purpose: Figures out if the incoming request is:
+An S3 event,
+JSON,
+or multipart form data.
+How:
+Checks for S3 event structure.
+Looks at the Content-Type header for JSON or multipart.
+Tries to parse the body as JSON if unsure.
+Defaults to JSON if it can’t decide.
+
+'''
+
 
 def determine_input_type(event):
     """Determine if the input is JSON, multipart form data, or S3 event"""
@@ -69,6 +106,15 @@ def determine_input_type(event):
         logger.warning(f"Error determining input type: {str(e)}, defaulting to JSON")
         return 'json'
 
+#4. JSON Input Parsing
+'''
+Purpose: Extracts and validates JSON input for resume processing.
+How:
+Decodes base64 if needed.
+Loads JSON and checks for required fields: resume_content and job_description_id.
+Raises errors if fields are missing or JSON is invalid.
+'''
+
 def parse_json_input(event):
     """Parse JSON input from the event for resume processing"""
     try:
@@ -92,6 +138,15 @@ def parse_json_input(event):
     except Exception as e:
         raise ValueError(f"Error parsing JSON input: {str(e)}")
 
+#5. S3 Event Parsing
+'''
+Purpose: Extracts the S3 bucket and key from an S3 event.
+How:
+Reads the first record for bucket and key.
+Skips .txt files to prevent recursion.
+Logs and returns bucket/key, or raises error if parsing fails.
+'''
+
 def parse_s3_event(event):
     """Parse S3 event to extract bucket and key information"""
     try:
@@ -111,6 +166,22 @@ def parse_s3_event(event):
         logger.error(f"Error parsing S3 event: {str(e)}")
         raise ValueError(f"Invalid S3 event format: {str(e)}")
 
+#6. Multipart Form Data Parsing
+'''
+Purpose: Extracts the PDF file and job description ID from a multipart form upload (used for resume uploads).
+How:
+Checks for correct Content-Type.
+Extracts the boundary from the header.
+Handles base64 decoding if needed.
+Applies PDF reconstruction if body is a string.
+Splits the body into parts using the boundary.
+For each part:
+Looks for the PDF file (by field name or filename) and validates it starts with %PDF.
+Extracts the job description ID from the appropriate field.
+Validates both PDF and job description ID are found.
+Returns the PDF content (as a BytesIO object) and the job description ID.
+'''
+
 def parse_multipart_form(event):
     """Parse multipart form data to extract resume content and job description ID"""
     try:
@@ -121,6 +192,10 @@ def parse_multipart_form(event):
             raise ValueError("Content-Type must be multipart/form-data")
         
         # Extract boundary
+        '''
+        If content_type = "multipart/form-data; boundary=----12345; charset=UTF-8",
+        the regex captures ----12345.
+        '''
         boundary_match = re.search(r'boundary=([^;]+)', content_type)
         if not boundary_match:
             raise ValueError("No boundary found in Content-Type header")
@@ -260,6 +335,14 @@ def parse_multipart_form(event):
         logger.error(f"Error parsing multipart form: {str(e)}")
         raise ValueError(f"Failed to parse multipart form data: {str(e)}")
 
+#7. S3 PDF Downloading
+'''
+Purpose: Downloads a PDF file from S3 and returns it as a BytesIO object.
+How:
+Uses boto3 to get the object from S3.
+Reads the file content into a BytesIO stream.
+Returns the stream for further processing.
+'''
 def get_s3_pdf_content(bucket, key):
     """Download PDF content from S3"""
     try:
@@ -273,3 +356,6 @@ def get_s3_pdf_content(bucket, key):
     except Exception as e:
         logger.error(f"Error downloading PDF from S3: {str(e)}")
         raise ValueError(f"Failed to download PDF from S3: {str(e)}")
+
+
+ 

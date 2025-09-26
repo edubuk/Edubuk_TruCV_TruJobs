@@ -1,3 +1,20 @@
+'''
+Summary
+This module is responsible for all OpenSearch operations in your resume pipeline.
+It ensures the index exists and is up-to-date, normalizes metadata for search, and indexes resumes with multi-vector embeddings for advanced semantic search.
+It includes robust error handling and logging for production reliability.
+'''
+#1. Imports and Logger Setup
+'''
+Imports:
+Standard libraries: json, logging, datetime
+AWS SDK: boto3
+OpenSearch libraries: OpenSearch, RequestsHttpConnection, AWSV4SignerAuth
+Project config: AWS region, OpenSearch endpoint, and index name
+Logger:
+Sets up a logger for this module.
+'''
+
 import json
 import boto3
 import logging
@@ -6,6 +23,23 @@ from datetime import datetime
 from config import AWS_REGION, OPENSEARCH_ENDPOINT, OPENSEARCH_INDEX
 
 logger = logging.getLogger()
+
+# 2. OpenSearch Client Initialization
+'''
+Purpose: Initializes and returns an authenticated OpenSearch client, and ensures the index exists with the correct mapping.
+How it works:
+Uses AWS credentials and region to create a signed OpenSearch client.
+Cleans up the endpoint URL.
+If the index exists:
+Logs that it exists.
+Attempts to update the mapping for compatibility (adds/updates fields in the metadata object).
+If the index does not exist:
+Creates the index with a schema that includes:
+Resume/job IDs, file info, candidate name, S3 key, upload date
+Four knn_vector fields (skills, experience, certification, projects)
+A rich metadata object with all extracted fields
+Index settings for KNN search
+Handles and logs any exceptions during index management.'''
 
 
 def get_opensearch_client():
@@ -101,6 +135,17 @@ def get_opensearch_client():
 
     return opensearch
 
+#3. Metadata Normalization
+'''Purpose: Converts the extracted metadata into a flat, OpenSearch-compatible structure.
+How it works:
+Defines a helper to_string_list() to flatten lists of dicts/strings into readable strings for each metadata type (skills, work, project, cert, edu).
+Processes each field:
+Simple fields (name, email, phone, etc.) are converted to strings.
+Skills are joined into a string and also stored as a list.
+Work experience, certifications, projects, and education are flattened into readable text.
+Adds a truncated preview of the raw resume text for debugging.
+Logs the normalization step.
+On error, returns a safe default structure.'''
 
 def normalize_metadata_for_opensearch(metadata, raw_text):
     """Normalize metadata to ensure compatibility with OpenSearch schema"""
@@ -231,6 +276,18 @@ def normalize_metadata_for_opensearch(metadata, raw_text):
             'raw_text_preview': raw_text[:1000] if raw_text else ''
         }
 
+#4. Resume Indexing
+'''
+Purpose: Indexes a complete resume document (with metadata and embeddings) into OpenSearch.
+How it works:
+Builds a document with all required fields, including:
+IDs, file info, candidate name, S3 key, upload date
+Normalized metadata
+Embeddings (skills, experience, certification, projects)
+Indexes the document into OpenSearch with a timeout.
+Logs the document ID on success.
+On error, raises a specific exception based on the error type (timeout, connection, permission, not found, or generic).
+'''
 
 def index_resume_document(opensearch, resume_id, job_description_id, filename, candidate_name, s3_key, normalized_metadata, embeddings):
     """Index resume document in OpenSearch"""

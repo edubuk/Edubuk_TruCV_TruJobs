@@ -1,3 +1,4 @@
+#1. Metadata Extraction Prompt
 def get_metadata_extraction_prompt(text):
     """Returns the prompt for extracting structured metadata from resume text"""
     return f"""
