@@ -45,6 +45,7 @@ export interface ISalary {
 export interface IJob {
   title: string;
   company: string;
+  job_description_id: string;
   location?: string;
   role?: string;
   employmentType?: "full-time" | "part-time" | "contract" | "internship" | "temporary";
@@ -96,6 +97,7 @@ const JobSchema = new Schema<IJobDocument>(
   {
     title: { type: String, required: true, trim: true, index: true },
     company: { type: String, required: true, trim: true },
+    job_description_id: { type: String, required: true, trim: true },
     location: { type: String, trim: true },
     role: { type: String, trim: true },
     employmentType: {

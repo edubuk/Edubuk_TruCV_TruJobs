@@ -1,8 +1,10 @@
 // controllers/jobController.ts
 import { Request, Response } from "express";
-import { Job, HR } from "../models/hr.model";
+import { Job} from "../models/hr.model";
 import mongoose from "mongoose";
-
+import axios from "axios";
+import dotenv from "dotenv";
+dotenv.config();
 /**
  * Create Job (must be an approved HR)
  * - req.user should identify the HR (req.user.id)
@@ -18,6 +20,7 @@ export const createJob = async (req: Request, res: Response) => {
       const {
         title, company, location, role,
         employmentType, isRemote, salary, description,
+        job_description_id,
         applyUrl, tags, status
       } = req.body;
   
@@ -28,6 +31,7 @@ export const createJob = async (req: Request, res: Response) => {
       const job = await Job.create({
         title,
         company,
+        job_description_id,
         location,
         role,
         employmentType,
@@ -128,3 +132,45 @@ export const getJobById = async (req: Request, res: Response) => {
     return res.status(500).json({ error: "Server error" });
   }
 };
+
+export const getAllJobByHrId = async (req: Request, res: Response) => {
+    try {
+        console.log("req params", req.params);
+        console.log("req query", req.query);
+        const hrId = req.query.hrId as string;
+        console.log("hrId", hrId);
+        if (!mongoose.Types.ObjectId.isValid(hrId)) return res.status(400).json({ error: "Invalid hrId" });
+        const jobs = await Job.find({ postedBy: hrId });
+        return res.status(200).json({ jobs });
+    } catch (err) {
+        console.error("getAllJobByHrId:", err);
+        return res.status(500).json({ error: "Server error" });
+    }
+};
+
+export const applyJob = async (req: Request, res: Response) => {
+    try {
+        const { resume_json, job_description_id } = req.body;
+        console.log("resume_json", resume_json);
+        console.log("job_description_id", job_description_id);
+        if (!resume_json || !job_description_id) return res.status(400).json({ error: "Missing required fields: resume_json, job_description_id" });
+        const result = await axios.post(`${process.env.AWS_BASE_URL}/prod/ResumeUpload`, 
+          {
+            "resume_json":resume_json,
+            "job_description_id":job_description_id
+          },
+          {
+            headers:{
+              "Content-Type": "application/json",
+              "x-api-key": `${process.env.AWS_API_KEY}`
+            },
+            timeout: 15000,
+        });
+        console.log("result", result);
+        return res.status(200).json({success:true,data:result.data})
+    } catch (err:any) {
+        console.error("applyJob:", err);
+        return res.status(500).json({success:false, error: err?.data?.message || "Server error" });
+    }
+};
+
