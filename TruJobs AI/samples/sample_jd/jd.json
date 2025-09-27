@@ -1,0 +1,33 @@
+[
+    {
+      "job_description": "Blockchain Developer role for graduates or experienced professionals with strong knowledge of blockchain protocols, smart contracts, and distributed ledger technologies. Hands-on experience with Ethereum, Solidity, and Hyperledger Fabric is required. Proficiency in cryptography, DApps, and API integration is essential. Responsibilities include developing and deploying smart contracts, designing blockchain-based solutions, maintaining secure transactions, and collaborating with cross-functional teams. Location: Bangalore (Hybrid/Remote options available). Salary: 8 - 15 LPA."
+    },
+    {
+      "job_description": "AI/ML Engineer role for graduates or experienced professionals with strong knowledge of machine learning algorithms, deep learning frameworks (TensorFlow, PyTorch), and data preprocessing techniques. Hands-on experience with NLP, computer vision, and model deployment is required. Proficiency in Python, R, and cloud AI services (AWS SageMaker, GCP AI, Azure AI) is essential. Responsibilities include building and training ML models, optimizing algorithms, integrating AI solutions into applications, and collaborating with data and software teams. Location: Bangalore (Hybrid/Remote options available). Salary: 10 - 20 LPA."
+    },
+    {
+      "job_description": "Software Engineer role for graduates or experienced professionals with strong knowledge of object-oriented programming, software development lifecycle, and version control systems (Git). Hands-on experience in Python, Java, or C++ is required. Proficiency in problem-solving, debugging, and unit testing is essential. Responsibilities include designing, developing, and maintaining software applications, writing clean and efficient code, and collaborating with QA and DevOps teams. Location: Bangalore (Hybrid/Remote options available). Salary: 6 - 12 LPA."
+    },
+    {
+      "job_description": "DevOps Engineer role for graduates or experienced professionals with strong knowledge in CI/CD pipelines, cloud platforms (AWS, GCP, Azure), and Linux-based systems administration. Hands-on experience with Docker and Kubernetes is required. Proficiency in infrastructure-as-code tools like Terraform or Ansible is essential. Responsibilities include automating deployments, managing cloud infrastructure, optimizing Linux server environments, and collaborating with development teams. Location: Bangalore (Hybrid/Remote options available). Salary: 6 - 12 LPA."
+    },
+    {
+      "job_description": "QA Testing Engineer role for graduates or experienced professionals with strong knowledge of software testing methodologies (manual and automation). Hands-on experience with Selenium, Cypress, or Playwright is required. Proficiency in creating test plans, executing test cases, and using bug tracking tools (JIRA, Bugzilla) is essential. Responsibilities include validating product quality, identifying defects, collaborating with development teams, and improving QA processes. Location: Bangalore (Hybrid/Remote options available). Salary: 5 - 10 LPA."
+    },
+    {
+      "job_description": "Full Stack Developer role for graduates or experienced professionals with strong knowledge of front-end (React, Angular) and back-end (Node.js, Python, Java) technologies. Hands-on experience with databases (SQL, NoSQL), REST APIs, and cloud deployment is required. Proficiency in writing clean, scalable code and integrating with CI/CD pipelines is essential. Responsibilities include developing full-stack web applications, collaborating with UI/UX and backend teams, and optimizing performance. Location: Bangalore (Hybrid/Remote options available). Salary: 8 - 15 LPA."
+    },
+    {
+      "job_description": "Data Scientist role for graduates or experienced professionals with strong knowledge of statistics, data analysis, and machine learning algorithms. Hands-on experience with Python, R, SQL, and data visualization tools (Tableau, Power BI) is required. Proficiency in building predictive models, cleaning large datasets, and generating actionable insights is essential. Responsibilities include analyzing complex data, building ML models, and collaborating with business and engineering teams. Location: Bangalore (Hybrid/Remote options available). Salary: 9 - 18 LPA."
+    },
+    {
+      "job_description": "Cloud Engineer role for graduates or experienced professionals with strong knowledge of cloud platforms (AWS, Azure, GCP), virtualization, and containerization. Hands-on experience with Terraform, Ansible, and CI/CD pipelines is required. Proficiency in cloud architecture, monitoring, and security best practices is essential. Responsibilities include managing cloud infrastructure, automating deployment workflows, ensuring system availability, and collaborating with development teams. Location: Bangalore (Hybrid/Remote options available). Salary: 7 - 14 LPA."
+    },
+    {
+      "job_description": "Mobile App Developer role for graduates or experienced professionals with strong knowledge of Android (Kotlin/Java) or iOS (Swift) development. Hands-on experience with mobile app frameworks, REST APIs, and app store deployment is required. Proficiency in debugging, UI/UX design integration, and performance optimization is essential. Responsibilities include developing mobile applications, collaborating with backend teams, and ensuring app quality and performance. Location: Bangalore (Hybrid/Remote options available). Salary: 6 - 12 LPA."
+    },
+    {
+      "job_description": "Cybersecurity Engineer role for graduates or experienced professionals with strong knowledge of network security, penetration testing, and threat analysis. Hands-on experience with firewalls, IDS/IPS, SIEM tools, and vulnerability assessment is required. Proficiency in scripting (Python, Bash) and compliance standards (ISO, NIST, GDPR) is essential. Responsibilities include securing IT infrastructure, monitoring for threats, performing security audits, and implementing protective measures. Location: Bangalore (Hybrid/Remote options available). Salary: 8 - 16 LPA."
+    }
+  ]
+  

@@ -1,0 +1,22 @@
+{
+  "http_status": 200,
+  "api_time_sec": 10.862095355987549,
+  "response": {
+    "message": "Successfully processed resume",
+    "resume_id": "75b7d0b6-1efb-4fb2-83b6-8948bc26b4b3",
+    "filename": "75b7d0b6-1efb-4fb2-83b6-8948bc26b4b3.pdf",
+    "job_description_id": "f3efb55a-8ae1-4e32-ba91-cdeedb2e3ff2",
+    "candidate_name": "Ajeet Ram Verma",
+    "s3_key": "resumes/75b7d0b6-1efb-4fb2-83b6-8948bc26b4b3.txt"
+  },
+  "s3_verification": {
+    "exists": true,
+    "size": 3648,
+    "content_type": "text/plain; charset=utf-8"
+  },
+  "opensearch_verification": {
+
+    "found": false,
+    "attempts": 5
+  }
+}

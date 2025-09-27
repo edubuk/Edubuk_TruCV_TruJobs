@@ -110,7 +110,7 @@ Storage      opensearch_client.py  Index Creation   Database Storage
 - **AWS Bedrock**: AI models for metadata extraction and embeddings
 - **AWS S3**: Document storage and retrieval
 - **AWS OpenSearch**: Vector database for similarity search
-- **API Gateway**: HTTP endpoint for multipart file uploads
+- **API Gateway**: HTTP endpoint for multipart and JSON uploads (Resume PDF or JSON via `/ResumeUpload`)
 
 ---
 
@@ -311,9 +311,23 @@ sections = {
 }
 ```
 
+Option B (structured resume object):
+```json
+{
+  "resume_json": {
+    "name": "Jane Doe",
+    "contact": {"email": "jane@example.com", "phone": "+91-9000000000"},
+    "education": [{"institution": "XYZ University", "degree": "B.Tech", "duration": "2019-2023"}],
+    "experience": [{"title": "Software Engineer", "organization": "ACME", "duration": "2023–Present"}],
+    "skills": {"languages": ["Python", "JavaScript"], "frameworks_libraries": ["React", "Node"]}
+  },
+  "job_description_id": "jd-12345"
+}
+```
+
 #### **2. Multipart Form Upload** (Web Interface)
 ```http
-POST /resume-processing
+POST /ResumeUpload
 Content-Type: multipart/form-data; boundary=----WebKitFormBoundary
 
 ------WebKitFormBoundary
@@ -327,6 +341,59 @@ Content-Disposition: form-data; name="job_description_id"
 jd-67890
 ------WebKitFormBoundary--
 ```
+
+#### **JSON Resume Upload via API** (Text-only)
+```http
+POST /ResumeUpload
+Content-Type: application/json
+
+Option A (simple text):
+{
+  "resume_content": "Full resume text content pasted here...",
+  "job_description_id": "jd-12345"
+}
+
+Option B (structured resume object):
+{
+  "resume_json": {
+    "name": "Jane Doe",
+    "contact": {"email": "jane@example.com", "phone": "+91-9000000000"},
+    "education": [{"institution": "XYZ University", "degree": "B.Tech", "duration": "2019-2023"}],
+    "experience": [{"title": "Software Engineer", "organization": "ACME", "duration": "2023–Present"}],
+    "skills": {"languages": ["Python", "JavaScript"], "frameworks_libraries": ["React", "Node"]}
+  },
+  "job_description_id": "jd-12345"
+}
+```
+
+JSON uploads bypass PDF parsing, but the flattened resume text is now persisted to S3 for audit/traceability under:
+- `s3://trujobs-db/resumes/{resume_id}.txt`
+
+The API response contains `s3_key` pointing to this `.txt` object.
+
+JSON Schema (required fields):
+```json
+{
+  "type": "object",
+  "required": ["job_description_id"],
+  "properties": {
+    "resume_content": {"type": "string", "minLength": 1, "description": "Full resume text"},
+    "resume_json": {"type": "object", "description": "Structured resume object", "additionalProperties": true},
+    "job_description_id": {"type": "string", "minLength": 1},
+    "metadata": {"type": "object", "additionalProperties": true}
+  }
+}
+```
+
+Postman steps (JSON Resume Upload):
+1) Method: POST
+2) URL: https://ctlzux7bee.execute-api.ap-south-1.amazonaws.com/prod/ResumeUpload
+3) Headers:
+   - x-api-key: KXXpej8bvb6TGQ9Rs8hcXB7WRLC7eoe5XYkMbd47
+   - Content-Type: application/json
+4) Body: Select raw → JSON, then use Option A (`resume_content`) or Option B (`resume_json`)
+5) Send and verify 200 OK
+6) Validate response contains `resume_id`, `candidate_name`, and `s3_key` (should be `resumes/{resume_id}.txt`)
 
 #### **3. S3 Event Trigger** (Automated Processing)
 ```json
