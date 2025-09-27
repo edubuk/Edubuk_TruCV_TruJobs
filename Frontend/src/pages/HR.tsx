@@ -1,6 +1,10 @@
 // HRDashboardWithBackend.tsx
 import React, { useEffect, useState } from "react";
 import { API_BASE_URL } from "@/main";
+import { Link } from "react-router-dom";
+import {AlertTriangle} from "lucide-react"
+import toast from "react-hot-toast";
+import console from "console";
 
 type Job = {
   _id?: string; // backend uses _id
@@ -83,13 +87,13 @@ export default function HRDashboard() {
   const [simLoading, setSimLoading] = useState(false);
   const [simError, setSimError] = useState<string | null>(null);
 
+
   /** Analysis side panel */
   const [analysisOpen, setAnalysisOpen] = useState(false);
   const [analysisCandidate, setAnalysisCandidate] = useState<Match | null>(null);
 
   const [showPostModal, setShowPostModal] = useState(false);
   const [editingJob, setEditingJob] = useState<Job | null>(null);
-  const [postMsg, setPostMsg] = useState<string | null>(null);
   const [form, setForm] = useState<any>({
     title: "",
     company: "",
@@ -121,22 +125,23 @@ export default function HRDashboard() {
   const [hrLoading, setHrLoading] = useState(false);
   const [saving, setSaving] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const [jobId, setJobId] = useState<string | null>(null);
+
+      // load existing jobs (public)
+      const fetchJobs = async (hrId: string) => {
+        try {
+          const res = await fetch(`${API_BASE}/job/hr-jobs?hrId=${hrId}`);
+          if (res.ok) {
+            const data = await res.json();
+            const list = data.jobs || data;
+            setJobs(Array.isArray(list) ? list : []);
+          }
+        } catch (err) {
+          console.error("fetchJobs error", err);
+        }
+      };
 
   useEffect(() => {
-    // load existing jobs (public)
-    const fetchJobs = async (hrId: string) => {
-      try {
-        const res = await fetch(`${API_BASE}/job/hr-jobs?hrId=${hrId}`);
-        if (res.ok) {
-          const data = await res.json();
-          const list = data.jobs || data;
-          setJobs(Array.isArray(list) ? list : []);
-        }
-      } catch (err) {
-        console.error("fetchJobs error", err);
-      }
-    };
-
     // fetch HR profile
     const fetchHrStatus = async () => {
       const token = localStorage.getItem("googleIdToken");
@@ -167,6 +172,26 @@ export default function HRDashboard() {
 
     fetchHrStatus();
   }, []);
+
+  const deleteJob = async (jobId: string) => {
+    try {
+      setJobId(jobId);
+      const token = localStorage.getItem("googleIdToken");
+      if (!token) return;
+      const res = await fetch(`${API_BASE}/hr/deleteJob/${jobId}`, {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" }
+      });
+      if (res.ok) {
+        fetchJobs(hr?.id || "");
+        toast.success("Job deleted");
+      }
+    } catch (err) {
+      console.error("deleteJob error", err);
+      toast.error("Failed to delete job");
+    }
+    setJobId(null);
+  };
 
   function openPostModal(forEdit?: Job) {
     setEditingJob(forEdit || null);
@@ -213,7 +238,6 @@ export default function HRDashboard() {
   //upload jd to s3 bucket
   const uploadJD = async (jd: string) => {
     try {
-      setPostMsg("Uploading JD...");
       const res = await fetch(`${API_BASE_URL}/file/uploadJD`,{
         method:"POST",
         body: JSON.stringify({ job_description: jd }),
@@ -264,7 +288,7 @@ export default function HRDashboard() {
 
     setSaving(true);
     const token = localStorage.getItem("googleIdToken");
-    const job_description = `Edubuk is hiring ${form.title} at ${form.company} located in ${form.location}. Role: ${form.role}. Description: ${form.description}. Posted at: ${new Date().toISOString()}. Employment Type: ${form.employmentType}. Remote: ${form.isRemote}. Salary: ${form.salaryMode === "structured" ? `${form.salary.min}-${form.salary.max} ${form.salary.currency}` : form.salaryText}. Tags: ${form.tags}. Posted By: ${hr.name} (ID: ${hr.id}).`;
+    const job_description = `Edubuk is hiring ${form.title} at ${form.company} located in ${form.location}. Role: ${form.role}. Description: ${form.description}. Posted at: ${new Date().toISOString()}. Employment Type: ${form.employmentType}. Remote: ${form.isRemote}. Salary: ${form.salaryText}. Tags: ${form.tags}. Posted By: ${hr.name} (ID: ${hr.id}).`;
 
     try {
       const payload: any = {
@@ -274,22 +298,12 @@ export default function HRDashboard() {
         role: form.role,
         employmentType: form.employmentType,
         isRemote: !!form.isRemote,
+        salary: form.salaryText,
         description: form.description,
         applyUrl: form.applyUrl ? form.applyUrl.split(",").map((s:string)=>s.trim()).filter(Boolean) : [],
         tags: form.tags ? form.tags.split(",").map((s:string)=>s.trim()).filter(Boolean) : [],
       };
 
-      if (form.salaryMode === "structured") {
-        payload.salary = {
-          min: form.salary.min ? Number(form.salary.min) : undefined,
-          max: form.salary.max ? Number(form.salary.max) : undefined,
-          currency: form.salary.currency || "INR"
-        };
-      } else {
-        payload.salary = form.salaryText || undefined;
-      }
-
-      setPostMsg("Uploading JD...");
       const job_description_id = await uploadJD(job_description);
       if (!job_description_id) {
         setErrorMsg("Failed to upload job description.");
@@ -380,7 +394,19 @@ export default function HRDashboard() {
 
   // small UI for status banner
   const StatusCard: React.FC<{ status: HRStatus }> = ({ status }) => {
-    if (!status) return null;
+    if (!status) return(
+      <div className="flex items-center gap-3 bg-red-50 border border-red-100 text-red-800 rounded-lg px-4 py-3">
+        <div className="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center">
+          <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </div>
+        <div>
+          <div className="text-sm font-semibold">Account Rejected</div>
+          <div className="text-xs text-red-700">Your account has been rejected. Please contact support for assistance.</div>
+        </div>
+      </div>
+    );
     if (status === "approved") {
       return (
         <div className="flex items-center gap-3 bg-green-50 border border-green-100 text-green-800 rounded-lg px-4 py-3">
@@ -442,7 +468,34 @@ export default function HRDashboard() {
                   <span className="text-sm">Checking account status…</span>
                 </div>
               ) : (
-                hrStatus && <StatusCard status={hrStatus} />
+                hrStatus?<StatusCard status={hrStatus} />:
+                <div className="relative flex justify-center items-center gap-4 rounded-2xl border border-red-200 bg-red-50/90 p-6 shadow-md hover:shadow-lg transition-shadow duration-300">
+                {/* Icon */}
+                <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-red-100">
+                  <AlertTriangle className="h-6 w-6 text-red-600" />
+                </div>
+          
+                {/* Text + Button */}
+                <div className="flex flex-col gap-2">
+                  <h3 className="text-base font-semibold text-red-800">
+                    Your Company is not registered
+                  </h3>
+                  <p className="text-sm text-red-700">
+                    Please register your company to post jobs. <br />
+                    To register, login as <span className="font-medium">HR</span> and
+                    register your company.
+                  </p>
+                  <Link
+                    to="/login"
+                    className="inline-block w-fit rounded-lg bg-[#03257e] px-5 py-2 text-sm font-medium text-white shadow-md transition hover:bg-[#021b5c] hover:shadow-lg"
+                  >
+                    Login as HR
+                  </Link>
+                </div>
+          
+                {/* Optional decorative gradient corner */}
+                <div className="absolute right-0 top-0 h-16 w-16 bg-gradient-to-br from-red-200/40 to-transparent rounded-tr-2xl" />
+              </div>
               )}
             </div>
           </div>
@@ -474,6 +527,7 @@ export default function HRDashboard() {
                     <div className="text-xs text-gray-500">{job.role} • {job.location}</div>
                   </div>
                   <div className="flex flex-col items-end gap-2">
+                  {!jobId?<button onClick={() => deleteJob(job?._id || "")} className="bg-[#f14419] text-white px-2 rounded">Delete</button>:<p className="text-sm text-center text-[#f14419]">{jobId===job._id||job.id&&'Deleting...'}</p>}
                     <div className="text-sm text-gray-500">{job.postedAt ? new Date(job.postedAt).toLocaleDateString() : ""}</div>
                   </div>
                 </div>
@@ -640,23 +694,10 @@ export default function HRDashboard() {
                 <span className="text-sm">Remote</span>
               </label>
               <div className="flex items-center gap-2">
-                <label className="text-sm">Salary mode:</label>
-                <select value={form.salaryMode} onChange={(e)=>setForm((s:any)=>({...s,salaryMode:e.target.value}))} className="border rounded px-2 py-1 text-sm">
-                  <option value="structured">Structured (min/max)</option>
-                  <option value="text">Free text</option>
-                </select>
+                <label className="text-sm">Salary</label>
               </div>
-              {form.salaryMode === "structured" ? (
-                <div className="grid grid-cols-3 gap-2">
-                  <input type="number" value={form.salary.min || ""} onChange={(e)=>setForm((s:any)=>({...s,salary:{...s.salary,min:e.target.value}}))} placeholder="Min" className="border rounded px-3 py-2" />
-                  <input type="number" value={form.salary.max || ""} onChange={(e)=>setForm((s:any)=>({...s,salary:{...s.salary,max:e.target.value}}))} placeholder="Max" className="border rounded px-3 py-2" />
-                  <input value={form.salary.currency || "INR"} onChange={(e)=>setForm((s:any)=>({...s,salary:{...s.salary,currency:e.target.value}}))} placeholder="Currency" className="border rounded px-3 py-2" />
-                </div>
-              ) : (
                 <input value={form.salaryText} onChange={(e)=>setForm((s:any)=>({...s,salaryText:e.target.value}))} placeholder="e.g. Competitive / Up to 10 LPA" className="w-full border rounded px-3 py-2" />
-              )}
               <textarea value={form.description} onChange={(e)=>setForm((s:any)=>({...s,description:e.target.value}))} required className="w-full border rounded-lg px-3 py-2 h-36" placeholder="Job description" />
-              <input value={form.applyUrl} onChange={(e)=>setForm((s:any)=>({...s,applyUrl:e.target.value}))} className="w-full border rounded-lg px-3 py-2" placeholder="Apply URLs (comma separated)" />
               <input value={form.tags} onChange={(e)=>setForm((s:any)=>({...s,tags:e.target.value}))} className="w-full border rounded-lg px-3 py-2" placeholder="Tags (comma separated)" />
               {errorMsg && <div className="text-sm text-red-600">{errorMsg}</div>}
               <div className="flex justify-end gap-3">

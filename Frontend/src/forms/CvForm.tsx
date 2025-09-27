@@ -643,7 +643,7 @@ const CvForm = () => {
               ) : (
                   <div className="flex gap-2 w-full flex-col sm:flex-row">
                     {
-                      step === 6 && !localStorage.getItem("txHash") &&
+                      step === 6 && localStorage.getItem("txHash") &&
                       <Button
                         type="button"
                         onClick={stepsHandler}

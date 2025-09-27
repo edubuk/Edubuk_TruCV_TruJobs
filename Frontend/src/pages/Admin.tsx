@@ -51,6 +51,7 @@ const AdminUsersPage = () => {
         },
       });
       const data = await response.json();
+      console.log("data",data);
       if (!data.success) {
         toast.error(data.message || "Failed to fetch users");
         return;
@@ -211,7 +212,7 @@ const AdminUsersPage = () => {
 
   return (
     <>
-      {!checkAccess ? (
+      {checkAccess ? (
         <div className="min-h-screen bg-white p-6">
           <h1 className="text-3xl font-bold text-[#03257e] mb-6 text-center">Admin Dashboard</h1>
 

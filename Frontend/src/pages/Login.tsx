@@ -32,7 +32,6 @@ interface UploadResponse {
 const API_BASE = process.env.REACT_APP_API_URL || "http://localhost:8000";
 
 const GoogleLoginWithHR: React.FC = () => {
-  const [loading, setLoading] = useState(false);
   const [step, setStep] = useState<
     "confirm" | "companyForm" | "pending" | "idle"
   >("idle");
@@ -50,12 +49,10 @@ const GoogleLoginWithHR: React.FC = () => {
   // Step 1: Google sign-in
   const handleGoogleLogin = async (credentialResponse: CredentialResponse | any) => {
     setInfoMessage(null);
-    setLoading(true);
     try {
       const token = credentialResponse?.credential;
       if (!token) {
         setInfoMessage("No credential from Google.");
-        setLoading(false);
         return;
       }
 
@@ -65,11 +62,9 @@ const GoogleLoginWithHR: React.FC = () => {
 
       setCompanyName(decoded?.name ? `${decoded.name}'s Company` : "");
       setStep("confirm");
-      setLoading(false);
     } catch (err) {
       console.error("Google login decode error", err);
       setInfoMessage("Google login failed. Try again.");
-      setLoading(false);
     }
   };
 
@@ -94,7 +89,6 @@ const GoogleLoginWithHR: React.FC = () => {
       setInfoMessage("Missing Google token. Please sign in again.");
       return;
     }
-    setLoading(true);
     setInfoMessage(null);
 
     try {
@@ -104,35 +98,25 @@ const GoogleLoginWithHR: React.FC = () => {
       });
      console.log(res);
       if (res.ok) {
-        const data = await res.json();
-        const hr = data.hr || data;
+        //const data = await res.json();
+        //const hr = data.hr || data;
         localStorage.setItem("googleIdToken", googleToken);
         if (profile?.name) localStorage.setItem("userProfileName", profile.name);
         if (profile?.email) localStorage.setItem("email", profile.email);
         if (profile?.picture) localStorage.setItem("userImage", profile.picture);
         if (profile?.exp) localStorage.setItem("tokenExpiry", String(profile.exp));
-        setLoading(false);
-
-        if (hr.status && hr.status !== "approved") {
-          navigate("/hr");
-        } else {
-          navigate("/hr"); // ✅ HR dashboard
-        }
-        return;
+        navigate("/hr");
       }
 
       if (res.status === 403 || res.status === 404) {
-        setLoading(false);
         setStep("companyForm"); // New HR → show company registration form
         return;
       }
 
       setInfoMessage("Could not verify HR status. Try again.");
-      setLoading(false);
     } catch (err) {
       console.error("onChooseHR error", err);
       setInfoMessage("Server error while checking HR status.");
-      setLoading(false);
     }
   };
 
@@ -148,7 +132,6 @@ const GoogleLoginWithHR: React.FC = () => {
       return;
     }
 
-    setLoading(true);
     setInfoMessage(null);
 
     try {
@@ -172,27 +155,30 @@ const GoogleLoginWithHR: React.FC = () => {
       });
 
       if (res.status === 201) {
+        localStorage.setItem("googleIdToken", googleToken);
+        if (profile?.name) localStorage.setItem("userProfileName", profile.name);
+        if (profile?.email) localStorage.setItem("email", profile.email);
+        if (profile?.picture) localStorage.setItem("userImage", profile.picture);
+        if (profile?.exp) localStorage.setItem("tokenExpiry", String(profile.exp));
         setStep("pending");
         setInfoMessage("Registered successfully. Awaiting admin approval.");
-        setLoading(false);
         navigate("/hr"); // ✅ HR pending approval page
         return;
       }
 
       if (res.ok) {
         setInfoMessage("Account linked — redirecting to HR dashboard.");
-        setLoading(false);
         navigate("/hr");
         return;
       }
 
       const data = await res.json();
+      console.log({data});
       setInfoMessage(data?.message || "Registration failed.");
-      setLoading(false);
+      navigate("/hr");
     } catch (err) {
       console.error("submitCompanyRegistration error", err);
       setInfoMessage("Server error while registering company.");
-      setLoading(false);
     }
   };
 
@@ -264,35 +250,38 @@ const GoogleLoginWithHR: React.FC = () => {
               Company name *
               <input
                 type="text"
+                required
                 value={companyName}
                 onChange={(e) => setCompanyName(e.target.value)}
                 className="mt-1 p-2 border rounded"
-                required
               />
             </label>
             <label className="flex flex-col text-sm">
-              Mobile number
+              Mobile number*
               <input
                 type="text"
+                required
                 value={mobileNumber}
                 onChange={(e) => setMobileNumber(e.target.value)}
                 className="mt-1 p-2 border rounded"
               />
             </label>
             <label className="flex flex-col text-sm">
-              Address
+              Address*
               <input
                 type="text"
                 value={address}
+                required
                 onChange={(e) => setAddress(e.target.value)}
                 className="mt-1 p-2 border rounded"
               />
             </label>
             <label className="flex flex-col text-sm">
-              Documents
+              Documents*
               <div className="flex gap-2">
               <input
                 type="file"
+                required
                 onChange={(e) => setDocuments(e.target.files?.[0] || null)}
                 className="mt-1 p-2 border rounded"
               />

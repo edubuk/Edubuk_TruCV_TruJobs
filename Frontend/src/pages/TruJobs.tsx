@@ -1,5 +1,5 @@
 // TruJobsPortal.tsx
-import React, { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useUserData } from "@/context/AuthContext";
 import { Link } from "react-router-dom";
 import { ArrowRightIcon } from "lucide-react";
@@ -50,7 +50,6 @@ function TruJobsPortal() {
         "education":null,
         "experience": null,
         "achievements": null,
-
         "skills": null
       },
       "job_description_id":""
@@ -339,7 +338,7 @@ function TruJobsPortal() {
               ))}
 
               {filtered.length===0 && !loading && (
-                <div className="lg:col-span-3 bg-white rounded-2xl shadow p-6 text-center text-gray-500">No jobs match your filters. Try clearing filters.</div>
+                <div className="lg:col-span-3 bg-white rounded-2xl shadow p-6 text-center text-gray-500">No jobs availables or  no jobs match your filters. Try clearing filters.</div>
               )}
             </div>
           </main>
@@ -355,18 +354,23 @@ function TruJobsPortal() {
               <h3 className="text-lg font-semibold">Apply — {appliedJob.title} @ {appliedJob.company}</h3>
               <button onClick={closeApply} className="px-2 py-1 rounded border">Close</button>
             </div>
+            <div>
+              <p className="text-sm font-sans"><span className="font-semibold">Description:</span> {appliedJob?.description}</p>
+              <p className="text-sm font-sans"><span className="font-semibold">Location:</span> {appliedJob?.location}</p>
+              <p className="text-sm font-sans"><span className="font-semibold">Employment Type:</span> {appliedJob?.employmentType}</p>
+              <p className="text-sm font-sans"><span className="font-semibold">Required Skills:</span> {appliedJob?.tags?.join(", ")}</p>
+            </div>
             {nanoId?.length>0?<div className="mt-4 flex flex-col gap-4">
-              <p className="text-sm text-[#03257e]">You have <span className="font-semibold text-[#006666]">{nanoId?.length}</span> resume uploaded. Please select one to apply.</p>
+              <p className="text-md text-[#03257e]">You have <span className="font-semibold text-[#006666]">{nanoId?.length}</span> resume created. Please select one to apply.</p>
               <select className="w-full border rounded-lg px-3 py-2 " onChange={(e)=>{getCvRequest(e.target.value)}}>
                 <option value="">Select a resume</option>
                 {nanoId.map(id=> <option key={id} value={id}>Resume {id}</option>)}
               </select>
-              {!loading?<button className="mt-4 w-full bg-[#03257e] text-white text-sm font-semibold py-2 px-4 rounded hover:bg-[#006666] transition" onClick={()=>{applyJobHandler(appliedJob?.job_description_id || "")}}>Apply</button>:<p className="mt-4 w-full text-center text-[#006666] text-sm font-semibold py-2 px-4 rounded hover:bg-[#006666] transition">Applying...</p>}
+              {!loading?<button className="mt-4 w-full bg-[#03257e] text-white text-sm font-semibold py-2 px-4 rounded hover:bg-[#006666] transition" onClick={()=>{applyJobHandler(appliedJob?.job_description_id || "")}}>Apply</button>:<p className="mt-4 w-full text-center text-[#006666] text-sm font-semibold py-2 px-4 rounded transition">Applying...</p>}
             </div>:<div className="mt-4 flex justify-center justify-items-center flex-col gap-4">
               <p className="text-sm text-[#f14419]">We didn't find any resume in your account. Please create a resume to apply.</p>
               <Link to="/create-cv" className="mt-4 bg-[#03257e] text-center text-white text-sm font-semibold py-2 px-4 rounded hover:bg-[#006666] transition">Create Resume <ArrowRightIcon className="inline w-4 h-4 ml-2" /></Link>
             </div>}
-            <div className="mt-3 text-xs text-gray-500">Note: This will POST to the employer's application endpoint or create a candidate profile in production.</div>
           </div>
         </div>
       )}
