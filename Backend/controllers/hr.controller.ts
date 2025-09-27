@@ -1,6 +1,6 @@
 // controllers/hrController.ts
 import { Request, Response } from "express";
-import {HR} from "../models/hr.model";
+import {HR, Job} from "../models/hr.model";
 import axios from "axios";
 
 
@@ -162,14 +162,13 @@ export const rejectHR = async (req: Request, res: Response) => {
 export const getSimilarityScore = async (req: Request, res: Response) => {
     try {
         const job_description_id = req.query.job_description_id;
-        const top_k = req.query.top_k;
+        //const top_k = req.query.top_k;
         console.log("job_description_id", job_description_id);
-        console.log("top_k", top_k);
-        if(!job_description_id || !top_k) return res.status(400).json({ error: "Missing required fields: job_description_id, top_k" });
+        //console.log("top_k", top_k);
+        if(!job_description_id) return res.status(400).json({ error: "Missing required fields: job_description_id" });
         const result = await axios.post(`${process.env.AWS_BASE_URL}/prod/resume_Similarity`, 
           {
             "job_description_id":job_description_id,
-            "top_k":Number(top_k),
             "calculate_similarity": true
           },
           {
@@ -186,3 +185,16 @@ export const getSimilarityScore = async (req: Request, res: Response) => {
         return res.status(500).json({success:false, error: err?.data?.message || "Server error" });
     }
 };  
+
+export const deleteJob = async (req: Request, res: Response) => {
+    try {
+        const { job_id } = req.params;
+        if (!job_id || !job_id.match(/^[0-9a-fA-F]{24}$/)) return res.status(400).json({ error: "Invalid job_id" });
+        const job = await Job.findByIdAndDelete(job_id);
+        if (!job) return res.status(404).json({ error: "Job not found" });
+        return res.status(200).json({ message: "Job deleted", job });
+    } catch (err) {
+        console.error("deleteJob:", err);
+        return res.status(500).json({ error: "Server error" });
+    }
+};

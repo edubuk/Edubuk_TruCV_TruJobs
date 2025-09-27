@@ -34,12 +34,9 @@ export interface IHR {
 export interface IHRDocument extends IHR, Document {}
 
 /** Salary structure (optional) */
-export interface ISalary {
-  min?: number;
-  max?: number;
-  currency?: string; // e.g. "INR", "USD"
-  text?: string;     // fallback freeform (e.g. "Competitive")
-}
+// export interface ISalary {
+//   text?: string;     // fallback freeform (e.g. "Competitive")
+// }
 
 /** Job post interface */
 export interface IJob {
@@ -50,7 +47,7 @@ export interface IJob {
   role?: string;
   employmentType?: "full-time" | "part-time" | "contract" | "internship" | "temporary";
   isRemote?: boolean;
-  salary?: ISalary | string;
+  salary?: string;
   description: string;
   postedAt?: Date;
   applyUrl?: string[];         // multiple ways to apply
@@ -81,16 +78,6 @@ const OAuthProviderSchema = new Schema<IOAuthProvider>(
   { _id: false }
 );
 
-// Salary subdocument (optional structured)
-const SalarySchema = new Schema<ISalary>(
-  {
-    min: { type: Number },
-    max: { type: Number },
-    currency: { type: String },
-    text: { type: String },
-  },
-  { _id: false }
-);
 
 /***** Job schema & model *****/
 const JobSchema = new Schema<IJobDocument>(
@@ -106,7 +93,7 @@ const JobSchema = new Schema<IJobDocument>(
       default: "full-time",
     },
     isRemote: { type: Boolean, default: false },
-    salary: { type: SalarySchema }, // or a string fallback
+    salary: { type: String }, // or a string fallback
     description: { type: String, required: true },
     postedAt: { type: Date, default: Date.now, index: true },
     applyUrl: { type: [String], validate: { validator: (arr: string[]) => arr.every(u => typeof u === "string"), message: "applyUrl must be an array of strings" } },

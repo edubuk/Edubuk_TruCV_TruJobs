@@ -7,6 +7,7 @@ import cors from "cors";
 import uploadRouter from "../routers/upload.router";
 import hrRouter from "../routers/hr.router";
 import jobRouter from "../routers/job.router";
+import adminRouter from "../routers/admin.router";
 // Initialize dotenv and Express app
 config();
 const app = express();
@@ -22,6 +23,7 @@ app.use("/hr", hrRouter);
 app.use("/job", jobRouter);
 app.use("/cv", cvRouter);
 app.use("/file",uploadRouter);
+app.use("/admin", adminRouter);
 app.get("/", (req: Request, res: Response) => {
   return res.json({
     message: "Health is ok !",
