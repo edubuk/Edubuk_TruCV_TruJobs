@@ -5,8 +5,9 @@ By leveraging **blockchain technology**, Edubuk provides a **secure, cost-effect
 
 ---
 
-## **Smart Contract Address**
-```0x75968e46D4699128e97631b1bb89Be9ddD27cB01```
+## **Smart Contract Address(U2U Solaris Mainnet)**
+```0x560c1787b2C9DcD33AD0df3fd29E4F43cE7ea481```
+<!-- ```0x75968e46D4699128e97631b1bb89Be9ddD27cB01``` -->
 
 ## **Demo Video**
 ``` https://drive.google.com/file/d/1Jvdi_mKvv0xx6ekhVunNqd3D-eDm5qzH/view?usp=sharing```
@@ -98,7 +99,7 @@ This application leverages **AI + NLP (Natural Language Processing)** to intelli
 
 ## **Deployment & U2U Test Network Integration**
 
-Edubuk’s smart contract is deployed on the **U2U Test Network**, following the official U2U documentation for network configuration.
+Edubuk’s smart contract is deployed on the **U2U Solaris Mainnet**, following the official U2U documentation for network configuration.
 
 ### **Steps to Deploy Smart Contract**
 
@@ -108,19 +109,26 @@ Edubuk’s smart contract is deployed on the **U2U Test Network**, following the
    - Compile and deploy using **Injected Web3** environment.
 
 2. **MetaMask Configuration**  
-   - Add a **Custom RPC Network** in MetaMask using U2U testnet details:
-     - **Network Name:** `U2U Test Network`  
+   - Add a **Custom RPC Network** in MetaMask using U2U Solaris Mainnet details:
+     - **Network Name:** `U2U Solaris Mainnet`  
      - **RPC URL:** *from U2U docs*  
      - **Chain ID:** *from U2U docs*  
      - **Currency Symbol:** `U2U`  
-   - Save and switch to the U2U Test Network.
+   - Save and switch to the U2U Solaris Mainnet.
 
 3. **Faucet**  
-   - Claim test U2U tokens from the **U2U Faucet**.  
+   - Claim test U2U tokens from the **U2U Faucet** to test the smart contract.  
    - Deposit these tokens to your MetaMask wallet to cover deployment gas fees.
+   - Faucet URL: `https://faucet.uniultra.xyz/`
+4. **Testing Smart Contract**  
+   - Use the **U2U Testnet** to test the smart contract.
+   - Network Name: `U2U Network Nebulas`
+   - RPC URL: `https://rpc-nebulas-testnet.u2u.xyz`
+   - Chain ID: `2484`
+   - Currency Symbol: `U2U`
 
-4. **Contract Deployment**  
-   - In Remix, select **Injected Web3** with MetaMask connected to the U2U Test Network.  
+5. **Contract Deployment**  
+   - In Remix, select **Injected Web3** with MetaMask connected to the U2U Solaris Mainnet.  
    - Deploy the contract and note the **contract address**.
 
 ✅ The contract is now live and ready for integration with the Edubuk platform.
@@ -131,8 +139,8 @@ Edubuk’s smart contract is deployed on the **U2U Test Network**, following the
 
 - **Frontend:** React, TypeScript, Tailwind CSS  
 - **Backend:** Node.js, Express.js, MongoDB, Flask (for AI APIs)  
-- **Blockchain & Smart Contracts:** Solidity, Remix IDE, ethers.js  
-- **Network:** U2U Test Network  
+- **Blockchain & Smart Contracts:** Solidity, Remix IDE, OpenZeppelin, ethers.js  
+- **Network:** U2U Solaris Mainnet  
 - **AI & NLP:** SentenceTransformer, PyTorch  
 - **Machine Learning:** Cosine Similarity for text matching  
 - **Data Processing:** Pandas for CSV export  
