@@ -97,7 +97,7 @@ This application leverages **AI + NLP (Natural Language Processing)** to intelli
 
 ---
 
-## **Deployment & U2U Test Network Integration**
+## **Deployment & U2U Network Solaris Mainnet Integration**
 
 Edubuk’s smart contract is deployed on the **U2U Solaris Mainnet**, following the official U2U documentation for network configuration.
 
@@ -110,9 +110,9 @@ Edubuk’s smart contract is deployed on the **U2U Solaris Mainnet**, following 
 
 2. **MetaMask Configuration**  
    - Add a **Custom RPC Network** in MetaMask using U2U Solaris Mainnet details:
-     - **Network Name:** `U2U Solaris Mainnet`  
-     - **RPC URL:** *from U2U docs*  
-     - **Chain ID:** *from U2U docs*  
+     - **Network Name:** `U2U Network Solaris`  
+     - **RPC URL:** `https://rpc-mainnet.u2u.xyz` (*from U2U docs*)  
+     - **Chain ID:** `39` (*from U2U docs*)  
      - **Currency Symbol:** `U2U`  
    - Save and switch to the U2U Solaris Mainnet.
 
