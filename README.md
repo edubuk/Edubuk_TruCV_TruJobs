@@ -12,6 +12,10 @@ By leveraging **blockchain technology**, Edubuk provides a **secure, cost-effect
 ## **Demo Video**
 ``` https://drive.google.com/file/d/1Jvdi_mKvv0xx6ekhVunNqd3D-eDm5qzH/view?usp=sharing```
 
+## **Website**
+```https://edubuk-hackathon.vercel.app```
+
+
 ## **Problem Statement**
 - **10 Million** fake degrees sold annually.  
 - **$20 Billion** global fake degree market.  
