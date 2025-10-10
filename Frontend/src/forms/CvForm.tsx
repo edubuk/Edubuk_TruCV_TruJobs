@@ -708,7 +708,7 @@ const CvForm = () => {
                       <div className="flex justify-center items-center w-auto sm:w-full">
                         <a
                           className="w-full px-2 py-1 text-center items-center border rounded hover:bg-[#f8f9fa] font-semibold hover:opacity-90"
-                          href={`https://educhain.blockscout.com/tx/${txHash || localStorage.getItem("txHash")}`}
+                          href={`https://u2uscan.xyz/tx/${txHash || localStorage.getItem("txHash")}`}
                           target="_blank"
                           rel="noopener noreferrer"
                         >

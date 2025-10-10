@@ -5,6 +5,7 @@ import {jwtDecode} from "jwt-decode";
 import { useNavigate } from "react-router-dom";
 import { uploadFile } from "@/uploadFile";
 import { Check } from "lucide-react";
+import { API_BASE_URL } from "@/main";
 
 interface DecodedGooglePayload {
   sub: string;
@@ -29,7 +30,7 @@ interface UploadResponse {
   };
 }
 
-const API_BASE = process.env.REACT_APP_API_URL || "http://localhost:8000";
+const API_BASE = API_BASE_URL || "http://localhost:8000";
 
 const GoogleLoginWithHR: React.FC = () => {
   const [step, setStep] = useState<

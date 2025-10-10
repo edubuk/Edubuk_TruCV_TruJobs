@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import AccessDeniedPage from "./AccessDenied";
 import { FaEdit, FaCheck, FaTimes } from "react-icons/fa";
+import { API_BASE_URL } from "@/main";
 
 type HRItem = {
   id: string;
@@ -16,8 +17,6 @@ type HRItem = {
   createdAt?: string;
   rejectionReason?: string;
 };
-
-const API_BASE_URL = process.env.REACT_APP_API_URL || "http://localhost:8000";
 
 const AdminUsersPage = () => {
   // user management (existing)

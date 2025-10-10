@@ -76,7 +76,7 @@ type SimilarityResponse = {
 };
 /** ----------------------------------------- */
 
-const API_BASE = process.env.REACT_APP_API_URL || "http://localhost:8000";
+const API_BASE = API_BASE_URL || "http://localhost:8000";
 
 export default function HRDashboard() {
   const [jobs, setJobs] = useState<Job[]>([]);
@@ -607,7 +607,7 @@ export default function HRDashboard() {
                               </div>
                               <div className="flex items-center gap-2">
                               <a
-                                  href={`http://localhost:5173/cv/${m.nano_Id}`}
+                                  href={`https://edubuk-hackathon.vercel.app/cv/${m.nano_Id}`}
                                   target="_blank"
                                   rel="noreferrer"
                                   className="px-3 text-white py-1 text-xs rounded-lg border bg-[#006666]"
