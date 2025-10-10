@@ -18,12 +18,12 @@ This guide covers testing for **3 main API endpoints** that power the TruJobs re
 - **Base URL**: `https://ctlzux7bee.execute-api.ap-south-1.amazonaws.com/prod/`
 - **Region**: ap-south-1 (Mumbai)
 - **Authentication**: API Key required in headers
-- **Content-Type**: `multipart/form-data` (for uploads), `application/json` (for matching)
+- **Content-Type**: `multipart/form-data` (for PDF resume uploads), `application/json` (for JSON resume uploads and matching)
 
 ### **Required Headers:**
 ```
 x-api-key: KXXpej8bvb6TGQ9Rs8hcXB7WRLC7eoe5XYkMbd47
-Content-Type: multipart/form-data (for uploads) | application/json (for matching)
+Content-Type: multipart/form-data (for PDF uploads) | application/json (for JSON resume uploads and matching)
 ```
 
 ---
@@ -88,12 +88,12 @@ Body (raw JSON):
 
 ### **Endpoint Details:**
 - **URL**: `POST /ResumeUpload`
-- **Purpose**: Upload and process candidate resume PDFs
+- **Purpose**: Upload and process candidate resumes (PDF or JSON text)
 - **Expected Response Time**: < 4 seconds
 
-### **Test Scenario:**
+### **Test Scenarios:**
 
-#### **Resume PDF Upload**
+#### **Scenario 2A: Resume PDF Upload**
 ```
 Method: POST
 URL: https://ctlzux7bee.execute-api.ap-south-1.amazonaws.com/prod/ResumeUpload
@@ -106,6 +106,34 @@ Body (form-data):
   job_description_id: abc123-def456-ghi789  // Use ID from Test 1
 ```
 
+#### **Scenario 2B: JSON Resume Upload (Text-only)**
+```
+Method: POST
+URL: https://ctlzux7bee.execute-api.ap-south-1.amazonaws.com/prod/ResumeUpload
+Headers:
+  x-api-key: KXXpej8bvb6TGQ9Rs8hcXB7WRLC7eoe5XYkMbd47
+  Content-Type: application/json
+
+Body (raw JSON):
+Option A (simple text):
+{
+  "resume_content": "Paste full resume text here...",
+  "job_description_id": "abc123-def456-ghi789"
+}
+
+Option B (structured resume object):
+{
+  "resume_json": {
+    "name": "Jane Doe",
+    "contact": {"email": "jane@example.com", "phone": "+91-9000000000"},
+    "education": [{"institution": "XYZ University", "degree": "B.Tech", "duration": "2019-2023"}],
+    "experience": [{"title": "Software Engineer", "organization": "ACME", "duration": "2023–Present"}],
+    "skills": {"languages": ["Python", "JavaScript"], "frameworks_libraries": ["React", "Node"]}
+  },
+  "job_description_id": "abc123-def456-ghi789"
+}
+```
+
 ### **✅ Expected Success Response:**
 ```json
 {
@@ -114,9 +142,21 @@ Body (form-data):
   "filename": "xyz789-abc123-def456.pdf",
   "job_description_id": "abc123-def456-ghi789",
   "candidate_name": "John Doe",
-  "s3_key": "resumes/xyz789-abc123-def456.pdf"
+  "s3_key": "resumes/xyz789-abc123-def456.txt"
 }
 ```
+
+Note: For JSON resume uploads (application/json), the flattened resume text is persisted to S3 under `resumes/{resume_id}.txt`. The `s3_key` will point to this `.txt` object.
+
+Postman steps (Scenario 2B - JSON):
+1) Method: POST
+2) URL: https://ctlzux7bee.execute-api.ap-south-1.amazonaws.com/prod/ResumeUpload
+3) Headers:
+   - x-api-key: KXXpej8bvb6TGQ9Rs8hcXB7WRLC7eoe5XYkMbd47
+   - Content-Type: application/json
+4) Body: Select raw → JSON, then choose Option A (resume_content) or Option B (resume_json) from above
+5) Send
+6) Verify 200 OK and capture `resume_id`, `candidate_name`, and `s3_key` (should be `resumes/{resume_id}.txt` for JSON)
 
 ### **🚨 Test Validation Points:**
 - ✅ Status Code: `200 OK`
